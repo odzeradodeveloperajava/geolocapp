@@ -1,0 +1,10 @@
+.imageContainer{
+    width: 80%;
+    border-radius: 10px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
+    grid-column-gap: 10px;
+    grid-row-gap: 10px;
+    padding-top: 10px;
+}
