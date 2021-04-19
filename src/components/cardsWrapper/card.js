@@ -5,7 +5,7 @@ import './card.css';
 
 
 
-const Card = ({ cardId, imageUrl, size, lat, lon}) => {
+const Card = ({ cardId, imageUrl, size, lat, lon, town}) => {
     return (
     <div className="imageCard" id={cardId}>
         <a>File name: {cardId}</a>
@@ -15,10 +15,17 @@ const Card = ({ cardId, imageUrl, size, lat, lon}) => {
         <a>size: {size} kb</a>
         <a>lat: {lat}</a>
         <a>lon: {lon}</a>
+        <a>town: {town}</a>
     </div>
     );
   };
-
  
+ 
+  Card.propTypes = {
+    town: PropTypes.string,
+  };
 
+  //Card.defaultProps = {
+  //  town: `Unknown`,
+  //};
 export default Card;

@@ -10,50 +10,81 @@ import calculateGpsDatalat from './components/upoloadHandler/scripts/calculateGp
 /*global EXIF*/
 
 class App extends React.Component{
-  state = {
-    items: [],
-  }
+    state = {
+        items: [],
+    }
 
-addItem = e => {
+    addItem = e => {
+        const setNewItemHandler = (newItem) => {
+            this.setState(prevState => ({
+                items: [...prevState.items, newItem]
+            }));
+        }
 
-  fileHandler();
-      let newItem = [];
-      let filesArray = document.getElementById('input').files.length;
-      //Loop for every file uploaded //
-      for (let i = 0; i < filesArray; i++) {
-        const selectedFile = document.getElementById('input').files[i];
-        EXIF.getData(selectedFile, function () {
-            if (this.exifdata.GPSLatitude !== undefined && this.exifdata.GPSLongitude !== undefined) {
-              newItem.push({
-                cardId: this.name,
-                imageUrl: window.URL.createObjectURL(this), // Create url for thumbnail of image //
-                size: this.size,
-                lat: calculateGpsDatalat(selectedFile),
-                lon: calculateGpsDatalon(selectedFile),
-              })
-            } else {
-              console.log('error');
-            };
-        })
-      }
+        fileHandler(); //making only marker on map
+        //let newItem ;
+        let filesArray = document.getElementById('input').files.length;
+        //Loop for every file uploaded //
+        for (let i = 0; i < filesArray; i++) {
+            const selectedFile = document.getElementById('input').files[i];
+            EXIF.getData(selectedFile, async function () {
+                if (this.exifdata.GPSLatitude !== undefined && this.exifdata.GPSLongitude !== undefined) {
+                    async function mainHandler(){
+                                        async function getCity() {
+                                            try {
+                                                const response = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${calculateGpsDatalat(selectedFile)}&longitude=${calculateGpsDatalon(selectedFile)}&localityLanguage=pl`, {
+                                                    method: 'GET',
+                                                });
+                                                const data = await response.json();
+                                                return data;
+                                            } catch (error) {
+                                                console.error(error);
+                                            }
+                                        }
+                                    
+                                        async function logCity() {
+                                            const data = await getCity();
+                                            console.log(data);
+                                            return data.locality;
+                                        }
 
-  setTimeout(() => {
-    this.setState(prevState => ({
-      items: [...prevState.items, ...newItem]
-    }));
-   }, 2000);
-};
+                                        console.log('funkcja log city ', logCity())
+                    async function returnNewItem(){
 
-render(){
-  return (
-    <div className="pageWrapper">
-      <Header />
-      <Map />
-      <UploadHandler submitFn={this.addItem} />
-      <CardsWrapper
-          items={this.state.items}
-      />
-    </div>
-  )};
+                                return {
+                                     cardId: (selectedFile).name,
+                                     imageUrl: window.URL.createObjectURL(selectedFile), // Create url for thumbnail of image //
+                                     size: (selectedFile).size,
+                                     lat: calculateGpsDatalat(selectedFile),
+                                     lon: calculateGpsDatalon(selectedFile),
+                                     town: await logCity(),
+                                 }
+                                }
+                        console.log(await returnNewItem());
+
+                        return await returnNewItem();
+                }
+                    setNewItemHandler(await mainHandler());
+                    //setNewItemHandler(newItem);
+                    console.log();
+                } else {
+                    console.log('make modal with error');
+                };
+            })
+        }
+
+    };
+
+    render(){
+        return (
+            <div className="pageWrapper">
+                <Header />
+                <Map />
+                <UploadHandler submitFn={this.addItem} />
+                <CardsWrapper
+                    items={this.state.items}
+                />
+            </div>
+        )};
 }
 export default App;
