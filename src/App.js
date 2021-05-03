@@ -22,17 +22,19 @@ class App extends React.Component {
     };
 
     fileHandler(); //making only marker on map
-    let filesArray = document.getElementById("input").files.length;
+    let filesArray = e.target.files.length;
     for (let i = 0; i < filesArray; i++) {
-      const selectedFile = document.getElementById("input").files[i];
+      const selectedFile = e.target.files[i];
       EXIF.getData(selectedFile, async function () {
         if (
           this.exifdata.GPSLatitude !== undefined && this.exifdata.GPSLongitude !== undefined) {
           async function mainHandler() {
+            let latitude = calculateGpsDatalat(selectedFile);
+            let longitude = calculateGpsDatalon(selectedFile);
             async function getCity() {
               try {
                 const response = await fetch(
-                  `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${calculateGpsDatalat(selectedFile)}&longitude=${calculateGpsDatalon(selectedFile)}&localityLanguage=pl`,
+                  `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=pl`,
                   {
                     method: "GET",
                   }
@@ -55,8 +57,8 @@ class App extends React.Component {
                 cardId: selectedFile.name,
                 imageUrl: window.URL.createObjectURL(selectedFile), // Create url for thumbnail of image //
                 size: selectedFile.size,
-                lat: calculateGpsDatalat(selectedFile),
-                lon: calculateGpsDatalon(selectedFile),
+                lat: latitude,
+                lon: longitude,
                 town: await logCity(),
               };
             }
