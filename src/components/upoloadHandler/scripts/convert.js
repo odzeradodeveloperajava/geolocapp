@@ -3,8 +3,7 @@ function convert(degrees, minutes, seconds, direction) {
         if (direction === "S" || direction === "W") {
         dd = dd * -1;
     }
-        console.log('po policzeniu to jest ', dd);
-        let pp = dd.toFixed(6);
+        let pp = dd;
         return pp;
 };
 

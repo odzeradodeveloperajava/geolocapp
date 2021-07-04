@@ -2,13 +2,10 @@ import React, {useRef} from 'react';
 import './uploadHandler.css';
 
 const UploadHandler = ({submitFn}) =>{
-
 	const inputFile = useRef(null)
-
 	const onButtonClick = (e) => {
 		e.preventDefault();
 		inputFile.current.click();
-
 	}
 
 	return (

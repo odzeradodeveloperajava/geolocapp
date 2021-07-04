@@ -3,3 +3,14 @@
   flex-direction: column;
   background-color: rgb(255, 255, 255);
 }
+
+.leaflet-container{
+    height: 600px;
+    min-width: 1000px;
+    width: 95vw;
+    border-radius: 10px;
+    margin: 0 auto;
+    margin-bottom: 50px;
+    position: relative;
+    z-index: 0;
+}
