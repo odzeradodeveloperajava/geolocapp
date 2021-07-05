@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^7.1.2",
     "exif-js": "^2.3.0",
     "exif-reader": "^1.0.3",
+    "firebase": "^8.7.0",
     "leaflet": "^1.7.1",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
@@ -26,9 +27,9 @@
   },
   "browserslist": [
     ">0.2%",
-   "not dead",
-   "not op_mini all"
- ],
+    "not dead",
+    "not op_mini all"
+  ],
   "devDependencies": {
     "exif-async": "^1.0.6"
   }

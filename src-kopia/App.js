@@ -7,7 +7,6 @@ import calculateGpsDatalon from "./components/upoloadHandler/scripts/calculateGp
 import calculateGpsDatalat from "./components/upoloadHandler/scripts/calculateGpsDatalat.js";
 import { MapContainer, TileLayer, Marker, Popup} from "react-leaflet";
 import { ChangeView } from './components/changeView/changeView';
-import { storage } from './components/firebase/index';
 /*global EXIF*/
 
 class App extends React.Component {
@@ -96,29 +95,6 @@ class App extends React.Component {
           this.exifdata.GPSLongitude !== undefined
         ) {
           async function mainHandler() {
-
-            const uploadTask = storage.ref(`images/${selectedFile.name}`).put(selectedFile);
-            uploadTask.on(
-                'state_changed',
-                snapshot => {},
-                error => {
-                  console.log(error);
-                },
-                () => {
-                  storage
-                    .ref('images')
-                    .child(selectedFile.name)
-                    .getDownloadURL()
-                    .then(url => {
-                      //console.log(url);
-                    });
-                }
-            );
-
-
-
-
-
             let latitude = calculateGpsDatalat(selectedFile);
             let longitude = calculateGpsDatalon(selectedFile);
             async function getCity() {
