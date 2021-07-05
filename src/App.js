@@ -15,6 +15,7 @@ class App extends React.Component {
     items: [],
     centerPosition: [50.433, 18.053],
     activeCard: 0,
+    center: []
   };
   deleteItem = (e) => {
     let array = this.state.items;
@@ -30,10 +31,8 @@ class App extends React.Component {
       behavior: 'smooth'
     });
   };
-    
 
   changeActiveCardRight = () => {
-    
     if (this.state.activeCard +1 < this.state.items.length){
       this.setState({ activeCard: this.state.activeCard +1 });
       let position = (this.state.activeCard +1)*400;
@@ -46,7 +45,6 @@ class App extends React.Component {
     });
     }
     else{
-      
       console.log('dupa');
       return null;
     }
@@ -121,6 +119,12 @@ class App extends React.Component {
 
             let latitude = calculateGpsDatalat(selectedFile);
             let longitude = calculateGpsDatalon(selectedFile);
+            let actualCenter = [latitude, longitude];
+            if (i === 0){
+              this.setState(() => ({
+                center: actualCenter
+              }));
+            }
             async function getCity() {
               try {
                 const response = await fetch(
@@ -139,7 +143,6 @@ class App extends React.Component {
               }
             }
             async function returnNewItem() {
-              
               return {
                 cardId: selectedFile.name,
                 imageUrl: window.URL.createObjectURL(selectedFile), // Create url for thumbnail of image //
@@ -159,6 +162,10 @@ class App extends React.Component {
         }
       });
     }
+
+
+    
+
   };
 
   render() {
@@ -173,7 +180,7 @@ class App extends React.Component {
           zoom={6}
           scrollWheelZoom={false}
         >
-          <ChangeView center={this.state} /> 
+          <ChangeView center={this.state.center} /> 
           <TileLayer
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

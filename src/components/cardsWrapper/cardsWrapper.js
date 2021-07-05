@@ -4,17 +4,30 @@ import './cardsWrapper.css';
 
 const CardsWrapper = (props) => {
     const [button, setButton] = useState('buttonHidden');
+    const [cards, setCards] = useState('cardsHidden');
     useEffect(() => {
-        if(props.items.length >= 2 ){
+        if(props.items.length >= 2 )
+        {
             setButton('button');
         }
-        else{
+        else
+        {
             setButton('buttonHidden');
         }
-      },[props.items.length])
+      },[props.items.length]);
+
+      useEffect(() => {
+        if(props.items.length > 0 )
+        {
+            setCards('cards');
+        }
+        else
+        {
+            setCards('cardsHidden');
+        }
+      },[props.items.length]);
     return (
-    <>
-    <div className='cards'>
+    <div className={cards}>
     <button  className={button} id='buttonLeft' onClick={props.cardHandlerLeft}></button>
     <div id='imageContainer' className="imageContainer">
         {props.items.map(item => (
@@ -23,7 +36,6 @@ const CardsWrapper = (props) => {
     </div>
     <button className={button} id='buttonRight' onClick={props.cardHandlerRight}></button>
     </div>
-    </> 
         )
     }
 

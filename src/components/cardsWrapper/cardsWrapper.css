@@ -1,4 +1,5 @@
 .cards{
+    width: 430px;
     display: flex;
     flex-direction: row;
     margin-bottom: 100px;
@@ -6,18 +7,21 @@
     z-index: 99;
     background-color: white;
     margin-top: 150px;
-    margin-left: 20px;
+    margin-left: 40px;
     border-radius: 5px;
+}
+.cardsHidden{
+    opacity: 0;
 }
 .imageContainer{
     width: 400px;
-    height: 560px;
+    height: 570px;
     display: flex;
     flex-direction: row;
     overflow-x: scroll;
     box-sizing: border-box;
     overflow: hidden;
-    
+    margin: 0 auto;
 }
 .button{
     opacity: 1;
