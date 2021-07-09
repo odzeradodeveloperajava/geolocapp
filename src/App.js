@@ -5,9 +5,11 @@ import UploadHandler from "./components/upoloadHandler/uploadHandler";
 import CardsWrapper from "./components/cardsWrapper/cardsWrapper";
 import calculateGpsDatalon from "./components/upoloadHandler/scripts/calculateGpsDatalon.js";
 import calculateGpsDatalat from "./components/upoloadHandler/scripts/calculateGpsDatalat.js";
-import { MapContainer, TileLayer, Marker, Popup} from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, ZoomControl} from "react-leaflet";
 import { ChangeView } from './components/changeView/changeView';
 import { storage } from './components/firebase/index';
+import CustomMarker from './components/CustomMarker/CustomMarker';
+
 /*global EXIF*/
 
 class App extends React.Component {
@@ -17,6 +19,24 @@ class App extends React.Component {
     activeCard: 0,
     center: []
   };
+
+  markerFlyerTo = (e) => {
+    let marketLat = e.latlng.lat;
+    let marketLon = e.latlng.lon;
+    let array = this.state.items;
+    console.log(array);
+    const index = array.findIndex((object, object1) => object.lat === marketLat & object1.lon === marketLon);
+    console.log(index);
+    this.setState({ activeCard: index });
+    let container = document.getElementById('imageContainer');
+    let pozycja = index * 400;
+    container.scroll({
+      top: 0,
+      left: pozycja,
+      behavior: 'smooth'
+    });
+  }
+
   deleteItem = (e) => {
     let array = this.state.items;
     const index = array.findIndex((object) => object.cardId === e);
@@ -34,6 +54,9 @@ class App extends React.Component {
 
   changeActiveCardRight = () => {
     if (this.state.activeCard +1 < this.state.items.length){
+      //const flyToLat = this.state.items[this.state.activeCard +1].lat;
+      //const flyToLon = this.state.items[this.state.activeCard +1].lon;
+      //this.setState({center: [flyToLat, flyToLon]});
       this.setState({ activeCard: this.state.activeCard +1 });
       let position = (this.state.activeCard +1)*400;
       let container = document.getElementById('imageContainer');
@@ -51,6 +74,9 @@ class App extends React.Component {
   }
   changeActiveCardLeft = () => {
     if (this.state.activeCard > 0){
+      //const flyToLat = this.state.items[this.state.activeCard -1].lat;
+      //const flyToLon = this.state.items[this.state.activeCard -1].lon;
+      //this.setState({center: [flyToLat, flyToLon]});
     let position = (this.state.activeCard-1)*400;
     //let positionr = position -400;
     this.setState({ activeCard: this.state.activeCard -1 });
@@ -65,8 +91,7 @@ class App extends React.Component {
   else {
     console.log('dupa1');
     return null;
-  }
-  }
+  }}
 
 
   addItem = (e) => {
@@ -119,12 +144,7 @@ class App extends React.Component {
 
             let latitude = calculateGpsDatalat(selectedFile);
             let longitude = calculateGpsDatalon(selectedFile);
-            let actualCenter = [latitude, longitude];
-            if (i === 0){
-              this.setState(() => ({
-                center: actualCenter
-              }));
-            }
+
             async function getCity() {
               try {
                 const response = await fetch(
@@ -179,16 +199,28 @@ class App extends React.Component {
           center={this.state.centerPosition}
           zoom={6}
           scrollWheelZoom={false}
+          zoomControl={false}
         >
-          <ChangeView center={this.state.center} /> 
+          <ZoomControl position={"bottomright"} />
+          <ChangeView center={this.state} /> 
           <TileLayer
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          {this.state.items.map(({ cardId, lat, lon}) => 
-          <Marker key={`marker-${cardId}`} position={[lat, lon]}>
+          {this.state.items.map(({ cardId, imageUrl, lat, lon, town}) => 
+          <Marker 
+            eventHandlers={{ click: this.markerFlyerTo }}
+            key={`marker-${cardId}`}
+            position={[lat, lon] }
+            onMouseOver={(e) => {
+              e.target.openPopup();
+              }}
+            onMouseOut={(e) => {
+              e.target.closePopup();
+              }}
+            >
           <Popup>
-            <span>{cardId} <br/> Easily customizable.</span>
+            <CustomMarker name={cardId} image={imageUrl} town={town} />
           </Popup>
           </Marker>
         )}
@@ -200,3 +232,4 @@ class App extends React.Component {
   }
 }
 export default App;
+// 
