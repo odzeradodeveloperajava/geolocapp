@@ -95,6 +95,12 @@ class App extends React.Component {
 
 
   addItem = (e) => {
+
+
+ 
+
+
+
     const setNewItemHandler = (newItem) => {
       const newLat = newItem.lat;
       const newLatFinal = +newLat.toFixed(3);
@@ -104,7 +110,6 @@ class App extends React.Component {
         items: [...prevState.items, newItem],
         centerPosition: [newLatFinal, newLonFinal]
       }));
-      console.log(this.state.centerPosition)
     };
 
 
@@ -113,13 +118,16 @@ class App extends React.Component {
     for (let i = 0; i < filesArray; i++) {
       const selectedFile = e.target.files[i];
       // eslint-disable-next-line no-loop-func
+
+
+
       EXIF.getData(selectedFile, async function () {
         if (
           this.exifdata.GPSLatitude !== undefined &&
           this.exifdata.GPSLongitude !== undefined
         ) {
           async function mainHandler() {
-
+            console.log('dane obrazka', selectedFile.exifdata);//do usuniecia
             const uploadTask = storage.ref(`images/${selectedFile.name}`).put(selectedFile);
             uploadTask.on(
                 'state_changed',
@@ -138,10 +146,6 @@ class App extends React.Component {
                 }
             );
 
-
-
-
-
             let latitude = calculateGpsDatalat(selectedFile);
             let longitude = calculateGpsDatalon(selectedFile);
 
@@ -154,6 +158,7 @@ class App extends React.Component {
                   }
                 );
                 const data = await response.json();
+                console.log('dane reverse geocode', data);
                 const city = data.locality;
                 return city;
               } catch (error) {
@@ -163,6 +168,14 @@ class App extends React.Component {
               }
             }
             async function returnNewItem() {
+              let date = selectedFile.exifdata.DateTime;
+              var str = date.split(" ");
+              //get date part and replace ':' with '-'
+              var dateStr = str[0].replace(/:/g, "-");
+              //concat the strings (date and time part)
+
+
+
               return {
                 cardId: selectedFile.name,
                 imageUrl: window.URL.createObjectURL(selectedFile), // Create url for thumbnail of image //
@@ -170,9 +183,19 @@ class App extends React.Component {
                 lat: latitude,
                 lon: longitude,
                 town: await getCity(),
+                cameraBrand: selectedFile.exifdata.Make,
+                cameraModel: selectedFile.exifdata.Model,
+                shutter: `${selectedFile.exifdata.ExposureTime.numerator}/${selectedFile.exifdata.ExposureTime.denominator}`,
+                iso: selectedFile.exifdata.ISOSpeedRatings,
+                fnumber: selectedFile.exifdata.FNumber.Number,
+                photoSize: `${selectedFile.exifdata.PixelXDimension} x ${selectedFile.exifdata.PixelYDimension}`,
+                date: dateStr,
+                time: str[1],
+                //timeZone: selectedFile.exifdata.,
               };
             }
-            //console.log(await returnNewItem());
+
+           
             return await returnNewItem();
           }
           setNewItemHandler(await mainHandler());
@@ -182,10 +205,6 @@ class App extends React.Component {
         }
       });
     }
-
-
-    
-
   };
 
   render() {
