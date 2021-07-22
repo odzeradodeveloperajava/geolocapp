@@ -9,6 +9,7 @@ import { MapContainer, TileLayer, Marker, Popup, ZoomControl} from "react-leafle
 import { ChangeView } from './components/changeView/changeView';
 import { storage } from './components/firebase/index';
 import CustomMarker from './components/CustomMarker/CustomMarker';
+import PhotoData from "./components/photoData/photoData";
 
 /*global EXIF*/
 
@@ -191,15 +192,16 @@ class App extends React.Component {
                 photoSize: `${selectedFile.exifdata.PixelXDimension} x ${selectedFile.exifdata.PixelYDimension}`,
                 date: dateStr,
                 time: str[1],
-                //timeZone: selectedFile.exifdata.,
+                lens: selectedFile.exifdata.LensModel,
               };
             }
 
            
             return await returnNewItem();
           }
+          console.log(await mainHandler())
           setNewItemHandler(await mainHandler());
-          //console.log();
+          
         } else {
           console.log("make modal with error");
         }
@@ -246,6 +248,7 @@ class App extends React.Component {
         </MapContainer>
         <UploadHandler submitFn={this.addItem} />
         <CardsWrapper items={this.state.items} handler={this.deleteItem} cardHandlerRight={this.changeActiveCardRight} cardHandlerLeft={this.changeActiveCardLeft}/>
+        <PhotoData data={this.state.items}/>
       </div>
     );
   }
