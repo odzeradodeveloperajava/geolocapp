@@ -10,6 +10,7 @@ import { ChangeView } from './components/changeView/changeView';
 import { storage } from './components/firebase/index';
 import CustomMarker from './components/CustomMarker/CustomMarker';
 import PhotoData from "./components/photoData/photoData";
+import Loader from "./components/loader/loader";
 
 /*global EXIF*/
 
@@ -18,16 +19,25 @@ class App extends React.Component {
     items: [],
     centerPosition: [50.433, 18.053],
     activeCard: 0,
-    center: []
+    center: [],
+    processing: 0,
+    processed: 0,
+    loader: 'hidden'
   };
+
+loaderHandler = (e) => {
+  console.log('loaderhander ', e);
+  this.setState({loader: e})
+}
+
 
   markerFlyerTo = (e) => {
     let marketLat = e.latlng.lat;
     let marketLon = e.latlng.lon;
     let array = this.state.items;
-    console.log(array);
+    //console.log(array);
     const index = array.findIndex((object, object1) => object.lat === marketLat & object1.lon === marketLon);
-    console.log(index);
+    //console.log(index);
     this.setState({ activeCard: index });
     let container = document.getElementById('imageContainer');
     let pozycja = index * 400;
@@ -42,7 +52,7 @@ class App extends React.Component {
     let array = this.state.items;
     const index = array.findIndex((object) => object.cardId === e);
     array.splice(index, 1);
-    console.log(e);
+    //console.log(e);
     this.setState({ items: array });
     this.setState({ activeCard: 0 });
     let container = document.getElementById('imageContainer');
@@ -61,7 +71,7 @@ class App extends React.Component {
       this.setState({ activeCard: this.state.activeCard +1 });
       let position = (this.state.activeCard +1)*400;
       let container = document.getElementById('imageContainer');
-      console.log(position);
+      //console.log(position);
       container.scroll({
         top: 0,
         left: position,
@@ -69,6 +79,7 @@ class App extends React.Component {
     });
     }
     else{
+      
       console.log('dupa');
       return null;
     }
@@ -82,7 +93,7 @@ class App extends React.Component {
     //let positionr = position -400;
     this.setState({ activeCard: this.state.activeCard -1 });
     let container = document.getElementById('imageContainer');
-    console.log(position);
+    //console.log(position);
     container.scroll({
       top: 0,
       left: position,
@@ -97,6 +108,7 @@ class App extends React.Component {
 
   addItem = (e) => {
 
+    //his.setState({ processing: 1 });
 
  
 
@@ -114,9 +126,24 @@ class App extends React.Component {
     };
 
 
+      const processedHandler = () => {
+        this.setState({ processed: this.state.processed +1 });
+        console.log('processed', this.state.processed);
+      }
+
+
+      const toProcessHandler = (e) => {
+        this.setState(() => ({
+          processing: this.state.processing + e
+        }));
+        console.log('processing', this.state.processing);
+      }
 
     let filesArray = e.target.files.length;
     for (let i = 0; i < filesArray; i++) {
+      //console.log(this.state.processing);
+      //console.log(this.state.processed);
+      toProcessHandler(filesArray);
       const selectedFile = e.target.files[i];
       // eslint-disable-next-line no-loop-func
 
@@ -128,7 +155,7 @@ class App extends React.Component {
           this.exifdata.GPSLongitude !== undefined
         ) {
           async function mainHandler() {
-            console.log('dane obrazka', selectedFile.exifdata);//do usuniecia
+            //onsole.log('dane obrazka', selectedFile.exifdata);//do usuniecia
             const uploadTask = storage.ref(`images/${selectedFile.name}`).put(selectedFile);
             uploadTask.on(
                 'state_changed',
@@ -153,15 +180,14 @@ class App extends React.Component {
             async function getCity() {
               try {
                 const response = await fetch(
-                  `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=pl`,
+                  `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`,
                   {
                     method: "GET",
                   }
                 );
                 const data = await response.json();
-                console.log('dane reverse geocode', data);
-                const city = data.locality;
-                return city;
+                //const city = data.locality; //unused
+                return data;
               } catch (error) {
                 console.error(error);
                 const apiError = "Unknown";
@@ -169,21 +195,29 @@ class App extends React.Component {
               }
             }
             async function returnNewItem() {
+              processedHandler();
               let date = selectedFile.exifdata.DateTime;
               var str = date.split(" ");
               //get date part and replace ':' with '-'
               var dateStr = str[0].replace(/:/g, "-");
               //concat the strings (date and time part)
-
-
-
+              
+              let getC = await getCity();
+              console.log('tu miasto', getC);
+              let country =  getC.localityInfo.length !== 0 ? getC.localityInfo.administrative[0].name : 'no data';
+              let province = getC.localityInfo.length !== 0  ? getC.localityInfo.administrative[1].name: 'no data';
+              let town = getC.locality;
+              let community = getC.localityInfo.length > 3 ? getC.localityInfo.administrative[4].name : "no data";
               return {
                 cardId: selectedFile.name,
                 imageUrl: window.URL.createObjectURL(selectedFile), // Create url for thumbnail of image //
                 size: selectedFile.size,
                 lat: latitude,
                 lon: longitude,
-                town: await getCity(),
+                country: country,
+                province: province,
+                community: community, 
+                town: town,
                 cameraBrand: selectedFile.exifdata.Make,
                 cameraModel: selectedFile.exifdata.Model,
                 shutter: `${selectedFile.exifdata.ExposureTime.numerator}/${selectedFile.exifdata.ExposureTime.denominator}`,
@@ -195,17 +229,22 @@ class App extends React.Component {
                 lens: selectedFile.exifdata.LensModel,
               };
             }
-
+            
            
-            return await returnNewItem();
+
+           return await returnNewItem();
           }
-          console.log(await mainHandler())
+          //console.log(await mainHandler())
           setNewItemHandler(await mainHandler());
           
         } else {
+          processedHandler();
           console.log("make modal with error");
         }
       });
+      //console.log('zamykanie modala', i+1, ' ', filesArray)
+      
+      
     }
   };
 
@@ -215,7 +254,8 @@ class App extends React.Component {
 
     return (
       <div className="pageWrapper">
-        <Header />
+        <Loader props={this.state} loaderHandler={this.loaderHandler}/>
+        <Header/>
         <MapContainer
           center={this.state.centerPosition}
           zoom={6}
@@ -248,7 +288,7 @@ class App extends React.Component {
         </MapContainer>
         <UploadHandler submitFn={this.addItem} />
         <CardsWrapper items={this.state.items} handler={this.deleteItem} cardHandlerRight={this.changeActiveCardRight} cardHandlerLeft={this.changeActiveCardLeft}/>
-        <PhotoData data={this.state.items}/>
+        <PhotoData data={this.state}/>
       </div>
     );
   }
