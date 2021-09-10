@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react'
 import './loader.css';
 
-const Loader = ({props ,loaderHandler}) => {
+const Loader = ({props ,loaderScreenHandler}) => {
    
     
     useEffect(() => {
@@ -9,15 +9,12 @@ const Loader = ({props ,loaderHandler}) => {
         console.log('drugi',props.processing);
         if (props.processing !== props.processed){
             window.scrollTo(0, 0);
-            loaderHandler('visible');
-            console.log('tu jest if');
-            
+            loaderScreenHandler('visible');
         }
         else{
-            console.log('tu jest else ');
-            setTimeout(function(){ loaderHandler('hidden'); }, 1000);
+            setTimeout(function(){ loaderScreenHandler('hidden'); }, 1000);
             }
-    },[props.loader, props.processing, props.processed, loaderHandler]);
+    },[props.loader, props.processing, props.processed, loaderScreenHandler]);
     return (
         <div className={props.loader}>
             <div className='loading'>Loading</div>

@@ -11,8 +11,7 @@ import { storage } from './components/firebase/index';
 import CustomMarker from './components/CustomMarker/CustomMarker';
 import PhotoData from "./components/photoData/photoData";
 import Loader from "./components/loader/loader";
-
-/*global EXIF*/
+import EXIF from 'exif-js';
 
 class App extends React.Component {
   state = {
@@ -25,7 +24,7 @@ class App extends React.Component {
     loader: 'hidden'
   };
 
-loaderHandler = (e) => {
+loaderScreenHandler = (e) => {
   console.log('loaderhander ', e);
   this.setState({loader: e})
 }
@@ -180,7 +179,7 @@ loaderHandler = (e) => {
             async function getCity() {
               try {
                 const response = await fetch(
-                  `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`,
+                  `https://api.bigdatacloud.net/data/reverse-geocode?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`,
                   {
                     method: "GET",
                   }
@@ -204,10 +203,10 @@ loaderHandler = (e) => {
               
               let getC = await getCity();
               console.log('tu miasto', getC);
-              let country =  getC.localityInfo.length !== 0 ? getC.localityInfo.administrative[0].name : 'no data';
-              let province = getC.localityInfo.length !== 0  ? getC.localityInfo.administrative[1].name: 'no data';
-              let town = getC.locality;
-              let community = getC.localityInfo.length > 3 ? getC.localityInfo.administrative[4].name : "no data";
+              let country =  getC.localityInfo !== undefined && getC.localityInfo.length !== 0 ? getC.localityInfo.administrative[0].name : 'no data';
+              let province = getC.localityInfo !== undefined && getC.localityInfo.length !== 0  ? getC.localityInfo.administrative[1].name: 'no data';
+              let town = getC.localityInfo !== undefined ? getC.locality : 'no data';
+              let community = getC.localityInfo !== undefined && getC.localityInfo.length > 3 ? getC.localityInfo.administrative[4].name : "no data";
               return {
                 cardId: selectedFile.name,
                 imageUrl: window.URL.createObjectURL(selectedFile), // Create url for thumbnail of image //
@@ -254,7 +253,7 @@ loaderHandler = (e) => {
 
     return (
       <div className="pageWrapper">
-        <Loader props={this.state} loaderHandler={this.loaderHandler}/>
+        <Loader props={this.state} loaderScreenHandler={this.loaderScreenHandler}/>
         <Header/>
         <MapContainer
           center={this.state.centerPosition}
