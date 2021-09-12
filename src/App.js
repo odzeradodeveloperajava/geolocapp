@@ -12,6 +12,7 @@ import CustomMarker from './components/CustomMarker/CustomMarker';
 import PhotoData from "./components/photoData/photoData";
 import Loader from "./components/loader/loader";
 import EXIF from 'exif-js';
+import markerFlyerHandler from "./functions/markerFlyerHandler/markerFlyerHandler";
 
 class App extends React.Component {
   state = {
@@ -25,29 +26,15 @@ class App extends React.Component {
   };
 
 loaderScreenHandler = (e) => {
-  console.log('loaderhander ', e);
   this.setState({loader: e})
 }
 
+markerFlyerTo = (e) => {
+  const index = (markerFlyerHandler(e, this.state));
+  this.setState({ activeCard: index });
+}
 
-  markerFlyerTo = (e) => {
-    let marketLat = e.latlng.lat;
-    let marketLon = e.latlng.lon;
-    let array = this.state.items;
-    //console.log(array);
-    const index = array.findIndex((object, object1) => object.lat === marketLat & object1.lon === marketLon);
-    //console.log(index);
-    this.setState({ activeCard: index });
-    let container = document.getElementById('imageContainer');
-    let pozycja = index * 400;
-    container.scroll({
-      top: 0,
-      left: pozycja,
-      behavior: 'smooth'
-    });
-  }
-
-  deleteItem = (e) => {
+deleteItem = (e) => {
     let array = this.state.items;
     const index = array.findIndex((object) => object.cardId === e);
     array.splice(index, 1);

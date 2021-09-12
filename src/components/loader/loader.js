@@ -5,8 +5,6 @@ const Loader = ({props ,loaderScreenHandler}) => {
    
     
     useEffect(() => {
-        console.log('jeden',props.processed);
-        console.log('drugi',props.processing);
         if (props.processing !== props.processed){
             window.scrollTo(0, 0);
             loaderScreenHandler('visible');

@@ -3,14 +3,12 @@ import React from 'react';
 
 
 const PhotoData = ({data}) => {
-    console.log(data.activeCard);
     if(data.items.length === 0){
-        console.log('pusto w state items')
+        //console.log('pusto w state items')
         return null;
     }
     else{
         const activeCard = data.items[data.activeCard];
-        console.log(activeCard);
         return (
             <div className='pictureDataWrapper'>
                 <p>File name: {activeCard.cardId}</p>
