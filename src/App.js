@@ -13,6 +13,9 @@ import PhotoData from "./components/photoData/photoData";
 import Loader from "./components/loader/loader";
 import EXIF from 'exif-js';
 import markerFlyerHandler from "./functions/markerFlyerHandler/markerFlyerHandler";
+import deleteItemHandler from "./functions/deleteItem/deleteItemHandler";
+import changeActiveCardRightHandler from "./functions/changeCardHandler/changeActiveCardRightHandler";
+import changeActiveCardLeftHandler from "./functions/changeCardHandler/changeActiveCardLeftHandler";
 
 class App extends React.Component {
   state = {
@@ -25,81 +28,33 @@ class App extends React.Component {
     loader: 'hidden'
   };
 
-loaderScreenHandler = (e) => {
-  this.setState({loader: e})
-}
+  loaderScreenHandler = (e) => {
+    this.setState({loader: e})
+  }
 
-markerFlyerTo = (e) => {
-  const index = (markerFlyerHandler(e, this.state));
-  this.setState({ activeCard: index });
-}
+  markerFlyerTo = (e) => {
+    const index = (markerFlyerHandler(e, this.state));
+    this.setState({ activeCard: index });
+  }
 
-deleteItem = (e) => {
-    let array = this.state.items;
-    const index = array.findIndex((object) => object.cardId === e);
-    array.splice(index, 1);
-    //console.log(e);
-    this.setState({ items: array });
+  deleteItem = (e) => {
+    const result = (deleteItemHandler(e, this.state));
+    this.setState({ items: result[0]});
     this.setState({ activeCard: 0 });
-    let container = document.getElementById('imageContainer');
-    container.scroll({
-      top: 0,
-      left: 0,
-      behavior: 'smooth'
-    });
   };
 
   changeActiveCardRight = () => {
-    if (this.state.activeCard +1 < this.state.items.length){
-      //const flyToLat = this.state.items[this.state.activeCard +1].lat;
-      //const flyToLon = this.state.items[this.state.activeCard +1].lon;
-      //this.setState({center: [flyToLat, flyToLon]});
-      this.setState({ activeCard: this.state.activeCard +1 });
-      let position = (this.state.activeCard +1)*400;
-      let container = document.getElementById('imageContainer');
-      //console.log(position);
-      container.scroll({
-        top: 0,
-        left: position,
-        behavior: 'smooth'
-    });
-    }
-    else{
-      
-      console.log('dupa');
-      return null;
-    }
+   const result = (changeActiveCardRightHandler(this.state));
+   this.setState({ activeCard: result });
   }
+
   changeActiveCardLeft = () => {
-    if (this.state.activeCard > 0){
-      //const flyToLat = this.state.items[this.state.activeCard -1].lat;
-      //const flyToLon = this.state.items[this.state.activeCard -1].lon;
-      //this.setState({center: [flyToLat, flyToLon]});
-    let position = (this.state.activeCard-1)*400;
-    //let positionr = position -400;
-    this.setState({ activeCard: this.state.activeCard -1 });
-    let container = document.getElementById('imageContainer');
-    //console.log(position);
-    container.scroll({
-      top: 0,
-      left: position,
-      behavior: 'smooth'
-    });
+    const result = (changeActiveCardLeftHandler(this.state));
+    this.setState({ activeCard: result});
   }
-  else {
-    console.log('dupa1');
-    return null;
-  }}
 
 
   addItem = (e) => {
-
-    //his.setState({ processing: 1 });
-
- 
-
-
-
     const setNewItemHandler = (newItem) => {
       const newLat = newItem.lat;
       const newLatFinal = +newLat.toFixed(3);
@@ -166,7 +121,7 @@ deleteItem = (e) => {
             async function getCity() {
               try {
                 const response = await fetch(
-                  `https://api.bigdatacloud.net/data/reverse-geocode?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`,
+                  `https://api.bigdatacloud.net/data/reverse-geocode?latitude=${latitude}&longitude=${longitude}&localityLanguage=en&key=${process.env.REACT_APP_REVERSEGEOCODEAPIKEY}`,
                   {
                     method: "GET",
                   }
@@ -187,7 +142,6 @@ deleteItem = (e) => {
               //get date part and replace ':' with '-'
               var dateStr = str[0].replace(/:/g, "-");
               //concat the strings (date and time part)
-              
               let getC = await getCity();
               console.log('tu miasto', getC);
               let country =  getC.localityInfo !== undefined && getC.localityInfo.length !== 0 ? getC.localityInfo.administrative[0].name : 'no data';
@@ -215,29 +169,19 @@ deleteItem = (e) => {
                 lens: selectedFile.exifdata.LensModel,
               };
             }
-            
-           
-
            return await returnNewItem();
           }
           //console.log(await mainHandler())
           setNewItemHandler(await mainHandler());
-          
         } else {
           processedHandler();
           console.log("make modal with error");
         }
       });
-      //console.log('zamykanie modala', i+1, ' ', filesArray)
-      
-      
     }
   };
 
   render() {
-
-
-
     return (
       <div className="pageWrapper">
         <Loader props={this.state} loaderScreenHandler={this.loaderScreenHandler}/>
