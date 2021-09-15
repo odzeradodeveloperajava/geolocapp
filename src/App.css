@@ -7,10 +7,16 @@
 .leaflet-container{
     height: 600px;
     min-width: 1000px;
-    width: 95vw;
     border-radius: 10px;
-    margin: 0 auto;
+    margin: 0 20px;
     margin-bottom: 50px;
     position: relative;
     z-index: 0;
+}
+.leaflet-popup{
+  left: -20px !important;
+}
+.leaflet-popup-tip-container{
+  left: 0 !important;
+  margin-left: 0 !important;
 }
