@@ -10,9 +10,8 @@ import PhotoData from "./components/photoData/photoData";
 import Loader from "./components/loader/loader";
 import EXIF from 'exif-js';
 import markerFlyerHandler from "./functions/markerFlyerHandler/markerFlyerHandler";
-import deleteItemHandler from "./functions/deleteItem/deleteItemHandler";
+import deleteItemHandler from "./functions/deleteItemHandler/deleteItemHandler";
 import changeActiveCardRightHandler from "./functions/changeCardHandler/changeActiveCardRightHandler";
-import changeActiveCardLeftHandler from "./functions/changeCardHandler/changeActiveCardLeftHandler";
 import firebaseUploadHandler from "./functions/firebaseHandler/firebaseUploadHandler";
 import returnNewItem from "./functions/returnNewItem/returnNewItem";
 
@@ -43,12 +42,12 @@ class App extends React.Component {
   };
 
   changeActiveCardRight = () => {
-   const result = (changeActiveCardRightHandler(this.state));
+   const result = (changeActiveCardRightHandler(this.state, 'right'));
    this.setState({ activeCard: result });
   }
 
   changeActiveCardLeft = () => {
-    const result = (changeActiveCardLeftHandler(this.state));
+    const result = (changeActiveCardRightHandler(this.state));
     this.setState({ activeCard: result});
   }
 
@@ -128,7 +127,7 @@ class App extends React.Component {
         )}
         </MapContainer>
         <UploadHandler submitFn={this.addItem} />
-        <CardsWrapper items={this.state.items} handler={this.deleteItem} cardHandlerRight={this.changeActiveCardRight} cardHandlerLeft={this.changeActiveCardLeft}/>
+        <CardsWrapper state={this.state} handler={this.deleteItem} cardHandlerRight={this.changeActiveCardRight} cardHandlerLeft={this.changeActiveCardLeft}/>
         <PhotoData data={this.state}/>
       </div>
     );

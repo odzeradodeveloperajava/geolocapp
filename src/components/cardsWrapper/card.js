@@ -11,14 +11,10 @@ const Card = ({ cardId, imageUrl, size, lat, lon, town, handler}) => {
       e.preventDefault();
       handler(cardId);
     }
-  const log = () => {
-    console.log('teraz sie zaladowalo');
-  }
-
     return (
     <div className='imageCard' key={cardId} >
         <div className="cardImageContainer">
-          <img className="image" src={imageUrl} alt='UploadedImage' onLoad={log}/>
+          <img className="image" src={imageUrl} alt='UploadedImage'/>
         </div>
         <div className='geoTag'>
           <div className='greyRow'><span className='tab tab_small'>File name:</span><span className='value tab_small'>{cardId}</span></div>

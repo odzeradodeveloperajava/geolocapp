@@ -51,7 +51,7 @@
         0x9292 : "SubsecTimeDigitized",     // Fractions of seconds for DateTimeDigitized
 
         // picture-taking conditions
-     
+        0xA434 : "LensModel",
         0x829A : "ExposureTime",            // Exposure time (in seconds)
         0x829D : "FNumber",                 // F number
         0x8822 : "ExposureProgram",         // Exposure program
@@ -102,7 +102,6 @@
         
         0x0100 : "ImageWidth",
         0x0101 : "ImageHeight",
-        0xA434 : "LensModel",
         0x8769 : "ExifIFDPointer",
         0x8825 : "GPSInfoIFDPointer",
         0xA005 : "InteroperabilityIFDPointer",
