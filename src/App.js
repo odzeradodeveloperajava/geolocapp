@@ -4,7 +4,7 @@ import Header from "./components/header/header";
 import UploadHandler from "./components/upoloadHandler/uploadHandler";
 import CardsWrapper from "./components/cardsWrapper/cardsWrapper";
 import { MapContainer, TileLayer, Marker, Popup, ZoomControl} from "react-leaflet";
-import { ChangeView } from './components/changeView/changeView';
+import { ChangeView } from './functions/changeView';
 import CustomMarker from './components/CustomMarker/CustomMarker';
 import PhotoData from "./components/photoData/photoData";
 import Loader from "./components/loader/loader";
@@ -14,17 +14,24 @@ import deleteItemHandler from "./functions/deleteItemHandler/deleteItemHandler";
 import changeActiveCardRightHandler from "./functions/changeCardHandler/changeActiveCardRightHandler";
 import firebaseUploadHandler from "./functions/firebaseHandler/firebaseUploadHandler";
 import returnNewItem from "./functions/returnNewItem/returnNewItem";
+import ip2LocHandler from "./functions/ip2LocHandler/ip2LocHandler";
+import firebaseDownloadHandler from "./functions/firebaseHandler/firebaseDownloadHandler";
 
 class App extends React.Component {
   state = {
     items: [],
-    centerPosition: [50.433, 18.053],
+    centerPosition: [50, 50],
     activeCard: 0,
-    center: [], //rename to mapCenterPosition
+    center: [], 
     processing: 0,
     processed: 0,
     loader: 'hidden'
   };
+  async componentDidMount() {
+    firebaseDownloadHandler();
+    let IPcenterPosition = await ip2LocHandler();
+    this.setState({ centerPosition: IPcenterPosition});
+  }
 
   loaderScreenHandler = (e) => {
     this.setState({loader: e})
@@ -98,7 +105,7 @@ class App extends React.Component {
         <Header/>
         <MapContainer
           center={this.state.centerPosition}
-          zoom={6}
+          zoom={3}
           scrollWheelZoom={false}
           zoomControl={false}
         >

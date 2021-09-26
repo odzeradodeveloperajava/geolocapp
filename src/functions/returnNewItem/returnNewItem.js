@@ -7,8 +7,6 @@ import weatherApiHandler from "../../functions/weatherApiHandler/weatherApiHandl
 async function returnNewItem(selectedFile) {
     let latitude = calculateGpsDatalat(selectedFile);
     let longitude = calculateGpsDatalon(selectedFile);
-    
-
     let getCurrentWeather = await weatherApiHandler(latitude, longitude);
     let currentWeather = getCurrentWeather.WeatherText;
     let currentTemperature = getCurrentWeather.Temperature.Metric.Value;
@@ -23,7 +21,6 @@ async function returnNewItem(selectedFile) {
     let town = getC.localityInfo !== undefined ? getC.locality : 'no data';
     let community = getC.localityInfo !== undefined && getC.localityInfo.administrative.length >= 5 ? getC.localityInfo.administrative[4].name : "no data";
     // let community = getC.localityInfo.administrative[4].name != undefined ? getC.localityInfo.administrative[4].name : "no data";
-    console.log(getC);
     return {
       cardId: selectedFile.name,
       imageUrl: window.URL.createObjectURL(selectedFile), // create url for thumbnail of image //
