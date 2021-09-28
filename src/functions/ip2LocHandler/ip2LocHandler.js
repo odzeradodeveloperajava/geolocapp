@@ -9,14 +9,12 @@ async function ip2LocHandler(){
           }
         );
         const data = await response.json();
-        console.log([data.location.latitude, data.location.longitude]);
         return ([data.location.latitude, data.location.longitude]);
     }   catch (error) {
         console.error(error);
         const apiError = "Unknown";
         return apiError;
     }
-    
 }
 
 export default ip2LocHandler;

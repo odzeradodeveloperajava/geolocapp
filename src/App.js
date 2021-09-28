@@ -16,19 +16,24 @@ import firebaseUploadHandler from "./functions/firebaseHandler/firebaseUploadHan
 import returnNewItem from "./functions/returnNewItem/returnNewItem";
 import ip2LocHandler from "./functions/ip2LocHandler/ip2LocHandler";
 import firebaseDownloadHandler from "./functions/firebaseHandler/firebaseDownloadHandler";
+import BottomGallery from "./components/bottomGallery/BottomGallery";
 
 class App extends React.Component {
   state = {
     items: [],
+    bottomGalleryItems: [],
     centerPosition: [50, 50],
     activeCard: 0,
-    center: [], 
+    center: [],
     processing: 0,
     processed: 0,
     loader: 'hidden'
   };
   async componentDidMount() {
-    firebaseDownloadHandler();
+    const newBottomGalleryItems = await firebaseDownloadHandler();
+    this.setState((prevState) => ({
+      bottomGalleryItems: [...prevState.bottomGalleryItems, newBottomGalleryItems],
+    }))
     let IPcenterPosition = await ip2LocHandler();
     this.setState({ centerPosition: IPcenterPosition});
   }
@@ -136,6 +141,7 @@ class App extends React.Component {
         <UploadHandler submitFn={this.addItem} />
         <CardsWrapper state={this.state} handler={this.deleteItem} cardHandlerRight={this.changeActiveCardRight} cardHandlerLeft={this.changeActiveCardLeft}/>
         <PhotoData data={this.state}/>
+        <BottomGallery data={this.state.bottomGalleryItems}/>
       </div>
     );
   }

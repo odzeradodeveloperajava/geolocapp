@@ -1,22 +1,12 @@
 import { storage } from '../../components/firebase/index';
+import { ref, uploadBytes } from "firebase/storage";
+
+
 
 const firebaseUploadHandler = (selectedFile) => {
-    const uploadTask = storage.ref(`images/${selectedFile.name}`).put(selectedFile);
-            uploadTask.on(
-                'state_changed',
-                snapshot => {},
-                error => {
-                  console.log(error);
-                },
-                () => {
-                  storage
-                    .ref('images')
-                    .child(selectedFile.name)
-                    .getDownloadURL()
-                    .then(url => {
-                    });
-                }
-            );
-}
+      const fileImagesRef = ref(storage, `images/${selectedFile.name}`);
+      uploadBytes(fileImagesRef, selectedFile);
+   }
+
 
 export default firebaseUploadHandler;

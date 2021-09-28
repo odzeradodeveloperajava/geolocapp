@@ -1,22 +1,40 @@
-import { getStorage, ref, listAll } from "firebase/storage";
-
+import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
+import { useState } from "react";
 const storage = getStorage();
+const listRef = ref(storage, 'images');
 
+const FirebaseDownloadHandler = () =>{
+  const [state, setState] = useState({});
 
-const firebaseDownloadHandler = () => {
-
-    const listRef = ref(storage, 'images');
-    // Find all the prefixes and items.
     listAll(listRef)
         .then((res) => {
             res.items.forEach((itemRef) => {
-        // All the items under listRef.
-        console.log(itemRef._location.path);
+              const fileRef = itemRef._location.path;
+              getDownloadURL(ref(storage, fileRef))
+              .then((url) => {
+                // setState((prevState) => ({
+                //  state: [...prevState, url],
+                // }));
+            })
         });
      }).catch((error) => {
-    // Uh-oh, an error occurred!
     console.log(error);
-  });
-}
+    });
 
-export default firebaseDownloadHandler;
+    //const downloadImagesFromUrls = async () => {
+    //  console.log(state);
+    //}
+
+
+
+
+
+
+
+
+  }
+ 
+
+export default FirebaseDownloadHandler;
+
+

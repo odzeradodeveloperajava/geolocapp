@@ -20,7 +20,6 @@ async function returnNewItem(selectedFile) {
     let province = getC.localityInfo !== undefined && getC.localityInfo.administrative.length !== 0  ? getC.localityInfo.administrative[1].name: 'no data';
     let town = getC.localityInfo !== undefined ? getC.locality : 'no data';
     let community = getC.localityInfo !== undefined && getC.localityInfo.administrative.length >= 5 ? getC.localityInfo.administrative[4].name : "no data";
-    // let community = getC.localityInfo.administrative[4].name != undefined ? getC.localityInfo.administrative[4].name : "no data";
     return {
       cardId: selectedFile.name,
       imageUrl: window.URL.createObjectURL(selectedFile), // create url for thumbnail of image //
@@ -29,7 +28,7 @@ async function returnNewItem(selectedFile) {
       lon: longitude,
       country: country,
       province: province,
-      community: community, 
+      community: community,
       town: town,
       cameraBrand: selectedFile.exifdata.Make,
       cameraModel: selectedFile.exifdata.Model,
