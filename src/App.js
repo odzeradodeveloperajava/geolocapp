@@ -29,11 +29,16 @@ class App extends React.Component {
     processed: 0,
     loader: 'hidden'
   };
-  async componentDidMount() {
-    const newBottomGalleryItems = await firebaseDownloadHandler();
+
+  firebaseDownloadHandlerLifter = async () => {
+    const result = await firebaseDownloadHandler();
     this.setState((prevState) => ({
-      bottomGalleryItems: [...prevState.bottomGalleryItems, newBottomGalleryItems],
-    }))
+      bottomGalleryItems: [...prevState.bottomGalleryItems, result],
+    }));
+  }
+
+  async componentDidMount() {
+    this.firebaseDownloadHandlerLifter();
     let IPcenterPosition = await ip2LocHandler();
     this.setState({ centerPosition: IPcenterPosition});
   }
