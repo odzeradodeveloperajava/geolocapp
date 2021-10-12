@@ -30,17 +30,13 @@ class App extends React.Component {
     loader: 'hidden'
   };
 
-  firebaseDownloadHandlerLifter = async () => {
-    const result = await firebaseDownloadHandler();
-    this.setState((prevState) => ({
-      bottomGalleryItems: [...prevState.bottomGalleryItems, result],
-    }));
-  }
 
   async componentDidMount() {
-    this.firebaseDownloadHandlerLifter();
     let IPcenterPosition = await ip2LocHandler();
     this.setState({ centerPosition: IPcenterPosition});
+    let bottomGalleryLoader = firebaseDownloadHandler();
+    this.setState({ bottomGalleryItems: bottomGalleryLoader});
+  
   }
 
   loaderScreenHandler = (e) => {
