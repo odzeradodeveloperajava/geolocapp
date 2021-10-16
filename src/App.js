@@ -34,9 +34,8 @@ class App extends React.Component {
   async componentDidMount() {
     let IPcenterPosition = await ip2LocHandler();
     this.setState({ centerPosition: IPcenterPosition});
-    let bottomGalleryLoader = firebaseDownloadHandler();
+    let bottomGalleryLoader = await firebaseDownloadHandler();
     this.setState({ bottomGalleryItems: bottomGalleryLoader});
-  
   }
 
   loaderScreenHandler = (e) => {
@@ -142,7 +141,7 @@ class App extends React.Component {
         <UploadHandler submitFn={this.addItem} />
         <CardsWrapper state={this.state} handler={this.deleteItem} cardHandlerRight={this.changeActiveCardRight} cardHandlerLeft={this.changeActiveCardLeft}/>
         <PhotoData data={this.state}/>
-        <BottomGallery data={this.state.bottomGalleryItems}/>
+        <BottomGallery files={this.state.bottomGalleryItems}/>
       </div>
     );
   }

@@ -3,40 +3,51 @@ import {getStorage, ref, listAll, getDownloadURL} from "firebase/storage";
 const storage = getStorage();
 const listRef = ref(storage, 'images');
 
-const firebaseDownloadHandler = () => {
-  const downloadedUrls = [];
 
- listAll(listRef)
-    .then((res) => {
-      res.items.forEach((itemRef) => {
-        const fileRef = itemRef._location.path;
-        getDownloadURL(ref(storage, fileRef))
-        .then((url) => {
-          downloadedUrls.push(url);
-        })
-      });
-    })
-    .then(() => {
-      console.log(downloadedUrls);
-      console.log('this is printed');
-      for (let i = 0; i < downloadedUrls.length; i++) {
-        console.log('this is not printed');
-        const xhr = new XMLHttpRequest();
+const firebaseDownloadHandler = async () => {
+
+
+  function getHTML(url) {
+    return new Promise(async function (resolve, reject) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('get', url, true);
         xhr.responseType = 'blob';
-        xhr.open('GET', downloadedUrls[i+1]);
+        xhr.onload = function () {
+            var status = xhr.status;
+            if (status === 200) {
+              console.log(xhr.response);
+                resolve([xhr.response]);
+            } else {
+                reject(status);
+            }
+        };
         xhr.send();
-        xhr.addEventListener("load",  e => {
-          if (xhr.status === 200) {
-            const data = xhr.response
-             console.log(data);
-             return data;
-          }
-          else{
-            console.log('error')
-          }
-      });
+    });
 }
-    })
+
+  const res = await listAll(listRef);
+  const requests = res.items.map(itemRef => getDownloadURL(itemRef))
+  const urls = await Promise.all(requests);
+  const processArray = async () => {
+    console.log(urls);
+    const finalResult = [];
+    return new Promise(async function (resolve, reject) {
+    for (let i = 0; i < urls.length; i++) {
+      const result = await getHTML(urls[i+1]);
+      finalResult.push(result);
+      if ( finalResult.length === urls.length) {
+        setTimeout(function(){resolve (finalResult); }, 5000);
+      }
+    }
+  })};
+
+
+
+  const downloaded = await processArray();
+  return await downloaded;
+
+
+
 }
 
 export default firebaseDownloadHandler;

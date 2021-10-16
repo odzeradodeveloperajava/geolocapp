@@ -3,9 +3,9 @@ import React from 'react';
 
 
 
-const BottomGallery = ({data}) => {
+const BottomGallery = ({files}) => {
 
-    console.log(data);
+    console.log(files);
     return (
         <div>xx</div>
     )
