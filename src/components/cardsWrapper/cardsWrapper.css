@@ -12,6 +12,7 @@
 }
 .cardsHidden{
     opacity: 0;
+    height: 0;
 }
 .imageContainer{
     width: 400px;

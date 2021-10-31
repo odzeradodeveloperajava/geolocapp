@@ -8,8 +8,8 @@ async function returnNewItem(selectedFile) {
     let latitude = calculateGpsDatalat(selectedFile);
     let longitude = calculateGpsDatalon(selectedFile);
     let getCurrentWeather = await weatherApiHandler(latitude, longitude);
-    let currentWeather = getCurrentWeather.WeatherText;
-    let currentTemperature = getCurrentWeather.Temperature.Metric.Value;
+    let currentWeather = getCurrentWeather.WeatherText != undefined ? getCurrentWeather.WeatherText : 'no data';
+    let currentTemperature = getCurrentWeather.Temperature.Metric.Value != undefined ? getCurrentWeather.Temperature.Metric.Value : 'no data';
     let getC = await getCityReverseGeocode(calculateGpsDatalat(selectedFile), calculateGpsDatalon(selectedFile));
     let date = selectedFile.exifdata.DateTime;
     var str = date.split(" ");
@@ -21,7 +21,7 @@ async function returnNewItem(selectedFile) {
     let town = getC.localityInfo !== undefined ? getC.locality : 'no data';
     let community = getC.localityInfo !== undefined && getC.localityInfo.administrative.length >= 5 ? getC.localityInfo.administrative[4].name : "no data";
     return {
-      cardId: selectedFile.name,
+      'cardId' : selectedFile.name,
       imageUrl: window.URL.createObjectURL(selectedFile), // create url for thumbnail of image //
       size: selectedFile.size,
       lat: latitude,

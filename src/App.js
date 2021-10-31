@@ -35,7 +35,8 @@ class App extends React.Component {
     let IPcenterPosition = await ip2LocHandler();
     this.setState({ centerPosition: IPcenterPosition});
     let bottomGalleryLoader = await firebaseDownloadHandler();
-    this.setState({ bottomGalleryItems: bottomGalleryLoader});
+    // this.setState({ bottomGalleryItems: returnNewItem(bottomGalleryLoader)});
+    this.setState({ bottomGalleryItems: bottomGalleryLoader });
   }
 
   loaderScreenHandler = (e) => {
