@@ -4,7 +4,7 @@ import Header from "./components/header/header";
 import UploadHandler from "./components/upoloadHandler/uploadHandler";
 import CardsWrapper from "./components/cardsWrapper/cardsWrapper";
 import { MapContainer, TileLayer, Marker, Popup, ZoomControl} from "react-leaflet";
-import { ChangeView } from './functions/changeView';
+import { ChangeView } from './functions/changeView/changeView';
 import CustomMarker from './components/CustomMarker/CustomMarker';
 import PhotoData from "./components/photoData/photoData";
 import Loader from "./components/loader/loader";
@@ -12,11 +12,12 @@ import EXIF from 'exif-js';
 import markerFlyerHandler from "./functions/markerFlyerHandler/markerFlyerHandler";
 import deleteItemHandler from "./functions/deleteItemHandler/deleteItemHandler";
 import changeActiveCardRightHandler from "./functions/changeCardHandler/changeActiveCardRightHandler";
-import firebaseUploadHandler from "./functions/firebaseHandler/firebaseUploadHandler";
+import firebaseUploadHandler from "./functions/firebaseScripts/firebaseUploadHandler";
 import returnNewItem from "./functions/returnNewItem/returnNewItem";
 import ip2LocHandler from "./functions/ip2LocHandler/ip2LocHandler";
-import firebaseDownloadHandler from "./functions/firebaseHandler/firebaseDownloadHandler";
+import firebaseDownloadHandler from "./functions/firebaseScripts/firebaseDownloadHandler";
 import BottomGallery from "./components/bottomGallery/BottomGallery";
+import newActiveImage from "./functions/newActiveImage/newActiveImage";
 
 class App extends React.Component {
   state = {
@@ -35,9 +36,14 @@ class App extends React.Component {
     let IPcenterPosition = await ip2LocHandler();
     this.setState({ centerPosition: IPcenterPosition});
     let bottomGalleryLoader = await firebaseDownloadHandler();
-    // this.setState({ bottomGalleryItems: returnNewItem(bottomGalleryLoader)});
     this.setState({ bottomGalleryItems: bottomGalleryLoader });
   }
+  imageClickHandler = (e) => {
+    const newActiveImageData = newActiveImage(e, this.state);
+    this.setState({items: newActiveImageData});
+    this.setState({activeCard: 0});
+  }
+
 
   loaderScreenHandler = (e) => {
     this.setState({loader: e})
@@ -140,9 +146,9 @@ class App extends React.Component {
         )}
         </MapContainer>
         <UploadHandler submitFn={this.addItem} />
-        <CardsWrapper state={this.state} handler={this.deleteItem} cardHandlerRight={this.changeActiveCardRight} cardHandlerLeft={this.changeActiveCardLeft}/>
+        <CardsWrapper state={this.state} handler={this.deleteItem} cardHandlerRight={this.changeActiveCardRight} cardHandlerLeft={this.changeActiveCardLeft} usageIdentifier='upperGallery'/>
         <PhotoData data={this.state}/>
-        <BottomGallery files={this.state.bottomGalleryItems}/>
+        <BottomGallery files={this.state.bottomGalleryItems} usageIdentifier='bottomGallery' clickHandler={this.imageClickHandler}/>
       </div>
     );
   }

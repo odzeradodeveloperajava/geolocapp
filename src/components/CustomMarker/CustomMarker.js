@@ -3,7 +3,7 @@ import './index.css';
 const CustomMarker = ({name, image, town}) => {
     console.log('dupa');
 
-
+    
     return (
         <div className='customMarkerWrapper'>
             <div className='photoData'>
@@ -12,7 +12,7 @@ const CustomMarker = ({name, image, town}) => {
                 <span className='spanTitle'>Location: </span>
                 <span>{town}</span>
             </div>
-            <img src={image} alt='uploaded_photo'></img>
+            <img className='markerImage' src={image} alt='uploaded_photo'></img>
         </div>
     )
 

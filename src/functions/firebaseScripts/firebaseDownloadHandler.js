@@ -19,17 +19,17 @@ const firebaseDownloadHandler = async () => {
   const fileUrls = await Promise.all(requests);
   const metaData = res.items.map(itemRef => getMetadata(itemRef));
   const loadedMetaData = await Promise.all(metaData);
-  console.log('metadata :',loadedMetaData);
-
   const processArray = async () => {
     const finalResult = [];
     return new Promise(async function (resolve, reject) {
     for (let i = 0; i < fileUrls.length; i++) {
       const result = await getHTML(fileUrls[i]);
+      const result2 = loadedMetaData[i].customMetadata;
       const resultFile = new File([result], "image.jpeg",{
         type: result.type
       });
-      finalResult.push(resultFile);
+      const imageUrl = {'imageUrl': window.URL.createObjectURL(resultFile)};
+      finalResult.push({...result2, ...imageUrl});
       if ( finalResult.length === fileUrls.length) {
       console.log(finalResult);
       resolve (finalResult);
@@ -37,12 +37,8 @@ const firebaseDownloadHandler = async () => {
     }
   })};
 
-
-
   const downloaded = await processArray();
   return await downloaded;
-
-
 
 }
 

@@ -1,7 +1,7 @@
 async function weatherApiHandler(lat, lon){
     const apiKey = process.env.REACT_APP_WEATHERAPIKEY;
-    
-    async function getLocalizationKey(){      
+
+    async function getLocalizationKey(){
         try {
             const response = await fetch(
               `http://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=${apiKey}&q=${lat}%2C${lon}&language=en-us`,

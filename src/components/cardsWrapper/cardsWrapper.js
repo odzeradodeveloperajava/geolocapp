@@ -3,6 +3,7 @@ import Card from './card.js';
 import './cardsWrapper.css';
 
 const CardsWrapper = (props) => {
+
     const [buttonRight, setButtonRight] = useState('buttonHidden');
     const [buttonLeft, setButtonLeft] = useState('buttonHidden');
     const [cards, setCards] = useState('cardsHidden');
@@ -18,7 +19,7 @@ const CardsWrapper = (props) => {
     <button  className={buttonLeft} id='buttonLeft' onClick={props.cardHandlerLeft}></button>
     <div id='imageContainer' className="imageContainer">
         {props.state.items.map(item => (
-            <Card key={item.cardId} {...item} handler={props.handler}/>
+            <Card key={item.cardId} {...item} handler={props.handler} usageIdentifier={props.usageIdentifier}/>
         ))}
     </div>
     <button className={buttonRight} id='buttonRight' onClick={props.cardHandlerRight}></button>
