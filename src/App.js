@@ -38,17 +38,18 @@ class App extends React.Component {
     let bottomGalleryLoader = await firebaseDownloadHandler();
     this.setState({ bottomGalleryItems: bottomGalleryLoader });
   }
-  imageClickHandler = (e) => {
+   imageClickHandler = (e) => {
     const newActiveImageData = newActiveImage(e, this.state);
     this.setState({items: newActiveImageData});
     this.setState({activeCard: 0});
+    console.log('click handler', newActiveImageData)
   }
 
 
   loaderScreenHandler = (e) => {
     this.setState({loader: e})
   }
-
+///////////////////////////////
   markerFlyerTo = (e) => {
     const index = (markerFlyerHandler(e, this.state));
     this.setState({ activeCard: index });
@@ -127,7 +128,7 @@ class App extends React.Component {
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          {this.state.items.map(({ cardId, imageUrl, lat, lon, town}) =>
+          {this.state.items.map(({ cardId, lat, lon}) =>
           <Marker
             eventHandlers={{ click: this.markerFlyerTo }}
             key={`marker-${cardId}`}
@@ -140,7 +141,7 @@ class App extends React.Component {
               }}
             >
           <Popup>
-            <CustomMarker name={cardId} image={imageUrl} town={town} />
+            <CustomMarker props={this.state} />
           </Popup>
           </Marker>
         )}

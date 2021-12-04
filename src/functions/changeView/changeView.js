@@ -9,8 +9,10 @@ export const ChangeView = ({ center }) => {
     return null;
     }
     else{
+      
       let activeCard = center.activeCard;
       let arrayPosition = center.items[activeCard];
+      console.log('array position ',arrayPosition);
       map.flyTo([arrayPosition.lat, arrayPosition.lon], 10);
       return null;
     }

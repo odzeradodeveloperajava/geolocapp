@@ -75,8 +75,8 @@ const Card = ({cardId, imageUrl, size, lat, lon, town, handler, country, usageId
     };
 
       return (
-       <UpperOrBottomGallery key={cardId} onClick={imageClickHandler} >
-        <CardImageContainer >
+       <UpperOrBottomGallery key={cardId} >
+        <CardImageContainer onClick={imageClickHandler}  >
           <ImageInCard  props={usageIdentifier} src={imageUrl}/>
         </CardImageContainer>
         <GeoInformation props={usageIdentifier}>
