@@ -1,0 +1,17 @@
+.customMarkerWrapper{
+    display: flex;
+    line-height: 15px;
+    flex-direction: row;
+}
+.photoData{
+    display: flex;
+    flex-direction: column;
+}
+.markerImage{
+    margin-left: 15px;
+    height: 50px;
+    width: 75px;
+}
+.spanTitle{
+    font-weight: 800;
+}

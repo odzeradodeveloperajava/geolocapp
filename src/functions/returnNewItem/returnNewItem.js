@@ -1,6 +1,6 @@
 import getCityReverseGeocode from "../../functions/getCityReverseGeocode/getCityReverseGeocode";
-import calculateGpsDatalon from "../../components/upoloadHandler/scripts/calculateGpsDatalon.js";
-import calculateGpsDatalat from "../../components/upoloadHandler/scripts/calculateGpsDatalat.js";
+import calculateGpsDatalon from "../../functions/scripts/calculateGpsDatalon";
+import calculateGpsDatalat from "../../functions/scripts/calculateGpsDatalat";
 
 
 async function test(selectedFile, customMetaDataMarker) {

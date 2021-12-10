@@ -4,15 +4,15 @@ async function weatherApiHandler(lat, lon){
     async function getLocalizationKey(){
         try {
             const response = await fetch(
-              `http://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=${apiKey}&q=${lat}%2C${lon}&language=en-us`,
+              `https://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=${apiKey}&q=${lat}%2C${lon}&language=en-us`,
               {
                 method: "GET",
               }
             );
             const data = await response.json();
+            console.log('response status ',response.status)
             return data.Key;
         }   catch (error) {
-            console.error(error);
             const apiError = "Unknown";
             return apiError;
         }
@@ -24,7 +24,7 @@ async function weatherApiHandler(lat, lon){
        const locationKey = await getLocalizationKey();
        try {
         const response = await fetch(
-          `http://dataservice.accuweather.com/currentconditions/v1/${locationKey}?apikey=${apiKey}&language=en-us`,
+          `https://dataservice.accuweather.com/currentconditions/v1/${locationKey}?apikey=${apiKey}&language=en-us`,
           {
             method: "GET",
           }
@@ -32,7 +32,6 @@ async function weatherApiHandler(lat, lon){
         const data = await response.json();
         return data[0];
       } catch (error) {
-        console.error(error);
         const apiError = "Unknown";
         return apiError;
       }

@@ -2,7 +2,7 @@ import { useMap } from "react-leaflet";
 
 
 
-export const ChangeView = ({ center }) => {
+const ChangeView = ({ center }) => {
     const map = useMap();
     if ( center.items.length === 0){
       map.flyTo(center.centerPosition);
@@ -18,4 +18,4 @@ export const ChangeView = ({ center }) => {
     }
   };
 
-
+export default ChangeView;

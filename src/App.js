@@ -1,13 +1,12 @@
 import React from "react";
 import "./App.css";
-import Header from "./components/header/header";
-import UploadHandler from "./components/upoloadHandler/uploadHandler";
-import CardsWrapper from "./components/cardsWrapper/cardsWrapper";
+import Header from "./components/organisms/Header/Header";
+import CardsWrapper from "./components/organisms/cardsWrapper/cardsWrapper";
 import { MapContainer, TileLayer, Marker, Popup, ZoomControl} from "react-leaflet";
-import { ChangeView } from './functions/changeView/changeView';
-import CustomMarker from './components/CustomMarker/CustomMarker';
-import PhotoData from "./components/photoData/photoData";
-import Loader from "./components/loader/loader";
+import ChangeView from './functions/changeView/changeView';
+import CustomMarker from './components/atoms/CustomMarker/CustomMarker';
+import PhotoData from "./components/organisms/photoData/photoData";
+import Loader from "./components/atoms/loader/loader";
 import EXIF from 'exif-js';
 import markerFlyerHandler from "./functions/markerFlyerHandler/markerFlyerHandler";
 import deleteItemHandler from "./functions/deleteItemHandler/deleteItemHandler";
@@ -16,8 +15,18 @@ import firebaseUploadHandler from "./functions/firebaseScripts/firebaseUploadHan
 import returnNewItem from "./functions/returnNewItem/returnNewItem";
 import ip2LocHandler from "./functions/ip2LocHandler/ip2LocHandler";
 import firebaseDownloadHandler from "./functions/firebaseScripts/firebaseDownloadHandler";
-import BottomGallery from "./components/bottomGallery/BottomGallery";
+import BottomGallery from "./components/organisms/bottomGallery/BottomGallery";
 import newActiveImage from "./functions/newActiveImage/newActiveImage";
+import styled from 'styled-components';
+import NoExifDataModal from "./components/atoms/NoExifDataModal/NoExifDataModal";
+
+const PageWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(255, 255, 255);
+  width: 1100px;
+`;
+
 
 class App extends React.Component {
   state = {
@@ -26,9 +35,8 @@ class App extends React.Component {
     centerPosition: [50, 50],
     activeCard: 0,
     center: [],
-    processing: 0,
-    processed: 0,
-    loader: 'hidden'
+    loader: 'hidden',
+    noexifdatafilenames: []
   };
 
 
@@ -42,14 +50,16 @@ class App extends React.Component {
     const newActiveImageData = newActiveImage(e, this.state);
     this.setState({items: newActiveImageData});
     this.setState({activeCard: 0});
-    console.log('click handler', newActiveImageData)
   }
-
 
   loaderScreenHandler = (e) => {
     this.setState({loader: e})
   }
-///////////////////////////////
+
+  modalCloseHandler = () =>{
+    this.setState({noexifdatafilenames: []})
+  }
+
   markerFlyerTo = (e) => {
     const index = (markerFlyerHandler(e, this.state));
     this.setState({ activeCard: index });
@@ -74,24 +84,19 @@ class App extends React.Component {
   addItem = (e) => {
     const setNewItemHandler = (newItem) => {
       this.setState((prevState) => ({
-        items: [...prevState.items, newItem],
+        items: [newItem, ...prevState.items ],
         centerPosition: [newItem.lat.toFixed(3), newItem.lon.toFixed(3)]
       }));
     };
 
-      const countFilesProcessed = () => {
-        this.setState({ processed: this.state.processed +1 });
-      }
-
-      const countFilesToProcess = (e) => {
-        this.setState(() => ({ processing: this.state.processing + e }));
-      }
-
+    const setNoExifData = (e) => {
+      this.setState((prevState) => ({
+        noexifdatafilenames: [prevState.noexifdatafilenames, e]
+      }));
+    }
     let filesArray = e.target.files.length;
     for (let i = 0; i < filesArray; i++) {
-      countFilesToProcess(filesArray);
       const selectedFile = e.target.files[i];
-      // eslint-disable-next-line no-loop-func
       EXIF.getData(selectedFile, async function () {
         if (
           this.exifdata.GPSLatitude !== undefined &&
@@ -102,10 +107,8 @@ class App extends React.Component {
             return await returnNewItem(selectedFile);
           }
           setNewItemHandler(await mainHandler());
-          countFilesProcessed();
         } else {
-          countFilesProcessed();
-          console.log("make modal with error");
+            setNoExifData(selectedFile.name);
         }
       });
     }
@@ -113,9 +116,11 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="pageWrapper">
+      <>
+        <NoExifDataModal files={this.state.noexifdatafilenames} deleteHandler={this.modalCloseHandler}/>
         <Loader props={this.state} loaderScreenHandler={this.loaderScreenHandler}/>
-        <Header/>
+        <Header submitFn={this.addItem}/>
+        <PageWrapper>
         <MapContainer
           center={this.state.centerPosition}
           zoom={3}
@@ -146,11 +151,11 @@ class App extends React.Component {
           </Marker>
         )}
         </MapContainer>
-        <UploadHandler submitFn={this.addItem} />
         <CardsWrapper state={this.state} handler={this.deleteItem} cardHandlerRight={this.changeActiveCardRight} cardHandlerLeft={this.changeActiveCardLeft} usageIdentifier='upperGallery'/>
         <PhotoData data={this.state}/>
         <BottomGallery files={this.state.bottomGalleryItems} usageIdentifier='bottomGallery' clickHandler={this.imageClickHandler}/>
-      </div>
+        </PageWrapper>
+       </>
     );
   }
 }

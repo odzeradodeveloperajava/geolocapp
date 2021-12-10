@@ -14,10 +14,10 @@ const firebaseDownloadHandler = async () => {
   }
 
 
-  const res = await listAll(listRef);
-  const requests = res.items.map(itemRef => getDownloadURL(itemRef));
-  const fileUrls = await Promise.all(requests);
-  const metaData = res.items.map(itemRef => getMetadata(itemRef));
+  const getAllFilesList = await listAll(listRef);
+  const getDownloadUrl = getAllFilesList.items.map(itemRef => getDownloadURL(itemRef));
+  const fileUrls = await Promise.all(getDownloadUrl);
+  const metaData = getAllFilesList.items.map(itemRef => getMetadata(itemRef));
   const loadedMetaData = await Promise.all(metaData);
   const processArray = async () => {
     const finalResult = [];
