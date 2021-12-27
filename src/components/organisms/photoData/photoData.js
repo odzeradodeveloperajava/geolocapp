@@ -13,8 +13,8 @@ const PhotoData = ({data}) => {
         if(data.items.length !== 0){
         (async function() {
             const activeCard = data.items[data.activeCard];
-            const lat = activeCard.lat;
-            const lon = activeCard.lon;
+            const lat = parseFloat(activeCard.lat).toFixed(4);
+            const lon = parseFloat(activeCard.lon).toFixed(4);
             const getTemperature = await weatherApiHandler(lat, lon);
             let currentWeather = getTemperature === (undefined || 'Unknown') ? 'No data': getTemperature.WeatherText ;
             let currentTemperature = getTemperature === (undefined  || 'Unknown') ? 'No data' : `${getTemperature.Temperature.Metric.Value} °C`;
@@ -22,8 +22,8 @@ const PhotoData = ({data}) => {
                         <div className='pictureDataWrapper'>
                         <p><span>File name: {activeCard.cardId}</span></p>
                         <p><span>File size: {activeCard.size} kb</span></p>
-                        <p><span>Latidute: {activeCard.lat}</span></p>
-                        <p><span>Longitude: {activeCard.lon}</span></p>
+                        <p><span>Latidute: {lat}</span></p>
+                        <p><span>Longitude: {lon}</span></p>
                         <p><span>Country: {activeCard.country}</span></p>
                         <p><span>Province: {activeCard.province}</span></p>
                         <p><span>Town: {activeCard.town}</span></p>

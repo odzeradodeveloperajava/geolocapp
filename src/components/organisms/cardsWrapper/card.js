@@ -20,6 +20,7 @@ display: flex;
 flex-direction: column;
 justify-content: space-between;
 box-sizing: border-box;
+background-color: white;
 `;
 const CardImageContainer = styled.div`
   display: flex;
@@ -56,9 +57,12 @@ margin-bottom: 10px;
 
 
 const Card = ({cardId, imageUrl, size, lat, lon, town, handler, country, usageIdentifier, clickHandler}) => {
+  const latFinal = parseFloat(lat).toFixed(4);
+  const lonFinal = parseFloat(lon).toFixed(4);
   const deleteHandler = (e) =>{
       e.preventDefault();
       handler(cardId);
+     
     
     }
     function imageClickHandler() {
@@ -77,15 +81,15 @@ const Card = ({cardId, imageUrl, size, lat, lon, town, handler, country, usageId
 
       return (
        <UpperOrBottomGallery key={cardId} >
-        <CardImageContainer onClick={imageClickHandler}  >
+        <CardImageContainer onClick={usageIdentifier === 'bottomGallery' ? imageClickHandler : null}  >
           <ImageInCard  props={usageIdentifier} src={imageUrl}/>
         </CardImageContainer>
         <GeoInformation props={usageIdentifier}>
         {usageIdentifier === 'bottomGallery' ? <Tab props={usageIdentifier}>{town}, {country}</Tab> : <>
           <Tab props={usageIdentifier}>File name: {cardId}</Tab>
           <Tab props={usageIdentifier}>File size: {size}</Tab>
-          <Tab props={usageIdentifier}>Latitude: {lat}</Tab>
-          <Tab props={usageIdentifier}>Longitude: {lon}</Tab>
+          <Tab props={usageIdentifier}>Latitude: {latFinal}</Tab>
+          <Tab props={usageIdentifier}>Longitude: {lonFinal}</Tab>
           <Tab props={usageIdentifier}>Town: {town}</Tab> </>}
         </GeoInformation>
         {usageIdentifier === 'bottomGallery' ? null : <DeletionButton onClick={deleteHandler}>Close this card</DeletionButton>}

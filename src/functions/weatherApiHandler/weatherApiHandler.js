@@ -10,7 +10,6 @@ async function weatherApiHandler(lat, lon){
               }
             );
             const data = await response.json();
-            console.log('response status ',response.status)
             return data.Key;
         }   catch (error) {
             const apiError = "Unknown";

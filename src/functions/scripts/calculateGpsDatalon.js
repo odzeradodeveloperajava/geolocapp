@@ -7,7 +7,8 @@ function calculateGpsDatalon(selectedFile){
     var lonMinute = selectedFile.exifdata.GPSLongitude[1].numerator;
     var lonSecond = selectedFile.exifdata.GPSLongitude[2].numerator;
     var lonDirection = selectedFile.exifdata.GPSLongitudeRef;
-    return  convert(lonDegree, lonMinute, lonSecond, lonDirection);
+    var finalSecond = parseInt(String(lonSecond).charAt(1));
+    return  convert(lonDegree, lonMinute, finalSecond, lonDirection);
 }
 
 export default calculateGpsDatalon;

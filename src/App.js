@@ -23,8 +23,9 @@ import NoExifDataModal from "./components/atoms/NoExifDataModal/NoExifDataModal"
 const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: rgb(255, 255, 255);
+  background-color: rgb(240, 240, 240);
   width: 1100px;
+  padding: 20px;
 `;
 
 
@@ -36,7 +37,9 @@ class App extends React.Component {
     activeCard: 0,
     center: [],
     loader: 'hidden',
-    noexifdatafilenames: []
+    noexifdatafilenames: [],
+    processing: 0,
+    processed: 0,
   };
 
 
@@ -49,7 +52,6 @@ class App extends React.Component {
    imageClickHandler = (e) => {
     const newActiveImageData = newActiveImage(e, this.state);
     this.setState({items: newActiveImageData});
-    this.setState({activeCard: 0});
   }
 
   loaderScreenHandler = (e) => {
@@ -72,8 +74,8 @@ class App extends React.Component {
   };
 
   changeActiveCardRight = () => {
-   const result = (changeActiveCardRightHandler(this.state, 'right'));
-   this.setState({ activeCard: result });
+    const result = (changeActiveCardRightHandler(this.state, 'right'));
+    this.setState({ activeCard: result });
   }
 
   changeActiveCardLeft = () => {
@@ -82,12 +84,24 @@ class App extends React.Component {
   }
 
   addItem = (e) => {
+
+    this.setState({items: []})
+
     const setNewItemHandler = (newItem) => {
       this.setState((prevState) => ({
         items: [newItem, ...prevState.items ],
-        centerPosition: [newItem.lat.toFixed(3), newItem.lon.toFixed(3)]
+        centerPosition: [newItem.lat.toFixed(3), newItem.lon.toFixed(3)],
+        activeCard: 0
       }));
     };
+
+    const countFilesProcessed = (e) => {
+      this.setState({ processed: this.state.processed + e });
+    }
+
+    const countFilesToProcess = (e) => {
+      this.setState(() => ({ processing: this.state.processing + e }));
+    }
 
     const setNoExifData = (e) => {
       this.setState((prevState) => ({
@@ -96,6 +110,7 @@ class App extends React.Component {
     }
     let filesArray = e.target.files.length;
     for (let i = 0; i < filesArray; i++) {
+      countFilesToProcess(filesArray);
       const selectedFile = e.target.files[i];
       EXIF.getData(selectedFile, async function () {
         if (
@@ -107,8 +122,10 @@ class App extends React.Component {
             return await returnNewItem(selectedFile);
           }
           setNewItemHandler(await mainHandler());
+          countFilesProcessed(1);
         } else {
             setNoExifData(selectedFile.name);
+            countFilesProcessed(1);
         }
       });
     }

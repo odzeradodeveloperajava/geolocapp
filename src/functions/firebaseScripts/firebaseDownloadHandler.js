@@ -1,44 +1,56 @@
 import {getStorage, ref, listAll, getDownloadURL, getMetadata} from "firebase/storage";
 const storage = getStorage();
 const listRef = ref(storage, 'images');
+const thumbnailRef = ref(storage, 'images/thumbnails');
 
 
 const firebaseDownloadHandler = async () => {
 
-  function getHTML(url) {
-    return fetch(url, {
-        method: 'GET',
-        type: 'image/jpeg'
-      })
-      .then(res => res.blob())
-  }
-
-
+// Getting list of all files in /images/
   const getAllFilesList = await listAll(listRef);
-  const getDownloadUrl = getAllFilesList.items.map(itemRef => getDownloadURL(itemRef));
-  const fileUrls = await Promise.all(getDownloadUrl);
-  const metaData = getAllFilesList.items.map(itemRef => getMetadata(itemRef));
-  const loadedMetaData = await Promise.all(metaData);
+  const getAllThumbnails = await listAll(thumbnailRef);
+
+
+
+  //const mapArr = getAllFilesList.items.map(fileNamex);
+  //function fileNamex (ref){
+  //  return ref._location.path.slice(7,ref._location.path.length)
+ // }
+  //console.log('tablica duzych plikow' ,mapArr);
+ 
+
+
+  //const mapThumbnailArr = getAllThumbnails.items.map(mapThumbnails);
+  //function mapThumbnails (ref){
+  //  return ref._location.path.slice(18,ref._location.path.length)
+ // }
+  //console.log('tablica miniaturek' ,mapThumbnailArr);
+
+
+  const getDownloadUrlFullFile = getAllFilesList.items.map(itemRef => getDownloadURL(itemRef));
+  const getDownloadUrlThumnails = getAllThumbnails.items.map(itemRef => getDownloadURL(itemRef));
+  const thumbnailsUrlsToDownloadArray = await Promise.all(getDownloadUrlThumnails);
+  const fullFilesUrlsToDownloadArray = await Promise.all(getDownloadUrlFullFile);
+  const getMetadataForAllFiles = getAllFilesList.items.map(itemRef => getMetadata(itemRef));
+  const loadedMetaData = await Promise.all(getMetadataForAllFiles);
+
   const processArray = async () => {
     const finalResult = [];
     return new Promise(async function (resolve, reject) {
-    for (let i = 0; i < fileUrls.length; i++) {
-      const result = await getHTML(fileUrls[i]);
-      const result2 = loadedMetaData[i].customMetadata;
-      const resultFile = new File([result], "image.jpeg",{
-        type: result.type
-      });
-      const imageUrl = {'imageUrl': window.URL.createObjectURL(resultFile)};
-      finalResult.push({...result2, ...imageUrl});
-      if ( finalResult.length === fileUrls.length) {
+    for (let i = 0; i < thumbnailsUrlsToDownloadArray.length; i++) {
+      const getSpecificFileThumbnail = thumbnailsUrlsToDownloadArray[i];
+      const getFileMetadata = loadedMetaData[i].customMetadata;
+      const imageUrl = {'imageUrl': getSpecificFileThumbnail};
+      const fullImageUrl = {'fullImageUrl': fullFilesUrlsToDownloadArray[i]}
+      finalResult.push({...getFileMetadata, ...imageUrl, fullImageUrl});
+      if ( finalResult.length === thumbnailsUrlsToDownloadArray.length) {
       console.log(finalResult);
       resolve (finalResult);
       }
     }
   })};
 
-  const downloaded = await processArray();
-  return await downloaded;
+  return await processArray();
 
 }
 
