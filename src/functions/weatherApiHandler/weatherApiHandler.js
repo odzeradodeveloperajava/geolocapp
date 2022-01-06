@@ -17,8 +17,6 @@ async function weatherApiHandler(lat, lon){
         }
    }
 
-
-
    async function getCurretWeather(){
        const locationKey = await getLocalizationKey();
        try {

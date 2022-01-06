@@ -43,6 +43,10 @@ const CloseButton = styled.button`
 
 
 const NoExifDataModal = ({files, deleteHandler}) => {
+    function onClickHandler(){
+        deleteHandler('modalCloseHandler')
+    }
+
     if(files.length === 0){
         return null
     }
@@ -54,7 +58,7 @@ const NoExifDataModal = ({files, deleteHandler}) => {
             This files do not contain latitude & longitude data: {files} .
             </div>
         </ModalWrapper>
-        <CloseButton onClick={deleteHandler} >Close</CloseButton>
+        <CloseButton onClick={onClickHandler} >Close</CloseButton>
         </Blackout>
         )
     }

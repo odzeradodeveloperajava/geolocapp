@@ -29,7 +29,7 @@ const CardImageContainer = styled.div`
 const ImageInCard = styled.img`
 width: 100%;
 padding: ${({props}) => props === 'bottomGallery' ? '15px' : '15px 0' };
-cursor: ${({props}) => props === 'bottomGallery' ? 'pointer' : 'auto' };
+cursor: pointer;
 height: 300px;
 object-fit: cover;
 `;
@@ -56,17 +56,18 @@ margin-bottom: 10px;
 
 
 
-const Card = ({cardId, imageUrl, size, lat, lon, town, handler, country, usageIdentifier, clickHandler}) => {
+const Card = ({cardId, imageUrl, size, lat, lon, town, handler, country, usageIdentifier, clickHandler, fullScreenOpenHandler}) => {
   const latFinal = parseFloat(lat).toFixed(4);
   const lonFinal = parseFloat(lon).toFixed(4);
   const deleteHandler = (e) =>{
       e.preventDefault();
-      handler(cardId);
-     
-    
+      handler('deleteItem',cardId);
     }
     function imageClickHandler() {
-      clickHandler(cardId);
+      clickHandler('imageClickHandler',cardId);
+    }
+    function fullScreenOpenHandlerPass(){
+      fullScreenOpenHandler('fullScreenOpenHandler')
     }
     const UpperOrBottomGallery = (props) =>{
       if(usageIdentifier === 'upperGallery'){
@@ -81,7 +82,7 @@ const Card = ({cardId, imageUrl, size, lat, lon, town, handler, country, usageId
 
       return (
        <UpperOrBottomGallery key={cardId} >
-        <CardImageContainer onClick={usageIdentifier === 'bottomGallery' ? imageClickHandler : null}  >
+        <CardImageContainer onClick={usageIdentifier === 'bottomGallery' ? imageClickHandler : fullScreenOpenHandlerPass}  >
           <ImageInCard  props={usageIdentifier} src={imageUrl}/>
         </CardImageContainer>
         <GeoInformation props={usageIdentifier}>

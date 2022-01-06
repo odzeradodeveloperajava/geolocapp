@@ -5,8 +5,7 @@ import EXIF from 'exif-js';
 import imageResizer from '../imageResizer/imageResizer';
 
 
-
-const firebaseUploadHandler = async (selectedFile) => {
+const firebaseUploadHandler = async (selectedFile, stateHandler) => {
    const file = selectedFile;
    EXIF.getData(file, async function () {
       const fileImagesRef = ref(storage, `images/${file.name}`);
@@ -15,7 +14,7 @@ const firebaseUploadHandler = async (selectedFile) => {
       uploadBytes(fileImagesRef, file, metaData);
       const thumbnail = await imageResizer(selectedFile);
       uploadBytes(thumbnailFileImageRef, thumbnail).then((snapshot) => {
-         console.log(snapshot);
+         stateHandler('countFilesProcessed')
       });
    });
 }

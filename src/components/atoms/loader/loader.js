@@ -7,10 +7,10 @@ const Loader = ({props ,loaderScreenHandler}) => {
     useEffect(() => {
         if (props.processing !== props.processed){
             window.scrollTo(0, 0);
-            loaderScreenHandler('visible');
+            loaderScreenHandler('loaderScreenHandler','visible');
         }
         else{
-            setTimeout(function(){ loaderScreenHandler('hidden'); }, 1000);
+            setTimeout(function(){ loaderScreenHandler('loaderScreenHandler','hidden'); }, 1000);
             }
     },[props.loader, props.processing, props.processed, loaderScreenHandler]);
     return (

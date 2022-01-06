@@ -2,7 +2,6 @@ import './index.css';
 
 const CustomMarker = ({props}) => {
     const active = props.activeCard;
-    console.log(active);
     return (
         <div className='customMarkerWrapper'>
             <div className='photoData'>

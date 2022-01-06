@@ -8,17 +8,17 @@ import CustomMarker from './components/atoms/CustomMarker/CustomMarker';
 import PhotoData from "./components/organisms/photoData/photoData";
 import Loader from "./components/atoms/loader/loader";
 import EXIF from 'exif-js';
-import markerFlyerHandler from "./functions/markerFlyerHandler/markerFlyerHandler";
-import deleteItemHandler from "./functions/deleteItemHandler/deleteItemHandler";
-import changeActiveCardRightHandler from "./functions/changeCardHandler/changeActiveCardRightHandler";
 import firebaseUploadHandler from "./functions/firebaseScripts/firebaseUploadHandler";
 import returnNewItem from "./functions/returnNewItem/returnNewItem";
 import ip2LocHandler from "./functions/ip2LocHandler/ip2LocHandler";
 import firebaseDownloadHandler from "./functions/firebaseScripts/firebaseDownloadHandler";
 import BottomGallery from "./components/organisms/bottomGallery/BottomGallery";
-import newActiveImage from "./functions/newActiveImage/newActiveImage";
 import styled from 'styled-components';
 import NoExifDataModal from "./components/atoms/NoExifDataModal/NoExifDataModal";
+import FullSizeImageShadowBox from "./components/organisms/FullSizeImageShadowBox/FullSizeImageShadowBox";
+import AppDescription from "./components/atoms/AppDescription/AppDescription";
+import Footer from "./components/atoms/Footer/Footer";
+import liftingUpStateHandler from './functions/liftingUpStateHandler/liftingUpStateHandler'
 
 const PageWrapper = styled.div`
   display: flex;
@@ -33,13 +33,14 @@ class App extends React.Component {
   state = {
     items: [],
     bottomGalleryItems: [],
-    centerPosition: [50, 50],
+    centerPosition: [70, 70],
     activeCard: 0,
     center: [],
     loader: 'hidden',
     noexifdatafilenames: [],
     processing: 0,
     processed: 0,
+    fullScreen: false,
   };
 
 
@@ -49,98 +50,59 @@ class App extends React.Component {
     let bottomGalleryLoader = await firebaseDownloadHandler();
     this.setState({ bottomGalleryItems: bottomGalleryLoader });
   }
-   imageClickHandler = (e) => {
-    const newActiveImageData = newActiveImage(e, this.state);
-    this.setState({items: newActiveImageData});
-  }
+// Bellow function is a walkaround for many single handlers for lifting up state
+  stateHandler = (type, e) =>{
+    const result = liftingUpStateHandler(type, e, this.state);
+    if (result[2] === true){
+      this.setState((prevState) => ({
+        [result[0]]: [ result[1], ...prevState.[result[0]]],
+        }));
+      }
+    else{
+      this.setState({ [result[0]]: result[1] });
+      if (result.length > 2)  this.setState({ [result[2]]: result[3] });
+    }}
 
-  loaderScreenHandler = (e) => {
-    this.setState({loader: e})
-  }
-
-  modalCloseHandler = () =>{
-    this.setState({noexifdatafilenames: []})
-  }
-
-  markerFlyerTo = (e) => {
-    const index = (markerFlyerHandler(e, this.state));
-    this.setState({ activeCard: index });
-  }
-
-  deleteItem = (e) => {
-    const result = (deleteItemHandler(e, this.state));
-    this.setState({ items: result[0]});
-    this.setState({ activeCard: 0 });
-  };
-
-  changeActiveCardRight = () => {
-    const result = (changeActiveCardRightHandler(this.state, 'right'));
-    this.setState({ activeCard: result });
-  }
-
-  changeActiveCardLeft = () => {
-    const result = (changeActiveCardRightHandler(this.state));
-    this.setState({ activeCard: result});
-  }
 
   addItem = (e) => {
-
     this.setState({items: []})
+    const appBinder = this;
 
-    const setNewItemHandler = (newItem) => {
-      this.setState((prevState) => ({
-        items: [newItem, ...prevState.items ],
-        centerPosition: [newItem.lat.toFixed(3), newItem.lon.toFixed(3)],
-        activeCard: 0
-      }));
-    };
-
-    const countFilesProcessed = (e) => {
-      this.setState({ processed: this.state.processed + e });
-    }
-
-    const countFilesToProcess = (e) => {
-      this.setState(() => ({ processing: this.state.processing + e }));
-    }
-
-    const setNoExifData = (e) => {
-      this.setState((prevState) => ({
-        noexifdatafilenames: [prevState.noexifdatafilenames, e]
-      }));
-    }
     let filesArray = e.target.files.length;
     for (let i = 0; i < filesArray; i++) {
-      countFilesToProcess(filesArray);
+      (()=>{ this.stateHandler('countFilesToProcess', (filesArray)) })()
       const selectedFile = e.target.files[i];
       EXIF.getData(selectedFile, async function () {
         if (
           this.exifdata.GPSLatitude !== undefined &&
           this.exifdata.GPSLongitude !== undefined
         ) {
-          async function mainHandler() {
-            firebaseUploadHandler(selectedFile);
-            return await returnNewItem(selectedFile);
-          }
-          setNewItemHandler(await mainHandler());
-          countFilesProcessed(1);
+          firebaseUploadHandler(selectedFile, appBinder.stateHandler);
+          const superdata = await returnNewItem(selectedFile);
+          (()=>{
+            appBinder.stateHandler('newItemHandler',superdata , true);
+            appBinder.stateHandler('centerPosition',superdata);
+            appBinder.stateHandler('activeCard');
+          })()
         } else {
-            setNoExifData(selectedFile.name);
-            countFilesProcessed(1);
+            (()=>{ appBinder.stateHandler('countFilesProcessed');
+              appBinder.stateHandler('setNoExifData', selectedFile.name)})()
         }
       });
     }
   };
-
+  
   render() {
     return (
       <>
-        <NoExifDataModal files={this.state.noexifdatafilenames} deleteHandler={this.modalCloseHandler}/>
-        <Loader props={this.state} loaderScreenHandler={this.loaderScreenHandler}/>
+        <FullSizeImageShadowBox state={this.state} closeHandler={this.stateHandler}/>
+        <NoExifDataModal files={this.state.noexifdatafilenames} deleteHandler={this.stateHandler}/>
+        <Loader props={this.state} loaderScreenHandler={this.stateHandler}/>
         <Header submitFn={this.addItem}/>
         <PageWrapper>
         <MapContainer
           center={this.state.centerPosition}
-          zoom={3}
+          zoom={2}
           scrollWheelZoom={false}
           zoomControl={false}
         >
@@ -152,7 +114,8 @@ class App extends React.Component {
           />
           {this.state.items.map(({ cardId, lat, lon}) =>
           <Marker
-            eventHandlers={{ click: this.markerFlyerTo }}
+            eventHandlers={{ click: (e) =>{
+              this.stateHandler('markerFlyerTo',e) }}}
             key={`marker-${cardId}`}
             position={[lat, lon] }
             onMouseOver={(e) => {
@@ -168,10 +131,12 @@ class App extends React.Component {
           </Marker>
         )}
         </MapContainer>
-        <CardsWrapper state={this.state} handler={this.deleteItem} cardHandlerRight={this.changeActiveCardRight} cardHandlerLeft={this.changeActiveCardLeft} usageIdentifier='upperGallery'/>
+        <CardsWrapper state={this.state} handler={this.stateHandler} cardChangeHandler={this.stateHandler} usageIdentifier='upperGallery' fullScreenOpenHandler={this.stateHandler}/>
+        <AppDescription />
         <PhotoData data={this.state}/>
-        <BottomGallery files={this.state.bottomGalleryItems} usageIdentifier='bottomGallery' clickHandler={this.imageClickHandler}/>
+        <BottomGallery files={this.state.bottomGalleryItems} usageIdentifier='bottomGallery' clickHandler={this.stateHandler}/>
         </PageWrapper>
+        <Footer />
        </>
     );
   }

@@ -4,7 +4,7 @@ import Card from '../cardsWrapper/card';
 
 
 const Gallery = styled.div`
-
+    margin: 30px 0 20px 0;
 `;
 
 const BottomGalleryHeader = styled.div`
@@ -15,6 +15,7 @@ const BottomGalleryHeader = styled.div`
 `;
 
 const OtherImagesWrapper = styled.div`
+    margin-top: 20px;
     display: grid;
     @media only screen and (max-width: 600px)
     {
