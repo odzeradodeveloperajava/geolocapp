@@ -7,7 +7,6 @@ async function getCityReverseGeocode (latitude, longitude){
           }
         );
         const data = await response.json();
-        //const city = data.locality; //unused
         return data;
       } catch (error) {
         console.error(error);

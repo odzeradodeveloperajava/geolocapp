@@ -96,7 +96,7 @@ class App extends React.Component {
     return (
       <>
         <FullSizeImageShadowBox state={this.state} closeHandler={this.stateHandler}/>
-        <NoExifDataModal files={this.state.noexifdatafilenames} deleteHandler={this.stateHandler}/>
+        <NoExifDataModal state={this.state} deleteHandler={this.stateHandler}/>
         <Loader props={this.state} loaderScreenHandler={this.stateHandler}/>
         <Header submitFn={this.addItem}/>
         <PageWrapper>

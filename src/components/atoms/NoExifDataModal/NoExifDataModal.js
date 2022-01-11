@@ -42,25 +42,28 @@ const CloseButton = styled.button`
 
 
 
-const NoExifDataModal = ({files, deleteHandler}) => {
+const NoExifDataModal = ({state, deleteHandler}) => {
     function onClickHandler(){
         deleteHandler('modalCloseHandler')
     }
 
-    if(files.length === 0){
+    if(state.noexifdatafilenames.length === 0 ){
         return null
     }
-    else{
+    else if (state.noexifdatafilenames.length !== 0 && state.loader ==='hidden'){
         return (
         <Blackout>
         <ModalWrapper>
             <div>
-            This files do not contain latitude & longitude data: {files} .
+            This files do not contain latitude & longitude data: {state.noexifdatafilenames} .
             </div>
         </ModalWrapper>
         <CloseButton onClick={onClickHandler} >Close</CloseButton>
         </Blackout>
         )
+    }
+    else {
+        return null
     }
 }
 

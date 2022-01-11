@@ -32,6 +32,7 @@ padding: ${({props}) => props === 'bottomGallery' ? '15px' : '15px 0' };
 cursor: pointer;
 height: 300px;
 object-fit: cover;
+box-sizing: border-box;
 `;
 
 const GeoInformation = styled.div`

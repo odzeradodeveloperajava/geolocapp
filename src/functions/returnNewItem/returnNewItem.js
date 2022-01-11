@@ -17,7 +17,7 @@ async function test(selectedFile, customMetaDataMarker) {
     console.log('bla',getC)
     let country =  getC.localityInfo !== undefined && getC.localityInfo.administrative.length !== 0 ? getC.localityInfo.administrative[0].name : 'no data';
     let province = getC.localityInfo !== undefined && getC.localityInfo.administrative.length !== 0  ? getC.localityInfo.administrative[1].name: 'no data';
-    let town = getC.localityInfo !== undefined ? getC.city : 'no data';
+    let town = getC !== undefined ? (getC.city !== '' ? getC.city : getC.locality) : 'no data';
     let community = getC.localityInfo !== undefined && getC.localityInfo.administrative.length >= 5 ? getC.localityInfo.administrative[4].name : "no data";
     const metaData = {
       'cardId' : selectedFile.name,
