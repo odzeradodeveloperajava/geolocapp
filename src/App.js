@@ -113,17 +113,12 @@ class App extends React.Component {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
           {this.state.items.map(({ cardId, lat, lon}) =>
-          <Marker
-            eventHandlers={{ click: (e) =>{
-              this.stateHandler('markerFlyerTo',e) }}}
+          <Marker 
+            eventHandlers={{ click: (e) =>{this.stateHandler('markerFlyerTo',e) }}}
             key={`marker-${cardId}`}
             position={[lat, lon] }
-            onMouseOver={(e) => {
-              e.target.openPopup();
-              }}
-            onMouseOut={(e) => {
-              e.target.closePopup();
-              }}
+            onMouseOver={(e) => {e.target.openPopup();}}
+            onMouseOut={(e) => {e.target.closePopup();}}
             >
           <Popup>
             <CustomMarker props={this.state} />
