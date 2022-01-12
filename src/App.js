@@ -1,23 +1,23 @@
 import React from "react";
 import "./App.css";
-import Header from "./components/organisms/Header/Header";
-import CardsWrapper from "./components/organisms/cardsWrapper/cardsWrapper";
+import Header from './components/Header/Header/Header';
+import CardsWrapper from "./components/CardsWrapper/cardsWrapper";
 import { MapContainer, TileLayer, Marker, Popup, ZoomControl} from "react-leaflet";
 import ChangeView from './functions/changeView/changeView';
-import CustomMarker from './components/atoms/CustomMarker/CustomMarker';
-import PhotoData from "./components/organisms/photoData/photoData";
-import Loader from "./components/atoms/loader/loader";
+import CustomMarker from './components/CustomMarker/CustomMarker';
+import PhotoData from "./components/PhotoData/PhotoData";
+import Loader from "./components/Modals/Loader/Loader";
 import EXIF from 'exif-js';
 import firebaseUploadHandler from "./functions/firebaseScripts/firebaseUploadHandler";
 import returnNewItem from "./functions/returnNewItem/returnNewItem";
 import ip2LocHandler from "./functions/ip2LocHandler/ip2LocHandler";
 import firebaseDownloadHandler from "./functions/firebaseScripts/firebaseDownloadHandler";
-import BottomGallery from "./components/organisms/bottomGallery/BottomGallery";
+import BottomGallery from "./components/BottomGallery/BottomGallery";
 import styled from 'styled-components';
-import NoExifDataModal from "./components/atoms/NoExifDataModal/NoExifDataModal";
-import FullSizeImageShadowBox from "./components/organisms/FullSizeImageShadowBox/FullSizeImageShadowBox";
-import AppDescription from "./components/atoms/AppDescription/AppDescription";
-import Footer from "./components/atoms/Footer/Footer";
+import NoExifDataModal from "./components/Modals/NoExifDataModal/NoExifDataModal";
+import FullSizeImageShadowBox from "./components/Modals/FullSizeImageShadowBox/FullSizeImageShadowBox";
+import AppDescription from "./components/AppDescription/AppDescription";
+import Footer from "./components/Footer/Footer";
 import liftingUpStateHandler from './functions/liftingUpStateHandler/liftingUpStateHandler'
 
 const PageWrapper = styled.div`
@@ -91,7 +91,7 @@ class App extends React.Component {
       });
     }
   };
-  
+
   render() {
     return (
       <>
