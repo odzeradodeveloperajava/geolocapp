@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import "./PhotoData.css";
 import weatherApiHandler from "./../../functions/weatherApiHandler/weatherApiHandler";
-
+import styles from './PhotoData.module.scss';
 
 
 
@@ -19,7 +18,7 @@ const PhotoData = ({data}) => {
             let currentWeather = getTemperature === (undefined || 'Unknown') ? 'No data': getTemperature.WeatherText ;
             let currentTemperature = getTemperature === (undefined  || 'Unknown') ? 'No data' : `${getTemperature.Temperature.Metric.Value} °C`;
                     const xdata =(
-                        <div className='pictureDataWrapper'>
+                        <div className={styles.pictureDataWrapper}>
                         <p><span>File name: {activeCard.cardId}</span></p>
                         <p><span>File size: {activeCard.size} kb</span></p>
                         <p><span>Latidute: {lat}</span></p>
