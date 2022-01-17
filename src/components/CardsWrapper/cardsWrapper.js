@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import Card from '../ImageCard/Card';
-import './cardsWrapper.css';
+import styled from './CardsWrapper.module.scss'
 
 const CardsWrapper = (props) => {
     function clickHandler(e){
@@ -10,30 +10,34 @@ const CardsWrapper = (props) => {
         {props.cardChangeHandler('changeActiveCardHandler')}
     }
 
-    const [buttonRight, setButtonRight] = useState('buttonHidden');
-    const [buttonLeft, setButtonLeft] = useState('buttonHidden');
-    const [cards, setCards] = useState(null);
-    const wrapper = (
-        <div className='cards'>
-            <button  className={buttonLeft} id='buttonLeft' onClick={clickHandler}></button>
-            <div id='imageContainer' className="imageContainer">
+    const buttonLeft = (
+        <button  className={styled.buttonLeft} id='buttonLeft' onClick={clickHandler}></button>
+    )
+
+    const buttonRight = (
+        <button className={styled.buttonRight} id='buttonRight' onClick={clickHandler}></button>
+    )
+
+    if ( props.state.items.length > 0){
+        return (
+            <div className={styled.cards}>
+            {props.state.activeCard > 0 ? buttonLeft : null}
+            <div  className={styled.imageContainer}>
                 {props.state.items.map(item => (
                 <Card key={item.cardId} {...item} handler={props.handler} usageIdentifier={props.usageIdentifier} fullScreenOpenHandler={props.fullScreenOpenHandler} />
             ))}
             </div>
-        <button className={buttonRight} id='buttonRight' onClick={clickHandler}></button>
+            {props.state.items.length > 1 && props.state.activeCard+1 < props.state.items.length ? buttonRight : null}
     </div>
-    );
-
-    useEffect(() => {
-        props.state.activeCard > 0 ? setButtonLeft('button') : setButtonLeft('buttonHidden');
-        props.state.items.length > 1 && props.state.activeCard+1 < props.state.items.length ? setButtonRight('button') : setButtonRight('buttonHidden');
-        props.state.items.length > 0 ? setCards(wrapper) : setCards(null);
-      },[props.state.items.length, props.state.activeCard, props.state, buttonLeft, buttonRight]);
-
-    return (
-        cards
         )
     }
+    else{
+        return null
+    }
+
+
+
+    }
+
 
 export default CardsWrapper;

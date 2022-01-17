@@ -11,15 +11,7 @@
     border-radius: 5px;
     height: 450px;
 }
-.cardsHidden{
-    opacity: 0;
-    height: 0;
-    width: 0;
-    z-index: -9999;
-}
-.hidden{
-    z-index: -9999;
-}
+
 .imageContainer{
     width: 400px;
     display: flex;
@@ -29,29 +21,22 @@
     overflow: hidden;
     margin: 0 auto;
 }
-.button{
-    opacity: 1;
+@mixin button{
     border: none;
-    height: 560px;
     width: 15px;
     background-color: white;
     background-repeat: no-repeat;
     background-size: 15px 15px;
     background-position: center; 
 }
-
-.buttonHidden{
-    z-index: -9999;
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-#buttonLeft{
- 
+.buttonLeft{
+    @include button;
     background-image: url('./../../assets/icons/arrow-left.png');
 }
-#buttonRight{
-    
-    background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Font_Awesome_5_solid_arrow-circle-right.svg/1200px-Font_Awesome_5_solid_arrow-circle-right.svg.png');
+.buttonRight{
+    @include button;
+    background-image: url('./../../assets/icons/arrow-right.png');
 }
+
+
+
