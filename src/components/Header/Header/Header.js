@@ -25,7 +25,7 @@ return(
     <HeaderWrapper>
         <HeaderInnerWrapper>
             <h1>IMAGE GEOLOC APP</h1>
-            <UploadHandler submitFn={props.submitFn} />
+            <UploadHandler handler={props.handler} />
         </HeaderInnerWrapper>
     </HeaderWrapper>
 )

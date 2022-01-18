@@ -7,9 +7,6 @@ import ChangeView from './functions/changeView/changeView';
 import CustomMarker from './components/CustomMarker/CustomMarker';
 import PhotoData from "./components/PhotoData/PhotoData";
 import Loader from "./components/Modals/Loader/Loader";
-import EXIF from 'exif-js';
-import firebaseUploadHandler from "./functions/firebaseScripts/firebaseUploadHandler";
-import returnNewItem from "./functions/returnNewItem/returnNewItem";
 import ip2LocHandler from "./functions/ip2LocHandler/ip2LocHandler";
 import firebaseDownloadHandler from "./functions/firebaseScripts/firebaseDownloadHandler";
 import BottomGallery from "./components/BottomGallery/BottomGallery";
@@ -64,33 +61,7 @@ class App extends React.Component {
     }}
 
 
-  addItem = (e) => {
-    this.setState({items: []})
-    const appBinder = this;
 
-    let filesArray = e.target.files.length;
-    for (let i = 0; i < filesArray; i++) {
-      (()=>{ this.stateHandler('countFilesToProcess', (filesArray)) })()
-      const selectedFile = e.target.files[i];
-      EXIF.getData(selectedFile, async function () {
-        if (
-          this.exifdata.GPSLatitude !== undefined &&
-          this.exifdata.GPSLongitude !== undefined
-        ) {
-          firebaseUploadHandler(selectedFile, appBinder.stateHandler);
-          const superdata = await returnNewItem(selectedFile);
-          (()=>{
-            appBinder.stateHandler('newItemHandler',superdata , true);
-            appBinder.stateHandler('centerPosition',superdata);
-            appBinder.stateHandler('activeCard');
-          })()
-        } else {
-            (()=>{ appBinder.stateHandler('countFilesProcessed');
-              appBinder.stateHandler('setNoExifData', selectedFile.name)})()
-        }
-      });
-    }
-  };
 
   render() {
     return (
@@ -98,7 +69,7 @@ class App extends React.Component {
         <FullSizeImageShadowBox state={this.state} closeHandler={this.stateHandler}/>
         <NoExifDataModal state={this.state} deleteHandler={this.stateHandler}/>
         <Loader props={this.state} loaderScreenHandler={this.stateHandler}/>
-        <Header submitFn={this.addItem}/>
+        <Header handler={this.stateHandler}/>
         <PageWrapper>
         <MapContainer
           center={this.state.centerPosition}
@@ -113,7 +84,7 @@ class App extends React.Component {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
           {this.state.items.map(({ cardId, lat, lon}) =>
-          <Marker 
+          <Marker
             eventHandlers={{ click: (e) =>{this.stateHandler('markerFlyerTo',e) }}}
             key={`marker-${cardId}`}
             position={[lat, lon] }

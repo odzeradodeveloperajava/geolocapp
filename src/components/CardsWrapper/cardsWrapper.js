@@ -22,7 +22,7 @@ const CardsWrapper = (props) => {
         return (
             <div className={styled.cards}>
             {props.state.activeCard > 0 ? buttonLeft : null}
-            <div  className={styled.imageContainer}>
+            <div  id='imageContainer' className={styled.imageContainer}>
                 {props.state.items.map(item => (
                 <Card key={item.cardId} {...item} handler={props.handler} usageIdentifier={props.usageIdentifier} fullScreenOpenHandler={props.fullScreenOpenHandler} />
             ))}

@@ -70,12 +70,13 @@ function liftingUpStateHandler(type, e, state){
         case 'setNoExifData':
             return['noexifdatafilenames', e, true]
         case 'newItemHandler':
-            console.log(e);
             return['items', e, true]
         case 'centerPosition':
             return['centerPosition', [e.lat.toFixed(3), e.lon.toFixed(3)]]
         case 'activeCard':
             return['activeCard', 0]
+        case 'deleteItems':
+            return['items', []]
         default:
             return null;
     }
