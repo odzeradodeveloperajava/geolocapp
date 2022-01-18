@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 const UpperCardWrapper = styled.div`
-min-width: 400px;
+//min-width: 400px;
 box-sizing: border-box;
 border-radius: 10px;
 font-family: 'Roboto', sans-serif;

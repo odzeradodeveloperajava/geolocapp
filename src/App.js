@@ -21,8 +21,26 @@ const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   background-color: rgb(240, 240, 240);
-  width: 1100px;
-  padding: 20px;
+  
+  @media only screen and (max-width: 360px)
+    {
+      width: 360px;
+    }
+    @media only screen and (min-width: 601px)
+    {
+      width: 600px;
+      padding: 10px;
+    }
+    @media only screen and (min-width: 801px)
+    {
+      width: 800px;
+      padding: 10px;
+    }
+    @media only screen and (min-width: 1100px)
+    {
+      width: 1100px;
+      padding: 20px;
+    }
 `;
 
 
@@ -76,6 +94,7 @@ class App extends React.Component {
           zoom={2}
           scrollWheelZoom={false}
           zoomControl={false}
+          dragging={false}
         >
           <ZoomControl position={"bottomright"} />
           <ChangeView center={this.state} />
