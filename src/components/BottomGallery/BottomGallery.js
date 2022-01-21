@@ -33,6 +33,7 @@ const OtherImagesWrapper = styled.div`
 
 const BottomGallery = ({files,  usageIdentifier, clickHandler}) => {
     if(files.length !== 0){
+        console.log(files);
     return (
         <Gallery className='gallery wrapper'>
             <BottomGalleryHeader>Check other images in database:</BottomGalleryHeader>
