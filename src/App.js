@@ -1,5 +1,7 @@
 import React from "react";
 import "./App.css";
+import { Provider } from "react-redux";
+import store from "./store";
 import Header from './components/Header/Header/Header';
 import CardsWrapper from "./components/CardsWrapper/cardsWrapper";
 import { MapContainer, TileLayer, Marker, Popup, ZoomControl} from "react-leaflet";
@@ -84,6 +86,7 @@ class App extends React.Component {
   render() {
     return (
       <>
+      <Provider store={store}>
         <FullSizeImageShadowBox state={this.state} closeHandler={this.stateHandler}/>
         <NoExifDataModal state={this.state} deleteHandler={this.stateHandler}/>
         <Loader props={this.state} loaderScreenHandler={this.stateHandler}/>
@@ -122,6 +125,7 @@ class App extends React.Component {
         <BottomGallery files={this.state.bottomGalleryItems} usageIdentifier='bottomGallery' clickHandler={this.stateHandler}/>
         </PageWrapper>
         <Footer />
+        </Provider>
        </>
     );
   }

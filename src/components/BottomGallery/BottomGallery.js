@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
 import Card from '../ImageCard/Card';
 
@@ -31,14 +32,14 @@ const OtherImagesWrapper = styled.div`
     }
 `;
 
-const BottomGallery = ({files,  usageIdentifier, clickHandler}) => {
-    if(files.length !== 0){
-        console.log(files);
+const BottomGallery = ({bottomGalleryItems,  usageIdentifier, clickHandler}) => {
+    if(bottomGalleryItems.length !== 0){
+        console.log(bottomGalleryItems);
     return (
         <Gallery className='gallery wrapper'>
             <BottomGalleryHeader>Check other images in database:</BottomGalleryHeader>
                 <OtherImagesWrapper>
-                    {files.map(item => (
+                    {bottomGalleryItems.map(item => (
                          <Card key={item.cardId} {...item} usageIdentifier={usageIdentifier} clickHandler={clickHandler}/>
                     ))}
                 </OtherImagesWrapper>
@@ -50,4 +51,8 @@ const BottomGallery = ({files,  usageIdentifier, clickHandler}) => {
     }
 }
 
-export default BottomGallery;
+const mapStateToProps = state => {
+    return { bottomGalleryItems: state.bottomGalleryItems}
+}
+
+export default connect(mapStateToProps)(BottomGallery);
