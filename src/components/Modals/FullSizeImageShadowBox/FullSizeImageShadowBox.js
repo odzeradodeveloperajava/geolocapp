@@ -53,7 +53,7 @@ const FullSizeImageShadowBox = ({state, closeHandler}) => {
             <WhiteImageBackground>
                 <CloseButton onClick={clickHandler}>X</CloseButton>
             </WhiteImageBackground>
-            <ImageWrapper url={state.items[state.activeCard].fullImageUrl.fullImageUrl}/>
+            <ImageWrapper url={state.items[state.activeCard].fullImageUrl}/>
         </Wrapper>
         )}
     else {
