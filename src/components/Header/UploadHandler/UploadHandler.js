@@ -3,32 +3,37 @@ import './uploadHandler.css';
 import EXIF from 'exif-js';
 import firebaseUploadHandler from '../../../functions/firebaseScripts/firebaseUploadHandler';
 import returnNewItem from './../../../functions/returnNewItem/returnNewItem'
+import { connect } from 'react-redux';
+import { resetStateValue, deleteActiveItems, countFilesToProcess, fileProcessedAdder, putNamesNoExif, addActiveFile, setCenterPosition, setActiveCardNr} from '../../../actions';
 
-const UploadHandler = ({handler}) =>{
+const UploadHandler = ({resetStateValueHandler, countFilesToProcessHandler, deleteActiveItemsHandler, fileProcessedHandler, addActiveFileHandler, setCenterPositionHandler, setActiveCardNrHandler}) =>{
 	const inputFile = useRef(null)
 	const onButtonClick = (e) => {
 		e.preventDefault();
 		inputFile.current.click();
 	}
 	const addItem = (e) => {
-		handler('deleteItems');
+		//resetStateValueHandler('filesToProcess', 0);
+		//resetStateValueHandler('fileProcessed', 0);
 		let filesArray = e.target.files.length;
+		countFilesToProcessHandler(filesArray)
+		deleteActiveItemsHandler();
+		
 		for (let i = 0; i < filesArray; i++) {
-		  handler('countFilesToProcess', (filesArray));
 		  const selectedFile = e.target.files[i];
 		  EXIF.getData(selectedFile, async function () {
 			if (
 			  this.exifdata.GPSLatitude !== undefined &&
 			  this.exifdata.GPSLongitude !== undefined
 			) {
-			  firebaseUploadHandler(selectedFile, handler);
+			  firebaseUploadHandler(selectedFile);
 			  const fileMetadata = await returnNewItem(selectedFile);
-				handler('newItemHandler',fileMetadata , true);
-				handler('centerPosition',fileMetadata);
-				handler('activeCard');
+				addActiveFileHandler(fileMetadata);
+				setCenterPositionHandler(fileMetadata.lat.toFixed(3), fileMetadata.lon.toFixed(3))
+				setActiveCardNrHandler(0)
 			} else {
-				handler('countFilesProcessed');
-				handler('setNoExifData', selectedFile.name)
+				fileProcessedHandler()
+				putNamesNoExif(selectedFile.name)
 		  	}
 		})}
 	}
@@ -40,5 +45,25 @@ const UploadHandler = ({handler}) =>{
 	)
 };
 
+const mapStateToProps = state =>{
+    return {
+        filesToProcess: state.filesToProcess,
+        fileProcessed: state.fileProcessed,
+        activeFiles: state.activeItems
+    }
+}
 
-export default UploadHandler;
+const mapDispatchToProps = dispatch =>({
+    countFilesToProcessHandler: (howManyFiles) => dispatch(countFilesToProcess(howManyFiles)),
+	deleteActiveItemsHandler: () => dispatch(deleteActiveItems()),
+	fileProcessedHandler: () => dispatch(fileProcessedAdder()),
+	putNamesNoExifHandler: (name) => dispatch(putNamesNoExif(name)),
+	addActiveFileHandler: (file) => dispatch(addActiveFile(file)),
+	setCenterPositionHandler: (lat, lng) => dispatch(setCenterPosition(lat, lng)),
+	setActiveCardNrHandler: (number) => dispatch(setActiveCardNr(number)),
+	resetStateValueHandler: (sname, value) => dispatch(resetStateValue(sname, value))
+})
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(UploadHandler);

@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { connect } from 'react-redux';
+import { fullScreenToggle } from '../../../actions';
 
 const Wrapper = styled.div`
     position: absolute;
@@ -41,19 +43,15 @@ const CloseButton = styled.a`
     cursor: pointer;
 `;
 
-const FullSizeImageShadowBox = ({state, closeHandler}) => {
-    function clickHandler(e){
-        closeHandler('fullScreenCloseHandler')
-    }
-    if(state.fullScreen === true){
+const FullSizeImageShadowBox = ({activeItems, activeCardNr, fullScreenState, fullScreenToggle}) => {
+    if(fullScreenState === true){
         window.onscroll = function () { window.scrollTo(0, 0); };
         return(
         <Wrapper>
-            {state.children}
             <WhiteImageBackground>
-                <CloseButton onClick={clickHandler}>X</CloseButton>
+                <CloseButton onClick={()=>fullScreenToggle('fullScreen',false)}>X</CloseButton>
             </WhiteImageBackground>
-            <ImageWrapper url={state.items[state.activeCard].fullImageUrl}/>
+            <ImageWrapper url={activeItems[activeCardNr].fullImageUrl}/>
         </Wrapper>
         )}
     else {
@@ -61,5 +59,16 @@ const FullSizeImageShadowBox = ({state, closeHandler}) => {
         return null;
     }
 }
+const mapStateToProps = state =>{
+    return {
+        fullScreenState: state.fullScreen,
+        activeItems: state.activeItems,
+        activeCardNr: state.activeCardNr
+    }
+}
 
-export default FullSizeImageShadowBox
+const mapDispatchToProps = dispatch =>({
+    fullScreenToggle: (screenType, trueOrFalse) => dispatch(fullScreenToggle(screenType, trueOrFalse))
+})
+export default connect(mapStateToProps, mapDispatchToProps)(FullSizeImageShadowBox);
+

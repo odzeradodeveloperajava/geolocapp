@@ -32,7 +32,7 @@ const OtherImagesWrapper = styled.div`
     }
 `;
 
-const BottomGallery = ({bottomGalleryItems,  usageIdentifier, clickHandler}) => {
+const BottomGallery = ({bottomGalleryItems}) => {
     if(bottomGalleryItems.length !== 0){
         console.log(bottomGalleryItems);
     return (
@@ -40,7 +40,7 @@ const BottomGallery = ({bottomGalleryItems,  usageIdentifier, clickHandler}) => 
             <BottomGalleryHeader>Check other images in database:</BottomGalleryHeader>
                 <OtherImagesWrapper>
                     {bottomGalleryItems.map(item => (
-                         <Card key={item.cardId} {...item} usageIdentifier={usageIdentifier} clickHandler={clickHandler}/>
+                         <Card key={item.cardId} {...item} usageIdentifier={'bottomGallery'}/>
                     ))}
                 </OtherImagesWrapper>
         </Gallery>

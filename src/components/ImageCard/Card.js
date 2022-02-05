@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { removeItem, clickItem, fullScreenToggle } from './../../actions'
 
 const UpperCardWrapper = styled.div`
 box-sizing: border-box;
@@ -56,35 +58,32 @@ margin-bottom: 10px;
 
 
 
-const Card = ({cardId, imageUrl, size, lat, lon, town, handler, country, usageIdentifier, clickHandler, fullScreenOpenHandler}) => {
+const Card = ({cardId, imageUrl, size, lat, lon, town,country, usageIdentifier, clickItem, fullScreenToggle, removeItem}) => {
   const latFinal = parseFloat(lat).toFixed(4);
   const lonFinal = parseFloat(lon).toFixed(4);
-  const deleteHandler = (e) =>{
-      e.preventDefault();
-      handler('deleteItem',cardId);
-    }
-    function imageClickHandler() {
-      clickHandler('imageClickHandler',cardId);
-    }
-    function fullScreenOpenHandlerPass(){
-      fullScreenOpenHandler('fullScreenOpenHandler')
-    }
-
+  const clickBottomItem = () => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
+    clickItem(imageUrl);
+  }
 
     const UpperOrBottomGallery = (props) =>{
       if(usageIdentifier === 'upperGallery'){
-        return <UpperCardWrapper className='wrapper karty gornej'>
+        return <UpperCardWrapper className='wrapper_karty_gornej'>
           {props.children}
         </UpperCardWrapper>
       }
-      return <BottomCardWrapper className='wrapper karty'>
+      return <BottomCardWrapper className='wrapper_karty_dolnej'>
         {props.children}
       </BottomCardWrapper>
     };
 
       return (
        <UpperOrBottomGallery key={cardId} >
-        <CardImageContainer onClick={usageIdentifier === 'bottomGallery' ? imageClickHandler : fullScreenOpenHandlerPass}  >
+        <CardImageContainer onClick={usageIdentifier === 'bottomGallery' ? ()=>clickBottomItem() : ()=>fullScreenToggle(true)}  >
           <ImageInCard  props={usageIdentifier} src={imageUrl}/>
         </CardImageContainer>
         <GeoInformation props={usageIdentifier}>
@@ -95,7 +94,7 @@ const Card = ({cardId, imageUrl, size, lat, lon, town, handler, country, usageId
           <Tab props={usageIdentifier}>Longitude: {lonFinal}</Tab>
           <Tab props={usageIdentifier}>Town: {town}</Tab> </>}
         </GeoInformation>
-        {usageIdentifier === 'bottomGallery' ? null : <DeletionButton onClick={deleteHandler}>Close this card</DeletionButton>}
+        {usageIdentifier === 'bottomGallery' ? null : <DeletionButton onClick={()=> removeItem(imageUrl)}>Close this card</DeletionButton>}
       </UpperOrBottomGallery>
     );
   }
@@ -113,6 +112,12 @@ const Card = ({cardId, imageUrl, size, lat, lon, town, handler, country, usageId
     town: `Unknown`,
  };
 
+ const mapDispatchToProps = dispatch => ({
+    removeItem: (imageUrl) => dispatch(removeItem(imageUrl)),
+    clickItem: (imageUrl) => dispatch(clickItem(imageUrl)),
+    fullScreenToggle: (trueOrFalse) => dispatch(fullScreenToggle(trueOrFalse))
+ })
 
-export default Card;
+
+export default connect(null, mapDispatchToProps)(Card);
 

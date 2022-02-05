@@ -5,7 +5,7 @@ import store from "./store";
 import Header from './components/Header/Header/Header';
 import CardsWrapper from "./components/CardsWrapper/cardsWrapper";
 import { MapContainer, TileLayer, Marker, Popup, ZoomControl} from "react-leaflet";
-import ChangeView from './functions/changeView/changeView';
+import ChangeView from './components/ChangeView/ChangeView';
 import CustomMarker from './components/CustomMarker/CustomMarker';
 import PhotoData from "./components/PhotoData/PhotoData";
 import Loader from "./components/Modals/Loader/Loader";
@@ -18,6 +18,7 @@ import FullSizeImageShadowBox from "./components/Modals/FullSizeImageShadowBox/F
 import AppDescription from "./components/AppDescription/AppDescription";
 import Footer from "./components/Footer/Footer";
 import liftingUpStateHandler from './functions/liftingUpStateHandler/liftingUpStateHandler'
+import setBottomGalleryItemsHandler from "./functions/setBottomGalleryItemsHandler/setBottomGalleryItemsHandler";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -47,50 +48,36 @@ const PageWrapper = styled.div`
 
 
 class App extends React.Component {
-  state = {
-    items: [],
-    bottomGalleryItems: [],
-    centerPosition: [70, 70],
-    activeCard: 0,
-    center: [],
-    loader: 'hidden',
-    noexifdatafilenames: [],
-    processing: 0,
-    processed: 0,
-    fullScreen: false,
-  };
 
+async componentDidMount(){
+  setBottomGalleryItemsHandler();
+};
 
-  async componentDidMount() {
-    let IPcenterPosition = await ip2LocHandler();
-    this.setState({ centerPosition: IPcenterPosition});
-    let bottomGalleryLoader = await firebaseDownloadHandler();
-    this.setState({ bottomGalleryItems: bottomGalleryLoader });
-  }
-// Bellow function is a walkaround for many single handlers for lifting up state
-  stateHandler = (type, e) =>{
-    const result = liftingUpStateHandler(type, e, this.state);
-    if (result[2] === true){
-      this.setState((prevState) => ({
-        [result[0]]: [ result[1], ...prevState.[result[0]]],
-        }));
-      }
-    else{
-      this.setState({ [result[0]]: result[1] });
-      if (result.length > 2)  this.setState({ [result[2]]: result[3] });
-    }}
+state = {
+  items: [],
+  bottomGalleryItems: [],
+  centerPosition: [70, 70],
+  activeCard: 0,
+  center: [],
+  loader: 'hidden',
+  noexifdatafilenames: [],
+  processing: 0,
+  processed: 0,
+  fullScreen: false,
+};
+  //async componentDidMount() {
+  //  let IPcenterPosition = await ip2LocHandler();
+  //  this.setState({ centerPosition: IPcenterPosition});
 
-
-
-
+  //}
   render() {
     return (
       <>
       <Provider store={store}>
         <FullSizeImageShadowBox state={this.state} closeHandler={this.stateHandler}/>
         <NoExifDataModal state={this.state} deleteHandler={this.stateHandler}/>
-        <Loader props={this.state} loaderScreenHandler={this.stateHandler}/>
-        <Header handler={this.stateHandler}/>
+        <Loader />
+        <Header/>
         <PageWrapper>
         <MapContainer
           center={this.state.centerPosition}
@@ -100,12 +87,12 @@ class App extends React.Component {
           dragging={false}
         >
           <ZoomControl position={"bottomright"} />
-          <ChangeView center={this.state} />
+         {/* <ChangeView /> */}
           <TileLayer
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          {this.state.items.map(({ cardId, lat, lon}) =>
+          {store.getState().activeItems.map(({ cardId, lat, lon}) =>
           <Marker
             eventHandlers={{ click: (e) =>{this.stateHandler('markerFlyerTo',e) }}}
             key={`marker-${cardId}`}
@@ -119,15 +106,16 @@ class App extends React.Component {
           </Marker>
         )}
         </MapContainer>
-        <CardsWrapper state={this.state} handler={this.stateHandler} cardChangeHandler={this.stateHandler} usageIdentifier='upperGallery' fullScreenOpenHandler={this.stateHandler}/>
+        <CardsWrapper/>
         <AppDescription />
         <PhotoData data={this.state}/>
-        <BottomGallery files={this.state.bottomGalleryItems} usageIdentifier='bottomGallery' clickHandler={this.stateHandler}/>
+        <BottomGallery/>
         </PageWrapper>
         <Footer />
         </Provider>
        </>
     );
   }
+
 }
 export default App;

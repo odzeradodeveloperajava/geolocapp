@@ -1,13 +1,17 @@
 import React from 'react';
 import Card from '../ImageCard/Card';
 import styled from './CardsWrapper.module.scss'
+import { connect } from 'react-redux';
 
-const CardsWrapper = (props) => {
+const CardsWrapper = ({activeItems, activeCard}) => {
     function clickHandler(e){
         if(e.target.id === 'buttonRight'){
-        props.cardChangeHandler('changeActiveCardHandler', 'right')}
+        //props.cardChangeHandler('changeActiveCardHandler', 'right')}
+        return null
+        }
         else if(e.target.id === 'buttonLeft')
-        {props.cardChangeHandler('changeActiveCardHandler')}
+       // {props.cardChangeHandler('changeActiveCardHandler')}
+        return null
     }
 
     const buttonLeft = (
@@ -18,26 +22,29 @@ const CardsWrapper = (props) => {
         <button className={styled.buttonRight} id='buttonRight' onClick={clickHandler}></button>
     )
 
-    if ( props.state.items.length > 0){
+    if ( activeItems.length > 0){
+        console.log('card wraopper',activeItems, activeCard)
         return (
             <div className={styled.cards}>
-            {props.state.activeCard > 0 ? buttonLeft : null}
+            {activeCard > 0 ? buttonLeft : null}
             <div  id='imageContainer' className={styled.imageContainer}>
-                {props.state.items.map(item => (
-                <Card key={item.cardId} {...item} handler={props.handler} usageIdentifier={props.usageIdentifier} fullScreenOpenHandler={props.fullScreenOpenHandler} />
+                {activeItems.map(item => (
+                <Card key={item.cardId} {...item} usageIdentifier='upperGallery'/>
             ))}
             </div>
-            {props.state.items.length > 1 && props.state.activeCard+1 < props.state.items.length ? buttonRight : null}
+            {activeItems.length > 1 && activeCard+1 < activeItems.length ? buttonRight : null}
     </div>
         )
     }
     else{
         return null
     }
-
-
-
+    }
+    const mapStateToProps = state => {
+        return {
+            activeItems: state.activeItems,
+            activeCard: state.activeCardNr,
+        }
     }
 
-
-export default CardsWrapper;
+    export default connect(mapStateToProps)(CardsWrapper);

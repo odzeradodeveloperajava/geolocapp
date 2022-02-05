@@ -1,9 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300&display=swap');
 
-.hidden{
-    display: none;
-}
-.visible{
+.loaderWrapper{
     display: flex;
     opacity: 1;
     z-index: 150;
@@ -20,11 +17,9 @@
     z-index: 150;
     position: absolute;
     width: 100vw;
-    height: 100vh;
+    height: 200vh;
     background-color: #ffffff10;
     backdrop-filter: blur(12px);
-
-      
 }
 
 @supports (-moz-appearance:none) {
@@ -32,8 +27,8 @@
     background-color: rgba(0, 0, 0, 0.81);
     }
 }
-.loaderWrapper{
-
+.loaderInnerWrapper{
+    position: absolute;
     z-index: 200;
     width: 640px;
     height: 480px;

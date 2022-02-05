@@ -3,6 +3,8 @@ import { ref, uploadBytes} from "firebase/storage";
 import returnNewItem from '../returnNewItem/returnNewItem';
 import EXIF from 'exif-js';
 import imageResizer from '../imageResizer/imageResizer';
+import store from '../../store';
+import { fileProcessedAdder } from '../../actions';
 
 
 const firebaseUploadHandler = async (selectedFile, handler) => {
@@ -14,7 +16,7 @@ const firebaseUploadHandler = async (selectedFile, handler) => {
       uploadBytes(fileImagesRef, file, metaData);
       const thumbnail = await imageResizer(selectedFile);
       uploadBytes(thumbnailFileImageRef, thumbnail).then((snapshot) => {
-         handler('countFilesProcessed')
+         store.dispatch(fileProcessedAdder())
       });
    });
 }
