@@ -6,19 +6,18 @@ import returnNewItem from './../../../functions/returnNewItem/returnNewItem'
 import { connect } from 'react-redux';
 import { resetStateValue, deleteActiveItems, countFilesToProcess, fileProcessedAdder, putNamesNoExif, addActiveFile, setCenterPosition, setActiveCardNr} from '../../../actions';
 
-const UploadHandler = ({resetStateValueHandler, countFilesToProcessHandler, deleteActiveItemsHandler, fileProcessedHandler, addActiveFileHandler, setCenterPositionHandler, setActiveCardNrHandler}) =>{
+const UploadHandler = ({resetStateValueHandler, countFilesToProcessHandler, deleteActiveItemsHandler, fileProcessedHandler, addActiveFileHandler, setCenterPositionHandler, setActiveCardNrHandler, putNamesNoExifHandler}) =>{
 	const inputFile = useRef(null)
 	const onButtonClick = (e) => {
 		e.preventDefault();
 		inputFile.current.click();
 	}
 	const addItem = (e) => {
-		//resetStateValueHandler('filesToProcess', 0);
-		//resetStateValueHandler('fileProcessed', 0);
+		resetStateValueHandler('filesToProcess', 0);
+		resetStateValueHandler('fileProcessed', 0);
 		let filesArray = e.target.files.length;
 		countFilesToProcessHandler(filesArray)
 		deleteActiveItemsHandler();
-		
 		for (let i = 0; i < filesArray; i++) {
 		  const selectedFile = e.target.files[i];
 		  EXIF.getData(selectedFile, async function () {
@@ -33,7 +32,7 @@ const UploadHandler = ({resetStateValueHandler, countFilesToProcessHandler, dele
 				setActiveCardNrHandler(0)
 			} else {
 				fileProcessedHandler()
-				putNamesNoExif(selectedFile.name)
+				putNamesNoExifHandler(selectedFile.name)
 		  	}
 		})}
 	}

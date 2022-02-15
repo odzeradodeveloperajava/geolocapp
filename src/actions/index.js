@@ -44,9 +44,10 @@ export const deleteActiveItems = () => {
         type: 'DELETE_ACTIVE_ITEMS',
     };
 };
-export const putNamesNoExif = () => {
+export const putNamesNoExif = (name) => {
     return {
         type: 'PUT_NAMES_NO_EXIF',
+        payload: {name}
     };
 };
 export const addActiveFile = (file) => {
@@ -71,5 +72,11 @@ export const resetStateValue = (name, value) => {
     return {
         type: 'RESET_STATE_VALUE',
         payload: {name, value}
+    };
+};
+export const swipeGallery = (leftOrRight) => {
+    return {
+        type: 'SWIPE_GALLERY',
+        payload: {leftOrRight}
     };
 };

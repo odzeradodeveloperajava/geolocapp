@@ -1,17 +1,17 @@
 import React, {useEffect, useState} from 'react';
 import weatherApiHandler from "./../../functions/weatherApiHandler/weatherApiHandler";
 import styles from './PhotoData.module.scss';
+import { connect } from 'react-redux';
 
 
-
-const PhotoData = ({data}) => {
+const PhotoData = ({activeItems, activeCardNr}) => {
 
     const [photoData, setPhotoData] = useState(null);
 
     useEffect(() => {
-        if(data.items.length !== 0){
+        if(activeItems.length !== 0){
         (async function() {
-            const activeCard = data.items[data.activeCard];
+            const activeCard = activeItems[activeCardNr];
             const lat = parseFloat(activeCard.lat).toFixed(4);
             const lon = parseFloat(activeCard.lon).toFixed(4);
             const getTemperature = await weatherApiHandler(lat, lon);
@@ -44,8 +44,16 @@ const PhotoData = ({data}) => {
             }
             else
             setPhotoData(null);
-    },[data.activeCard, data.items, data.items.length]);
+    },[activeCardNr,activeItems]);
     return photoData;
 }
 
-export default PhotoData;
+const mapStateToProps = state =>{
+    return{
+        activeItems: state.activeItems,
+        activeCardNr: state.activeCardNr
+    }
+}
+
+
+export default connect(mapStateToProps)(PhotoData);

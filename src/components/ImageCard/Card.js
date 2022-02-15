@@ -10,8 +10,9 @@ border-radius: 10px;
 font-family: 'Roboto', sans-serif;
 font-size: 18px;
 display: flex;
-flex: 1;
+flex-shrink: 0;
 flex-direction: column;
+width: 100%;
 `;
 const BottomCardWrapper = styled.div`
 margin: 5px;
@@ -24,6 +25,7 @@ box-sizing: border-box;
 background-color: white;
 `;
 const CardImageContainer = styled.div`
+ //width: 400px;
   display: flex;
   justify-content: center;
 `;
@@ -45,6 +47,7 @@ align-items: ${ ({props}) => props === 'bottomGallery' ? 'center' : 'start'};
 `;
 
 const Tab = styled.div`
+margin: 0 10px;
 font-size: ${({props}) => props  === 'bottomGallery' ? '13px' : '16px' };
 vertical-align: middle;
 display: table-cell;
@@ -52,9 +55,18 @@ font-weight: 400;
 `;
 
 const DeletionButton = styled.button`
+border: none;
+background-color: #728ca3;
 margin-top: auto;
 margin-bottom: 10px;
+color: white;
+cursor: pointer;
+width: 200px;
+border-radius: 5px;
+margin-left: 50%;
+transform: translateX(-50%);
 `;
+
 
 
 
@@ -83,7 +95,7 @@ const Card = ({cardId, imageUrl, size, lat, lon, town,country, usageIdentifier, 
 
       return (
        <UpperOrBottomGallery key={cardId} >
-        <CardImageContainer onClick={usageIdentifier === 'bottomGallery' ? ()=>clickBottomItem() : ()=>fullScreenToggle(true)}  >
+        <CardImageContainer onClick={usageIdentifier === 'bottomGallery' ? ()=>clickBottomItem() : ()=>fullScreenToggle('fullScreen',true)}  >
           <ImageInCard  props={usageIdentifier} src={imageUrl}/>
         </CardImageContainer>
         <GeoInformation props={usageIdentifier}>
@@ -115,7 +127,7 @@ const Card = ({cardId, imageUrl, size, lat, lon, town,country, usageIdentifier, 
  const mapDispatchToProps = dispatch => ({
     removeItem: (imageUrl) => dispatch(removeItem(imageUrl)),
     clickItem: (imageUrl) => dispatch(clickItem(imageUrl)),
-    fullScreenToggle: (trueOrFalse) => dispatch(fullScreenToggle(trueOrFalse))
+    fullScreenToggle: (screenType, trueOrFalse) => dispatch(fullScreenToggle(screenType, trueOrFalse))
  })
 
 

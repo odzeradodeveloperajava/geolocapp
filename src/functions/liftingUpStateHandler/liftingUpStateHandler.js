@@ -1,3 +1,4 @@
+
 const activeCardScroll = (position) => {
     let container = document.getElementById('imageContainer');
     container.scroll({
@@ -14,6 +15,8 @@ const activeCardCalculate = (state, e) => {
     activeCardScroll(position);
     return newActiveCardNumber;
 }
+
+
 
 
 function liftingUpStateHandler(type, e, state){
@@ -40,6 +43,12 @@ function liftingUpStateHandler(type, e, state){
             return ['fullScreen', true]
         case 'fullScreenCloseHandler':
             return ['fullScreen', false]
+
+
+
+
+
+
         case 'changeActiveCardHandler':
             if (e === 'right'){
                 if (state.activeCard +1 < state.items.length){
@@ -49,6 +58,9 @@ function liftingUpStateHandler(type, e, state){
                     return ['activeCard', state.activeCard]
                   }
                 }
+
+
+                
                 else{
                   if (state.activeCard > 0){
                       return ['activeCard', activeCardCalculate(state, -1)]
@@ -57,6 +69,15 @@ function liftingUpStateHandler(type, e, state){
                   return ['activeCard', state.activeCard]
                 }
               }
+
+
+
+
+
+
+
+
+
         case 'countFilesToProcess':
             return ['processing', state.processing + e]
         case 'countFilesProcessed':

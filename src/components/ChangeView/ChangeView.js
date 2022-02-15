@@ -1,20 +1,33 @@
 import { useMap } from "react-leaflet";
+import { connect } from "react-redux";
 
+//const state = store.getState();
 
+const ChangeView = ({state}) => {
 
-const ChangeView = ({ center }) => {
-    const map = useMap();
-    if ( center.items.length === 0){
-      map.flyTo(center.centerPosition,12);
-    return null;
+  const map = useMap();
+    console.log(state)
+    if ( state.activeItems.length === 0 && state.centerPosition.length !== 0){
+      map.setView(state.centerPosition,12);
+      return null
+    }
+    else if(state.activeItems.length === 0 && state.centerPosition.length === 0){
+      return null
     }
     else{
-      let activeCard = center.activeCard;
-      let arrayPosition = center.items[activeCard];
-      map.flyTo([arrayPosition.lat, arrayPosition.lon], 15);
+      const activeCard = state.activeCardNr;
+      const arrayPosition = state.activeItems[activeCard];
+      console.log(arrayPosition)
+      map.panTo([arrayPosition.lat, arrayPosition.lon], 15);
       map.getZoom(15);
       return null;
     }
   };
 
-export default ChangeView;
+  const mapStateToProps = state =>{
+    return {
+        state: state,
+    }
+}
+
+export default connect(mapStateToProps)(ChangeView);

@@ -1,20 +1,25 @@
 import './index.css';
+import { connect } from 'react-redux';
 
-const CustomMarker = ({props}) => {
-    const active = props.activeCard;
+const CustomMarker = ({active, items}) => {
     return (
         <div className='customMarkerWrapper'>
             <div className='photoData'>
                 <span className='spanTitle'>Photo name: </span>
-                <span>{props.items[active].cardId}</span>
+                <span>{items[active].cardId}</span>
                 <span className='spanTitle'>Location: </span>
-                <span>{props.items[active].town}</span>
+                <span>{items[active].town}</span>
             </div>
-            <img className='markerImage' src={props.items[active].imageUrl} alt='uploaded_photo'></img>
+            <img className='markerImage' src={items[active].imageUrl} alt='uploaded_photo'></img>
         </div>
     )
-
-
 }
 
-export default CustomMarker;
+const mapStateToProps = state =>{
+    return{
+        active: state.activeCardNr,
+        items: state.activeItems
+    }
+}
+
+export default connect(mapStateToProps)(CustomMarker);

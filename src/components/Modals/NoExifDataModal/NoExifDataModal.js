@@ -1,6 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 import './NoExifDataModal.css'
+import { connect } from 'react-redux';
+import { resetStateValue } from '../../../actions';
+
 
 const Blackout = styled.div`
     position: absolute;
@@ -45,27 +48,23 @@ const CloseButton = styled.button`
 
 
 
-const NoExifDataModal = ({state, deleteHandler}) => {
-    function onClickHandler(){
-        deleteHandler('modalCloseHandler')
-    }
-
-    if(state.noexifdatafilenames.length === 0 ){
+const NoExifDataModal = ({noexifdatafilenames,resetStateValueX}) => {
+    if(noexifdatafilenames.length === 0 ){
         return null
     }
-    else if (state.noexifdatafilenames.length !== 0 && state.loader ==='hidden'){
+    else if (noexifdatafilenames.length !== 0 ){
+        console.log(noexifdatafilenames)
         return (
         <Blackout>
         <ModalWrapper>
         <p className='noGpsDataDesc'>This files not contain any GPS data:</p>
-        {state.noexifdatafilenames.map(item => (
-                                <div className='noExifDataName' key={state.noexifdatafilenames.item}>
+        {noexifdatafilenames.map(item => (
+                                <div className='noExifDataName' key={noexifdatafilenames.item}>
                                     {item}
                                 </div>
                             ))}
-            <CloseButton onClick={onClickHandler} >Close</CloseButton>
+            <CloseButton onClick={()=> resetStateValueX('noExifDataFileNames', [])} >Close</CloseButton>
         </ModalWrapper>
-        
         </Blackout>
         )
     }
@@ -74,4 +73,16 @@ const NoExifDataModal = ({state, deleteHandler}) => {
     }
 }
 
-export default NoExifDataModal
+const mapStateToProps = state =>{
+    return {
+        noexifdatafilenames: state.noExifDataFileNames,
+        fullScreen: state.fullScreen
+    }
+}
+
+const mapDispatchToProps = dispatch =>({
+    resetStateValueX: (stateEntry, value) => dispatch(resetStateValue(stateEntry, value))
+})
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(NoExifDataModal)

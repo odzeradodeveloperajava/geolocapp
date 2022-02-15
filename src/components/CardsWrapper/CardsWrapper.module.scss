@@ -22,7 +22,7 @@
     }
     @media only screen and (min-width: 801px)
     {
-        width: 430px;
+        width: 400px;
         margin-left: 50%;
         transform: translateX(-50%);
         padding: 0px;
@@ -48,18 +48,31 @@
     margin: 0 auto;
 }
 @mixin button{
+    position: absolute;
     border: none;
     width: 15px;
     background-color: white;
     background-repeat: no-repeat;
-    background-size: 15px 15px;
+    background-size: 25px 25px;
     background-position: center; 
+    top: 50%;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    opacity: 0.5;
+    cursor: pointer;
+        &:hover{
+            opacity: 1;
+        }
 }
 .buttonLeft{
     @include button;
+    left: 10px;
     background-image: url('./../../assets/icons/arrow-left.png');
 }
 .buttonRight{
+    left: 100%;
+    transform: translateX(-50px);
     @include button;
     background-image: url('./../../assets/icons/arrow-right.png');
 }

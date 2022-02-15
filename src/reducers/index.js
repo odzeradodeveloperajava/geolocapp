@@ -1,3 +1,5 @@
+import { activeCardScroll } from "../functions/activeCardScrollHandler/activeCardScrollHandler";
+
 const initialState = {
     filesToProcess: 0,
     fileProcessed: 0,
@@ -8,7 +10,6 @@ const initialState = {
     centerPosition: [],
     bottomGalleryItems: [],
     noExifDataFileNames: [],
-    
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -41,7 +42,7 @@ const rootReducer = (state = initialState, action) => {
         case ('FILE_PROCESSED'):
             return {
                 ...state,
-                fileProcessed: [state.fileProcessed +1]
+                fileProcessed: state.fileProcessed +1
             }
         case ('DELETE_ACTIVE_ITEMS'):
             return {
@@ -49,9 +50,10 @@ const rootReducer = (state = initialState, action) => {
                 activeItems: []
             }
         case ('PUT_NAMES_NO_EXIF'):
+            console.log('klik',  action.payload.name)
             return {
                 ...state,
-                noExifDataFileNames: [...state.noExifDataFileNames, action.payload]
+                noExifDataFileNames: [...state.noExifDataFileNames, action.payload.name]
             }
         case ('ADD_ACTIVE_FILE'):
             return {
@@ -66,13 +68,32 @@ const rootReducer = (state = initialState, action) => {
         case ('SET_ACTIVE_CARD_NR'):
             return {
                 ...state,
-                activeCardNr: [action.payload.number]
+                activeCardNr: action.payload.number
             }
         case ('RESET_STATE_VALUE'):
             return {
                 ...state,
-                [action.payload.name]: [action.payload.value]
+                [action.payload.name]: action.payload.value
             }
+        case ('SWIPE_GALLERY'):
+            if(action.payload.leftOrRight === 'right'){
+                if(state.activeCardNr+1 < state.activeItems.length)
+                activeCardScroll((state.activeCardNr+1)*400)
+                return {
+                    ...state,
+                    activeCardNr: state.activeCardNr +1
+                }
+            }
+            else{
+                if(state.activeCardNr > 0){
+                    activeCardScroll((state.activeCardNr-1)*400)
+                    return{
+                        ...state,
+                        activeCardNr: state.activeCardNr -1
+                    }
+                }
+            }
+            break;
             default :
                 return state;
     }

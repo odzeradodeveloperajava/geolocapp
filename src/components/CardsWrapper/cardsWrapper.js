@@ -2,15 +2,16 @@ import React from 'react';
 import Card from '../ImageCard/Card';
 import styled from './CardsWrapper.module.scss'
 import { connect } from 'react-redux';
+import { swipeGallery } from '../../actions';
 
-const CardsWrapper = ({activeItems, activeCard}) => {
+const CardsWrapper = ({activeItems, activeCard, swipeGalleryHandler}) => {
     function clickHandler(e){
         if(e.target.id === 'buttonRight'){
-        //props.cardChangeHandler('changeActiveCardHandler', 'right')}
+        swipeGalleryHandler('right')
         return null
         }
         else if(e.target.id === 'buttonLeft')
-       // {props.cardChangeHandler('changeActiveCardHandler')}
+        swipeGalleryHandler('left')
         return null
     }
 
@@ -23,7 +24,6 @@ const CardsWrapper = ({activeItems, activeCard}) => {
     )
 
     if ( activeItems.length > 0){
-        console.log('card wraopper',activeItems, activeCard)
         return (
             <div className={styled.cards}>
             {activeCard > 0 ? buttonLeft : null}
@@ -46,5 +46,8 @@ const CardsWrapper = ({activeItems, activeCard}) => {
             activeCard: state.activeCardNr,
         }
     }
+    const mapDispatchToProps = dispatch =>({
+        swipeGalleryHandler: (leftOrRight) => dispatch(swipeGallery(leftOrRight))
+    })
 
-    export default connect(mapStateToProps)(CardsWrapper);
+    export default connect(mapStateToProps, mapDispatchToProps)(CardsWrapper);

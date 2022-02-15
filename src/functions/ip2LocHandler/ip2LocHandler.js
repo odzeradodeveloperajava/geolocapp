@@ -1,4 +1,7 @@
+import store from '../../store';
+import { setCenterPosition } from '../../actions';
 const apiKey = process.env.REACT_APP_IP2LOCAPIKEY;
+
 
 async function ip2LocHandler(){
     try {
@@ -9,7 +12,10 @@ async function ip2LocHandler(){
           }
         );
         const data = await response.json();
-        return ([data.location.latitude, data.location.longitude]);
+        const lat = data.location.latitude;
+        const lng = data.location.longitude;
+        store.dispatch(setCenterPosition(lat, lng))
+        return null
     }   catch (error) {
         console.error(error);
         const apiError = "Unknown";
