@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Card from '../ImageCard/Card';
 import styled from './CardsWrapper.module.scss'
 import { connect } from 'react-redux';
 import { swipeGallery } from '../../actions';
+
 
 const CardsWrapper = ({activeItems, activeCard, swipeGalleryHandler}) => {
     function clickHandler(e){
@@ -27,9 +28,9 @@ const CardsWrapper = ({activeItems, activeCard, swipeGalleryHandler}) => {
         return (
             <div className={styled.cards}>
             {activeCard > 0 ? buttonLeft : null}
-            <div  id='imageContainer' className={styled.imageContainer}>
+            <div  id='imageContainer' className={styled.imageContainer}  >
                 {activeItems.map(item => (
-                <Card key={item.cardId} {...item} usageIdentifier='upperGallery'/>
+                <Card key={item.cardId} {...item} usageIdentifier='upperGallery' />
             ))}
             </div>
             {activeItems.length > 1 && activeCard+1 < activeItems.length ? buttonRight : null}

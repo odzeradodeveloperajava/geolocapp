@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { removeItem, clickItem, fullScreenToggle } from './../../actions'
+import handleGesture from '../../functions/swipeHandler/swipeHandler';
+
 
 const UpperCardWrapper = styled.div`
 box-sizing: border-box;
@@ -82,8 +84,13 @@ const Card = ({cardId, imageUrl, size, lat, lon, town,country, usageIdentifier, 
     clickItem(imageUrl);
   }
 
+
+
     const UpperOrBottomGallery = (props) =>{
       if(usageIdentifier === 'upperGallery'){
+        setTimeout(()=>{
+          handleGesture()
+        },1000)
         return <UpperCardWrapper className='wrapper_karty_gornej'>
           {props.children}
         </UpperCardWrapper>
@@ -92,7 +99,6 @@ const Card = ({cardId, imageUrl, size, lat, lon, town,country, usageIdentifier, 
         {props.children}
       </BottomCardWrapper>
     };
-
       return (
        <UpperOrBottomGallery key={cardId} >
         <CardImageContainer onClick={usageIdentifier === 'bottomGallery' ? ()=>clickBottomItem() : ()=>fullScreenToggle('fullScreen',true)}  >

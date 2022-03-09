@@ -1,10 +1,9 @@
-import firebaseDownloadHandler from '../firebaseScripts/firebaseDownloadHandler';
 import store from '../../store';
 import { setBottomGalleryItems } from '../../actions';
+import mainFirebaseHandler from '../firebaseScripts/mainFirebaseHandler';
 
 const setBottomGalleryItemsHandler = async () => {
-  console.log(setBottomGalleryItems(await firebaseDownloadHandler()))
-  store.dispatch(setBottomGalleryItems(await firebaseDownloadHandler()))
+  store.dispatch(setBottomGalleryItems(await mainFirebaseHandler()))
   return null;
 };
 

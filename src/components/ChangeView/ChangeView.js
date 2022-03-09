@@ -6,7 +6,6 @@ import { connect } from "react-redux";
 const ChangeView = ({state}) => {
 
   const map = useMap();
-    console.log(state)
     if ( state.activeItems.length === 0 && state.centerPosition.length !== 0){
       map.setView(state.centerPosition,12);
       return null
@@ -17,7 +16,6 @@ const ChangeView = ({state}) => {
     else{
       const activeCard = state.activeCardNr;
       const arrayPosition = state.activeItems[activeCard];
-      console.log(arrayPosition)
       map.panTo([arrayPosition.lat, arrayPosition.lon], 15);
       map.getZoom(15);
       return null;

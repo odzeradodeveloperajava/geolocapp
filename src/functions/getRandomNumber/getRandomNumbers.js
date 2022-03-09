@@ -1,8 +1,8 @@
-export default function getRandomNumbers(min, max) {
+export default function getRandomNumbers(max) {
     let randomNumArr = []
     let step = 0;
+    const min = 1;
     while (step <= 6) {
-      min = Math.ceil(min);
       max = Math.floor(max);
       const randomNumberx = Math.floor(Math.random() * (max - min)) + min;
       const index = randomNumArr.indexOf(randomNumberx);

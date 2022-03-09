@@ -78,7 +78,7 @@ const rootReducer = (state = initialState, action) => {
         case ('SWIPE_GALLERY'):
             if(action.payload.leftOrRight === 'right'){
                 if(state.activeCardNr+1 < state.activeItems.length)
-                activeCardScroll((state.activeCardNr+1)*400)
+                activeCardScroll((state.activeCardNr+1)*340)
                 return {
                     ...state,
                     activeCardNr: state.activeCardNr +1
@@ -86,7 +86,7 @@ const rootReducer = (state = initialState, action) => {
             }
             else{
                 if(state.activeCardNr > 0){
-                    activeCardScroll((state.activeCardNr-1)*400)
+                    activeCardScroll((state.activeCardNr-1)*340)
                     return{
                         ...state,
                         activeCardNr: state.activeCardNr -1

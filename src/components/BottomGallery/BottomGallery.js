@@ -22,7 +22,7 @@ const OtherImagesWrapper = styled.div`
     {
         grid-template-columns: 1fr;
     }
-    @media only screen and (min-width: 601px)
+    @media only screen and (min-width: 800px)
     {
         grid-template-columns: 1fr 1fr;
     }
@@ -34,7 +34,6 @@ const OtherImagesWrapper = styled.div`
 
 const BottomGallery = ({bottomGalleryItems}) => {
     if(bottomGalleryItems.length !== 0){
-        console.log(bottomGalleryItems);
     return (
         <Gallery className='gallery wrapper'>
             <BottomGalleryHeader>Check other images in database:</BottomGalleryHeader>
