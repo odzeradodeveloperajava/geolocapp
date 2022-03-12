@@ -5,6 +5,8 @@ import { fullScreenToggle } from '../../../actions';
 
 const FullSizeImageShadowBox = ({activeItems, activeCardNr, fullScreenState, fullScreenToggle}) => {
 
+    // to do transition
+
     const [fullScreenImage, setFullScreenImage] = useState(null);
     useEffect(()=>{
         if(activeItems[activeCardNr] !== undefined){
