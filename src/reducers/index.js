@@ -10,6 +10,14 @@ const initialState = {
     centerPosition: [],
     bottomGalleryItems: [],
     noExifDataFileNames: [],
+    lightTheme: {
+        tiles: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    },
+    darkTheme: {
+        tiles: 'https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png',
+        attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+    },
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -78,7 +86,7 @@ const rootReducer = (state = initialState, action) => {
         case ('SWIPE_GALLERY'):
             if(action.payload.leftOrRight === 'right'){
                 if(state.activeCardNr+1 < state.activeItems.length)
-                activeCardScroll((state.activeCardNr+1)*340)
+                activeCardScroll((state.activeCardNr+1)*350)
                 return {
                     ...state,
                     activeCardNr: state.activeCardNr +1

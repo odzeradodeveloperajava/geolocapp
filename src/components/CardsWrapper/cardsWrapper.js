@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Card from '../ImageCard/Card';
 import styled from './CardsWrapper.module.scss'
 import { connect } from 'react-redux';

@@ -1,4 +1,4 @@
-import './index.css';
+import './CustomMarker.scss';
 import { connect } from 'react-redux';
 
 const CustomMarker = ({active, items}) => {

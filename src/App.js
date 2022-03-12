@@ -3,7 +3,7 @@ import "./App.scss";
 import { Provider, useSelector } from "react-redux";
 import store from "./store";
 import Header from './components/Header/Header/Header';
-import CardsWrapper from "./components/CardsWrapper/cardsWrapper";
+import CardsWrapper from "./components/CardsWrapper/CardsWrapper";
 import { MapContainer, TileLayer, Marker, Popup, ZoomControl} from "react-leaflet";
 import ChangeView from './components/ChangeView/ChangeView';
 import CustomMarker from './components/CustomMarker/CustomMarker';
@@ -24,6 +24,7 @@ const App = () => {
 
   const InnerApp = () =>{
     const activeItems = useSelector(state => state.activeItems);
+    const darkTheme = useSelector(state => state.darkTheme);
     return(
     <>
     <FullSizeImageShadowBox/>
@@ -41,8 +42,8 @@ const App = () => {
       <ZoomControl position={"bottomright"} />
       <ChangeView/>
       <TileLayer
-        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution={darkTheme.attribution}
+        url={darkTheme.tiles}
       />
      {activeItems.map(({ cardId, lat, lon}) =>
       <Marker

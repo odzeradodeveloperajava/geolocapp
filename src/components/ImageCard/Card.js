@@ -33,7 +33,7 @@ const CardImageContainer = styled.div`
 `;
 const ImageInCard = styled.img`
 width: 100%;
-padding: ${({props}) => props === 'bottomGallery' ? '15px' : '15px 0' };
+padding: ${({props}) => props === 'bottomGallery' ? '15px' : '5px 0' };
 cursor: pointer;
 height: 300px;
 object-fit: cover;
@@ -54,6 +54,13 @@ font-size: ${({props}) => props  === 'bottomGallery' ? '13px' : '16px' };
 vertical-align: middle;
 display: table-cell;
 font-weight: 400;
+`;
+const SmallerTab = styled.div`
+margin: 0 10px;
+font-size: 10px;
+vertical-align: middle;
+display: table-cell;
+font-weight: 200;
 `;
 
 const DeletionButton = styled.button`
@@ -105,7 +112,7 @@ const Card = ({cardId, imageUrl, size, lat, lon, town,country, usageIdentifier, 
           <ImageInCard  props={usageIdentifier} src={imageUrl}/>
         </CardImageContainer>
         <GeoInformation props={usageIdentifier}>
-        {usageIdentifier === 'bottomGallery' ? <Tab props={usageIdentifier}>{town}, {country}</Tab> : <>
+        {usageIdentifier === 'bottomGallery' ? <><Tab props={usageIdentifier}>{town}, {country}</Tab><SmallerTab>Lattitude: {latFinal}, Longitude: {lonFinal}</SmallerTab></> : <>
           <Tab props={usageIdentifier}>File name: {cardId}</Tab>
           <Tab props={usageIdentifier}>File size: {size}</Tab>
           <Tab props={usageIdentifier}>Latitude: {latFinal}</Tab>

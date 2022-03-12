@@ -1,0 +1,17 @@
+
+.headerWrapper{
+width: 100%;
+background-color: cornflowerblue;
+display: flex;
+justify-content: center;
+align-items: center;
+color: white;
+}
+
+.headerInnerWrapper{
+width: 1100px;
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+}

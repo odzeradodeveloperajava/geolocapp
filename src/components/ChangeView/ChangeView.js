@@ -1,8 +1,6 @@
 import { useMap } from "react-leaflet";
 import { connect } from "react-redux";
 
-//const state = store.getState();
-
 const ChangeView = ({state}) => {
 
   const map = useMap();

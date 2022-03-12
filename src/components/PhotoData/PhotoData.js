@@ -15,8 +15,8 @@ const PhotoData = ({activeItems, activeCardNr}) => {
             const lat = parseFloat(activeCard.lat).toFixed(4);
             const lon = parseFloat(activeCard.lon).toFixed(4);
             const getTemperature = await weatherApiHandler(lat, lon);
-            let currentWeather = getTemperature === (undefined || 'Unknown') ? 'No data': getTemperature.WeatherText ;
-            let currentTemperature = getTemperature === (undefined  || 'Unknown') ? 'No data' : `${getTemperature.Temperature.Metric.Value} °C`;
+            let currentWeather = getTemperature === undefined ? 'No data': getTemperature.WeatherText ;
+            let currentTemperature = getTemperature === undefined  ? 'No data' : `${getTemperature.Temperature.Metric.Value} °C`;
                     const xdata =(
                         <div className={styles.pictureDataWrapper}>
                         <p><span>File name: {activeCard.cardId}</span></p>
