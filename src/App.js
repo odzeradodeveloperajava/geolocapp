@@ -1,12 +1,9 @@
 import React from "react";
 import "./App.scss";
-import { Provider, useSelector } from "react-redux";
+import { Provider} from "react-redux";
 import store from "./store";
 import Header from './components/Header/Header/Header';
 import CardsWrapper from "./components/CardsWrapper/CardsWrapper";
-import { MapContainer, TileLayer, Marker, Popup, ZoomControl} from "react-leaflet";
-import ChangeView from './components/ChangeView/ChangeView';
-import CustomMarker from './components/CustomMarker/CustomMarker';
 import PhotoData from "./components/PhotoData/PhotoData";
 import Loader from "./components/Modals/Loader/Loader";
 import ip2LocHandler from "./functions/ip2LocHandler/ip2LocHandler";
@@ -16,15 +13,13 @@ import FullSizeImageShadowBox from "./components/Modals/FullSizeImageShadowBox/F
 import AppDescription from "./components/AppDescription/AppDescription";
 import Footer from "./components/Footer/Footer";
 import setBottomGalleryItemsHandler from "./functions/setBottomGalleryItemsHandler/setBottomGalleryItemsHandler";
-
+import Map from "./components/Map/Map";
 const App = () => {
 
   setBottomGalleryItemsHandler();
   ip2LocHandler()
 
   const InnerApp = () =>{
-    const activeItems = useSelector(state => state.activeItems);
-    const darkTheme = useSelector(state => state.darkTheme);
     return(
     <>
     <FullSizeImageShadowBox/>
@@ -32,32 +27,7 @@ const App = () => {
     <Loader />
     <Header/>
       <div className={"pageWrapper"}>
-    <MapContainer
-      center={[60.351711, -26.489913]}
-      zoom={2}
-      scrollWheelZoom={false}
-      zoomControl={false}
-      dragging={false}
-    >
-      <ZoomControl position={"bottomright"} />
-      <ChangeView/>
-      <TileLayer
-        attribution={darkTheme.attribution}
-        url={darkTheme.tiles}
-      />
-     {activeItems.map(({ cardId, lat, lon}) =>
-      <Marker
-        key={`marker-${cardId}`}
-        position={[lat, lon] }
-        onMouseOver={(e) => {e.target.openPopup();}}
-        onMouseOut={(e) => {e.target.closePopup();}}
-        >
-      <Popup>
-        <CustomMarker/>
-      </Popup>
-      </Marker>
-      )}
-    </MapContainer>
+    <Map />
     <CardsWrapper/>
     <AppDescription />
     <PhotoData/>

@@ -10,6 +10,7 @@ const initialState = {
     centerPosition: [],
     bottomGalleryItems: [],
     noExifDataFileNames: [],
+    activeTheme: 'lightTheme',
     lightTheme: {
         tiles: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -82,6 +83,11 @@ const rootReducer = (state = initialState, action) => {
             return {
                 ...state,
                 [action.payload.name]: action.payload.value
+            }
+        case ('TOGGLE_THEME'):
+            return {
+                ...state,
+                activeTheme: action.payload.theme
             }
         case ('SWIPE_GALLERY'):
             if(action.payload.leftOrRight === 'right'){
