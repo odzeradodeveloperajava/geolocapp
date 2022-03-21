@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import weatherApiHandler from "./../../functions/weatherApiHandler/weatherApiHandler";
-import styles from './PhotoData.module.scss';
+import styled from './PhotoData.module.scss';
 import { connect } from 'react-redux';
 
 
-const PhotoData = ({activeItems, activeCardNr}) => {
+const PhotoData = ({activeItems, activeCardNr, activeTheme}) => {
 
     const [photoData, setPhotoData] = useState(null);
 
@@ -18,7 +18,7 @@ const PhotoData = ({activeItems, activeCardNr}) => {
             let currentWeather = getTemperature === undefined ? 'No data': getTemperature.WeatherText ;
             let currentTemperature = getTemperature === undefined  ? 'No data' : `${getTemperature.Temperature.Metric.Value} °C`;
                     const xdata =(
-                        <div className={styles.pictureDataWrapper}>
+                        <div className={`${styled.pictureDataWrapper[activeTheme]} ${styled.pictureDataWrapper}`}>
                         <p><span>File name: {activeCard.cardId}</span></p>
                         <p><span>File size: {activeCard.size} kb</span></p>
                         <p><span>Latidute: {lat}</span></p>
@@ -44,14 +44,15 @@ const PhotoData = ({activeItems, activeCardNr}) => {
             }
             else
             setPhotoData(null);
-    },[activeCardNr,activeItems]);
+    },[activeCardNr,activeItems, activeTheme]);
     return photoData;
 }
 
 const mapStateToProps = state =>{
     return{
         activeItems: state.activeItems,
-        activeCardNr: state.activeCardNr
+        activeCardNr: state.activeCardNr,
+        activeTheme : state.activeTheme
     }
 }
 

@@ -37,7 +37,7 @@ const mapStateToProps = state =>{
     return {
         fullScreenState: state.fullScreen,
         activeItems: state.activeItems,
-        activeCardNr: state.activeCardNr
+        activeCardNr: state.activeCardNr,
     }
 }
 

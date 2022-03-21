@@ -21,34 +21,3 @@
 }
 
 
-.pageWrapper{
-  display: flex;
-  flex-direction: column;
-  background-color: rgb(240, 240, 240);
-  align-items: center;
-}
-
-@media only screen and (min-width: 360px)
-{
-  .pageWrapper{
-  width: 360px;
-  }
-  .leaflet-container{
-    margin-bottom: 0;
-  }
-}
-
-@media only screen and (min-width: 800px)
-{
-  .pageWrapper{
-  width: 800px;
-  padding: 10px;
-  }
-}
-@media only screen and (min-width: 1100px)
-{
-  .pageWrapper{
-  width: 1100px;
-  padding: 20px;
-  }
-}

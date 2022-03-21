@@ -7,7 +7,6 @@
         height: 2rem;
         align-items: center;
         margin: 5px 5px 5px 5px;
-        background-color: white;
     }
     span{
         margin-left: 5px;
@@ -31,4 +30,18 @@
     .pictureDataWrapper{
         grid-template-columns: 1fr 1fr 1fr;
   }
+}
+
+.pictureDataWrapperlightTheme{
+    p{
+        background-color: rgb(240, 240, 240);
+        color: black;
+    }
+}
+
+.pictureDataWrapperdarkTheme{
+    p{
+        background-color: rgb(61, 61, 61);
+        color: white;
+    }
 }
