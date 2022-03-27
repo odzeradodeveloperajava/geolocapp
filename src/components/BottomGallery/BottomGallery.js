@@ -24,7 +24,9 @@ const BottomGallery = ({bottomGalleryItems}) => {
 }
 
 const mapStateToProps = state => {
-    return { bottomGalleryItems: state.bottomGalleryItems}
+    return {
+        bottomGalleryItems: state.bottomGalleryItems
+    }
 }
 
 export default connect(mapStateToProps)(BottomGallery);

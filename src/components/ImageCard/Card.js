@@ -21,8 +21,8 @@ const Card = ({cardId, imageUrl, size, lat, lon, town,country, usageIdentifier, 
         //  handleGesture()
         //},1000)
         return(
-          <div className={`${styled.upperCardWrapper} ${styled[activeTheme]}`} onClick={()=>fullScreenToggle('fullScreen',true)} >
-            <div className={styled.cardImageContainer}>
+          <div className={`${styled.upperCardWrapper} ${styled[activeTheme]}`} >
+            <div className={styled.cardImageContainer} onClick={()=>fullScreenToggle('fullScreen',true)} >
               <img className={styled.imageInCard} src={imageUrl} alt='' style={{padding: '5px 0'}}/>
             </div>
             <div className={styled.geoInformation} style={{alignItems: 'start'}}>
@@ -31,7 +31,7 @@ const Card = ({cardId, imageUrl, size, lat, lon, town,country, usageIdentifier, 
               <div className={styled.tabUpper}>Latitude: {latFinal}</div>
               <div className={styled.tabUpper}>Longitude: {lonFinal}</div>
               <div className={styled.tabUpper}>Town: {town}</div>
-              <button className={styled.deletionButton}>Close card</button>
+              <button className={styled.deletionButton} onClick={()=>removeItem(imageUrl)}>Close card</button>
             </div>
           </div>
       )}
