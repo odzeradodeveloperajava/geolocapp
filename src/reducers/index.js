@@ -27,6 +27,7 @@ const rootReducer = (state = initialState, action) => {
             return {
                 ...state,
                activeItems: [...state.activeItems.filter(item => item.imageUrl !== action.payload.imageUrl)],
+               activeCardNr: state.activeCardNr > 0 ? state.activeCardNr -1 : 0
             };
         case ('CLICK_ITEM'):
             return {
