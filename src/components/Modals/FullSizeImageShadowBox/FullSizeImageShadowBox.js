@@ -24,8 +24,10 @@ const FullSizeImageShadowBox = ({activeItems, activeCardNr, fullScreenState, ful
         return(
             <>
             <div className={styled.wrapper}/>
-            <img className={styled.imageWrapper} alt='' src={fullScreenImage} />
-            <button className={styled.closeButton} onClick={()=>fullScreenToggle('fullScreen',false)}>Close ✖</button>
+            <div className={styled.justifier}>
+                <img className={styled.imageWrapper} alt='' src={fullScreenImage} />
+                <button className={styled.closeButton} onClick={()=>fullScreenToggle('fullScreen',false)}>Close ✖</button>
+            </div>
             </>
         )}
     else {
