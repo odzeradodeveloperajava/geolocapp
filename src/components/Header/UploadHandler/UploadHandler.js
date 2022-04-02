@@ -5,6 +5,7 @@ import firebaseUploadHandler from '../../../functions/firebaseScripts/firebaseUp
 import returnNewItem from './../../../functions/returnNewItem/returnNewItem'
 import { connect } from 'react-redux';
 import { resetStateValue, deleteActiveItems, countFilesToProcess, fileProcessedAdder, putNamesNoExif, addActiveFile, setCenterPosition, setActiveCardNr} from '../../../actions';
+import { areCoordinatesValid } from '../../../functions/areCoordinatesValid/areCoordinatesValid';
 
 const UploadHandler = ({resetStateValueHandler, countFilesToProcessHandler, deleteActiveItemsHandler, fileProcessedHandler, addActiveFileHandler, setCenterPositionHandler, setActiveCardNrHandler, putNamesNoExifHandler}) =>{
 	const inputFile = useRef(null)
@@ -13,18 +14,15 @@ const UploadHandler = ({resetStateValueHandler, countFilesToProcessHandler, dele
 		inputFile.current.click();
 	}
 	const addItem = (e) => {
+		let filesArray = e.target.files.length;
 		resetStateValueHandler('filesToProcess', 0);
 		resetStateValueHandler('fileProcessed', 0);
-		let filesArray = e.target.files.length;
 		countFilesToProcessHandler(filesArray)
 		deleteActiveItemsHandler();
 		for (let i = 0; i < filesArray; i++) {
 		  const selectedFile = e.target.files[i];
 		  EXIF.getData(selectedFile, async function () {
-			if (
-			  this.exifdata.GPSLatitude !== undefined &&
-			  this.exifdata.GPSLongitude !== undefined
-			) {
+			if (areCoordinatesValid(this.exifdata.GPSLatitude, this.exifdata.GPSLongitude) === true) {
 			  firebaseUploadHandler(selectedFile);
 			  const fileMetadata = await returnNewItem(selectedFile);
 				addActiveFileHandler(fileMetadata);

@@ -50,7 +50,9 @@ const Card = ({cardId, imageUrl, size, lat, lon, town,country, usageIdentifier, 
 };
 
   Card.propTypes = {
-    town: PropTypes.string,
+    cardId: PropTypes.string.isRequired,
+    imageUrl: PropTypes.string.isRequired,
+    town: PropTypes.string.isRequired,
   };
 
  Card.defaultProps = {

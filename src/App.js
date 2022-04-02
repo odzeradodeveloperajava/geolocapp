@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.scss";
-import { Provider, useSelector} from "react-redux";
+import { Provider } from "react-redux";
 import store from "./store";
 import Header from './components/Header/Header/Header';
 import Loader from "./components/Modals/Loader/Loader";
