@@ -3,32 +3,49 @@ import Card from '../ImageCard/Card';
 import styled from './CardsWrapper.module.scss'
 import { connect } from 'react-redux';
 import { swipeGallery } from '../../actions';
+import { useSwipeable } from "react-swipeable";
 
 
 const CardsWrapper = ({activeItems, activeCard, swipeGalleryHandler}) => {
-    function clickHandler(e){
-        if(e.target.id === 'buttonRight'){
+    function clickHandler(dir){
+        if(dir === 'Right'){
         swipeGalleryHandler('right')
         return null
         }
-        else if(e.target.id === 'buttonLeft')
+        else if(dir === 'Left')
         swipeGalleryHandler('left')
         return null
     }
 
+    const handlers = useSwipeable({})
+    const { ref: documentRef } = useSwipeable({
+       onSwiped: ({ dir}) => {
+         if( dir === 'Left'){
+             clickHandler('Right')
+         }
+         else{
+             clickHandler('Left')
+         }
+       },
+        preventDefaultTouchmoveEvent: true
+      });
+      React.useEffect(() => {
+        documentRef(document);
+      });
+
     const buttonLeft = (
-        <button  className={styled.buttonLeft} id='buttonLeft' onClick={clickHandler}></button>
+        <button  className={styled.buttonLeft} id='buttonLeft' onClick={()=>clickHandler('Left')}></button>
     )
 
     const buttonRight = (
-        <button className={styled.buttonRight} id='buttonRight' onClick={clickHandler}></button>
+        <button className={styled.buttonRight} id='buttonRight' onClick={()=>clickHandler('Right')}></button>
     )
 
     if ( activeItems.length > 0){
         return (
             <div className={styled.cards}>
             {activeCard > 0 ? buttonLeft : null}
-            <div  id='imageContainer' className={styled.imageContainer}  >
+            <div  id='imageContainer' className={styled.imageContainer} {...handlers} >
                 {activeItems.map(item => (
                 <Card key={item.cardId} {...item} usageIdentifier='upperGallery' />
             ))}
@@ -50,5 +67,4 @@ const CardsWrapper = ({activeItems, activeCard, swipeGalleryHandler}) => {
     const mapDispatchToProps = dispatch =>({
         swipeGalleryHandler: (leftOrRight) => dispatch(swipeGallery(leftOrRight))
     })
-
     export default connect(mapStateToProps, mapDispatchToProps)(CardsWrapper);

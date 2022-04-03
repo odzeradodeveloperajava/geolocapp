@@ -3,7 +3,6 @@ import styled from './Card.module.scss';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { removeItem, clickItem, fullScreenToggle } from './../../actions'
-import handleGesture from '../../functions/swipeHandler/swipeHandler';
 
 const Card = ({cardId, imageUrl, size, lat, lon, town,country, usageIdentifier, clickItem, fullScreenToggle, removeItem, activeTheme}) => {
   const latFinal = parseFloat(lat).toFixed(4);
@@ -17,9 +16,6 @@ const Card = ({cardId, imageUrl, size, lat, lon, town,country, usageIdentifier, 
     clickItem(imageUrl);
   }
      if(usageIdentifier === 'upperGallery'){
-        //setTimeout(()=>{
-        //  handleGesture()
-        //},1000)
         return(
           <div className={`${styled.upperCardWrapper} ${styled[activeTheme]}`} >
             <div className={styled.cardImageContainer} onClick={()=>fullScreenToggle('fullScreen',true)} >

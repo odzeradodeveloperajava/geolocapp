@@ -12,7 +12,6 @@ const ChangeView = ({state}) => {
       return null
     }
     else{
-      console.log('tutaj sa dane \n',state.activeItems, state.activeCardNr)
       const activeCard = state.activeCardNr;
       const arrayPosition = state.activeItems[activeCard];
       map.panTo([arrayPosition.lat, arrayPosition.lon], 15);
