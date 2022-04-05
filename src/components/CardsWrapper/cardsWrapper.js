@@ -20,6 +20,7 @@ const CardsWrapper = ({activeItems, activeCard, swipeGalleryHandler}) => {
     const handlers = useSwipeable({})
     const { ref: documentRef } = useSwipeable({
        onSwiped: ({ dir}) => {
+           console.log('swiped kurwa')
          if( dir === 'Left'){
              clickHandler('Right')
          }
@@ -30,7 +31,7 @@ const CardsWrapper = ({activeItems, activeCard, swipeGalleryHandler}) => {
         preventDefaultTouchmoveEvent: true
       });
       React.useEffect(() => {
-        documentRef(document);
+        documentRef(document.getElementById('imageContainer'));
       });
 
     const buttonLeft = (
