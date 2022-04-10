@@ -31,7 +31,7 @@ const Card = ({cardId, imageUrl, size, lat, lon, town,country, usageIdentifier, 
             </div>
           </div>
       )}
-        else{
+        else if (usageIdentifier === 'bottomGallery'){
           return(
             <div className={`${styled.bottomCardWrapper} ${styled[activeTheme]}`}>
               <div className={styled.cardImageContainer} onClick={()=>clickBottomItem()} >
@@ -43,6 +43,15 @@ const Card = ({cardId, imageUrl, size, lat, lon, town,country, usageIdentifier, 
               </div>
             </div>
           )}
+          else if (usageIdentifier === 'placeHolder'){
+            return(
+              <div className={`${styled.bottomCardWrapper} ${styled[activeTheme]}`}>
+                <div className={styled.cardImageContainer}>
+                  <img className={styled.imageInCard} src={imageUrl} alt='loading animation' style={{padding: '15px'}}/>
+                </div>
+              </div>
+            )
+          }
 };
 
   Card.propTypes = {

@@ -22,7 +22,7 @@ async function test(selectedFile, customMetaDataMarker) {
       'cardId' : selectedFile.name,
       //If metadata is uploaded to firebase temporary image url cannot be uploaded
       'imageUrl': customMetaDataMarker === true ? null :  url,
-      'fullImageUrl': customMetaDataMarker === true ? null : {'fullImageUrl' : url},
+      'fullImageUrl': customMetaDataMarker === true ? null : url,
       'size': selectedFile.size,
       'lat': latitude,
       'lon': longitude,

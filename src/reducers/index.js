@@ -9,6 +9,13 @@ const initialState = {
     activeItems:[],
     centerPosition: [],
     bottomGalleryItems: [],
+    bottomGalleryItemsPlaceHolder: 
+        {imageUrl: 'https://i.gifer.com/YCZH.gif',
+        town: null,
+        country: null,
+        lat: null,
+        lon: null
+    },
     noExifDataFileNames: [],
     activeTheme: 'lightTheme',
     lightTheme: {

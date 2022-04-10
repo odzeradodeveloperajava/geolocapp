@@ -1,31 +1,46 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import styled from './BottomGallery.module.scss';
 import Card from '../ImageCard/Card';
 
 
+const BottomGallery = ({bottomGalleryItems, bottomGalleryItemsPlaceholder}) => {
 
-const BottomGallery = ({bottomGalleryItems}) => {
-    if(bottomGalleryItems.length !== 0){
+    const [content, setContent] = useState(null)
+
+    useEffect(()=>{
+        if(bottomGalleryItems.length !== 0){
+            setContent(
+                bottomGalleryItems.map(item => (
+                    <Card key={item.cardId} {...item} usageIdentifier={'bottomGallery'}/>
+               ))
+            )
+        }
+        else{
+            setContent(
+                [...Array(6)].map(e => (
+                <Card usageIdentifier={'placeHolder'} {...bottomGalleryItemsPlaceholder}/>
+           ))
+            )
+        }
+    },[bottomGalleryItems, bottomGalleryItems.length, bottomGalleryItemsPlaceholder])
+
+
+
     return (
         <div className={styled.galleryWrapper}>
             <div className={styled.bottomGalleryHeader}>Check other images in database:</div>
                 <div className={styled.bottomImagesWrapper}>
-                    {bottomGalleryItems.map(item => (
-                         <Card key={item.cardId} {...item} usageIdentifier={'bottomGallery'}/>
-                    ))}
+                    {content}
                 </div>
         </div>
     )
-    }
-    else {
-        return null;
-    }
 }
 
 const mapStateToProps = state => {
     return {
-        bottomGalleryItems: state.bottomGalleryItems
+        bottomGalleryItems: state.bottomGalleryItems,
+        bottomGalleryItemsPlaceholder: state.bottomGalleryItemsPlaceHolder
     }
 }
 
