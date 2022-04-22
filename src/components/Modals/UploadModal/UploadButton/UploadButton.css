@@ -1,3 +1,8 @@
+.uploadButtonWrapper{
+    height: 30px;
+    width: 100px;
+}
+
 .uploadHandlerWrapper{
     display: flex;
     flex-direction: column;
@@ -13,6 +18,8 @@
 }
 
 .browseFilesButton{
+    position: absolute;
+    z-index: 9999;
     height: 30px;
     width: 100px;
     background-color: white;
@@ -20,6 +27,11 @@
     color: #3490dc;
     border-radius: 5px;
     cursor: pointer;
+}
+
+.browseFilesButton:hover{
+    background-color: #3490dc;
+    color: white;
 }
 
 #input{

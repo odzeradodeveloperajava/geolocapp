@@ -2,19 +2,17 @@ import EXIF from 'exif-js';
 import firebaseUploadHandler from '../firebaseScripts/firebaseUploadHandler';
 import returnNewItem from '../returnNewItem/returnNewItem';
 import { areCoordinatesValid } from '../areCoordinatesValid/areCoordinatesValid';
-import { resetStateValue, deleteActiveItems, countFilesToProcess, fileProcessedAdder, putNamesNoExif, addActiveFile, setCenterPosition, setActiveCardNr} from '../../actions';
+import { toggleUploadModal, resetStateValue, deleteActiveItems, countFilesToProcess, fileProcessedAdder, putNamesNoExif, addActiveFile, setCenterPosition, setActiveCardNr} from '../../actions';
 import store from '../../store';
 
 const addItemHandler = (e) => {
-
-console.log(e)
-
 		let filesArray = e.target.files.length;
         console.log(e.target.files)
 		store.dispatch(resetStateValue('filesToProcess', 0));
 		store.dispatch(resetStateValue('fileProcessed', 0));
 		store.dispatch(countFilesToProcess(filesArray));
 		store.dispatch(deleteActiveItems());
+		store.dispatch(toggleUploadModal('false'));
 		for (let i = 0; i < filesArray; i++) {
 		  const selectedFile = e.target.files[i];
 		  EXIF.getData(selectedFile, async function () {

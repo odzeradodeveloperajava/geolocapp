@@ -1,0 +1,50 @@
+.uploadModal__wrapper{
+    position: absolute;
+    z-index: 9999;
+    background-color: rgba(0, 0, 0, 0.892);
+    height: 100vh;
+    width: 100vw;
+    overflow-y: hidden;
+}
+.uploadModal__centeringWrapper{
+    z-index: 9999;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.uploadModal__closeButton{
+    padding: 5px;
+    border-radius: 2px;
+    position: absolute;
+    z-index: 9999;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+    font-size: 12px;
+    &:hover{
+        color: white;
+        background-color: #3490dc;
+    }
+}
+.uploadModal__text{
+    padding-bottom: 50px;
+    text-align: justify;
+}
+.uploadModal__textBox{
+    @media only screen and (max-width: 800px){
+        height: 100%;
+        background-color: rgb(255, 255, 255);}
+    @media only screen and (min-width: 800px){
+        height: 480px;}
+    position: relative;
+    max-width: 640px;
+    background-color: white;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

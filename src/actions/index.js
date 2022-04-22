@@ -86,3 +86,9 @@ export const toggleTheme = (theme) => {
         payload: {theme}
     };
 };
+export const toggleUploadModal = (onOrOff) => {
+    return {
+        type: 'TOGGLE_UPLOAD_MODAL',
+        payload: {onOrOff}
+    };
+};

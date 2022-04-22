@@ -1,6 +1,7 @@
 import {getStorage, ref, listAll} from "firebase/storage";
-const storage = getStorage();
-const listRef = ref(storage, 'images');
+import { storage } from "./index";
+const fstorage = getStorage();
+const listRef = ref(fstorage, 'images');
 
 export const howManyFiles = async () => {
     const getAllFilesList = await listAll(listRef);

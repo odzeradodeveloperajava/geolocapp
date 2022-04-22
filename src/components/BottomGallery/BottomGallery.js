@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import styled from './BottomGallery.module.scss';
 import Card from '../ImageCard/Card';
 
-
 const BottomGallery = ({bottomGalleryItems, bottomGalleryItemsPlaceholder}) => {
 
     const [content, setContent] = useState(null)

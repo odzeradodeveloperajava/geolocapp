@@ -10,6 +10,7 @@ import FullSizeImageShadowBox from "./components/Modals/FullSizeImageShadowBox/F
 import Footer from "./components/Footer/Footer";
 import setBottomGalleryItemsHandler from "./functions/setBottomGalleryItemsHandler/setBottomGalleryItemsHandler";
 import ContentWrapper from "./components/ContentWrapper/ContentWrapper";
+import UploadModal from "./components/Modals/UploadModal/UploadModal";
 
 const App = () => {
   setBottomGalleryItemsHandler();
@@ -17,6 +18,7 @@ const App = () => {
   const InnerApp = () =>{
     return(
     <>
+    <UploadModal />
     <FullSizeImageShadowBox/>
     <NoExifDataModal />
     <Loader />

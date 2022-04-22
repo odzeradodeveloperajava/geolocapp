@@ -1,4 +1,4 @@
-import { activeCardScroll } from "../functions/activeCardScrollHandler/activeCardScrollHandler";
+import { activeCardScroll } from '../functions/activeCardScrollHandler/activeCardScrollHandler';
 
 const initialState = {
     filesToProcess: 0,
@@ -6,35 +6,37 @@ const initialState = {
     activeCardNr: 0,
     fullScreen: false,
     loaderScreen: false,
-    activeItems:[],
+    uploadScreen: false,
+    activeItems: [],
     centerPosition: [],
     bottomGalleryItems: [],
-    bottomGalleryItemsPlaceHolder: 
-        {imageUrl: 'https://i.gifer.com/YCZH.gif',
+    bottomGalleryItemsPlaceHolder:
+        {
+        imageUrl: 'https://i.gifer.com/YCZH.gif',
         town: null,
         country: null,
         lat: null,
-        lon: null
+        lon: null,
     },
     noExifDataFileNames: [],
     activeTheme: 'lightTheme',
     lightTheme: {
         tiles: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
     },
     darkTheme: {
         tiles: `https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png?api_key=${process.env.REACT_APP_STADIAKEY}`,
-        attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+        attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
     },
 };
 
 const rootReducer = (state = initialState, action) => {
-    switch(action.type){
+    switch (action.type) {
         case ('REMOVE_ITEM'):
             return {
                 ...state,
                activeItems: [...state.activeItems.filter(item => item.imageUrl !== action.payload.imageUrl)],
-               activeCardNr: state.activeCardNr > 0 ? state.activeCardNr -1 : 0
+               activeCardNr: state.activeCardNr > 0 ? state.activeCardNr - 1 : 0,
             };
         case ('CLICK_ITEM'):
             return {
@@ -126,7 +128,13 @@ const rootReducer = (state = initialState, action) => {
                     }
                 }
             }
-        default :
+            case ('TOGGLE_UPLOAD_MODAL'):
+                console.log(action.payload.onOrOff)
+                    return{
+                        ...state,
+                        uploadScreen: action.payload.onOrOff
+                    }
+            default :
            return state;
     }
 };
