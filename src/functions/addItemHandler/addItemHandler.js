@@ -7,7 +7,6 @@ import store from '../../store';
 
 const addItemHandler = (e) => {
 		let filesArray = e.target.files.length;
-        console.log(e.target.files)
 		store.dispatch(resetStateValue('filesToProcess', 0));
 		store.dispatch(resetStateValue('fileProcessed', 0));
 		store.dispatch(countFilesToProcess(filesArray));

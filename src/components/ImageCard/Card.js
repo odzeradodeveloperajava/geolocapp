@@ -4,9 +4,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { removeItem, clickItem, fullScreenToggle } from './../../actions'
 
+
+
+
 const Card = ({cardId, imageUrl, size, lat, lon, town,country, usageIdentifier, clickItem, fullScreenToggle, removeItem, activeTheme}) => {
   const latFinal = parseFloat(lat).toFixed(4);
   const lonFinal = parseFloat(lon).toFixed(4);
+
+
   const clickBottomItem = () => {
     window.scrollTo({
       top: 0,
@@ -17,29 +22,29 @@ const Card = ({cardId, imageUrl, size, lat, lon, town,country, usageIdentifier, 
   }
      if(usageIdentifier === 'upperGallery'){
         return(
-          <div className={`${styled.upperCardWrapper} ${styled[activeTheme]}`} >
-            <div className={styled.cardImageContainer} onClick={()=>fullScreenToggle('fullScreen',true)} >
-              <img className={styled.imageInCard} src={imageUrl} alt='' style={{padding: '5px 0'}}/>
+          <div className={`${styled.upperCard__wrapper} ${styled[activeTheme]}`} >
+            <div className={styled.card__imageContainer} onClick={()=>fullScreenToggle('fullScreen',true)} >
+              <img className={styled.card__image} src={imageUrl} alt='' style={{padding: '5px 0'}}/>
             </div>
-            <div className={styled.geoInformation} style={{alignItems: 'start'}}>
-              <div className={styled.tabUpper}>File name: {cardId}</div>
-              <div className={styled.tabUpper}>File size: {size}</div>
-              <div className={styled.tabUpper}>Latitude: {latFinal}</div>
-              <div className={styled.tabUpper}>Longitude: {lonFinal}</div>
-              <div className={styled.tabUpper}>Town: {town}</div>
-              <button className={styled.deletionButton} onClick={()=>removeItem(imageUrl)}>Close card</button>
+            <div className={styled.card__geoInformation} style={{alignItems: 'start'}}>
+              <div className={styled.card__tabUpper}>File name: {cardId}</div>
+              <div className={styled.card__tabUpper}>File size: {size}</div>
+              <div className={styled.card__tabUpper}>Latitude: {latFinal}</div>
+              <div className={styled.card__tabUpper}>Longitude: {lonFinal}</div>
+              <div className={styled.card__tabUpper}>Town: {town}</div>
+              <button className={styled.card__deletionButton} onClick={()=>removeItem(imageUrl)}>Close card</button>
             </div>
           </div>
       )}
         else if (usageIdentifier === 'bottomGallery'){
           return(
-            <div className={`${styled.bottomCardWrapper} ${styled[activeTheme]}`}>
+            <div className={`${styled.bottomCard__wrapper} ${styled[activeTheme]}`}>
               <div className={styled.cardImageContainer} onClick={()=>clickBottomItem()} >
                 <img className={styled.imageInCard} src={imageUrl} alt='' style={{padding: '15px'}}/>
               </div>
               <div className={styled.geoInformation} style={{alignItems: 'center'}}>
-                <div className={styled.tabBottom}>{town}, {country}</div>
-                <div className={styled.smallerTab}>Latitude: {latFinal}, Longitude: {lonFinal}</div>
+                <div className={styled.card__tabBottom}>{town}, {country}</div>
+                <div className={styled.card__smallerTab}>Latitude: {latFinal}, Longitude: {lonFinal}</div>
               </div>
             </div>
           )}

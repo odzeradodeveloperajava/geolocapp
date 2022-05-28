@@ -15,9 +15,11 @@ const firebaseUploadHandler = async (selectedFile, handler) => {
       const metaData = await returnNewItem(file, true);
       uploadBytes(fileImagesRef, file, metaData);
       const thumbnail = await imageResizer(selectedFile);
-      uploadBytes(thumbnailFileImageRef, thumbnail).then((snapshot) => {
-         store.dispatch(fileProcessedAdder())
-      });
+      if(store.getState().denyUploadToServer === true){
+         uploadBytes(thumbnailFileImageRef, thumbnail).then((snapshot) => {
+            store.dispatch(fileProcessedAdder())
+         })
+      }
    });
 }
 

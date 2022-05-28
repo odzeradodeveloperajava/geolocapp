@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import styled from './BottomGallery.module.scss';
 import Card from '../ImageCard/Card';
 
+
 const BottomGallery = ({bottomGalleryItems, bottomGalleryItemsPlaceholder}) => {
 
     const [content, setContent] = useState(null)
@@ -11,25 +12,22 @@ const BottomGallery = ({bottomGalleryItems, bottomGalleryItemsPlaceholder}) => {
         if(bottomGalleryItems.length !== 0){
             setContent(
                 bottomGalleryItems.map(item => (
-                    <Card key={item.cardId} {...item} usageIdentifier={'bottomGallery'}/>
+                    <Card key={item.cardId} {...item} usageIdentifier={'bottomGallery'} />
                ))
             )
         }
         else{
             setContent(
                 [...Array(6)].map(e => (
-                <Card usageIdentifier={'placeHolder'} {...bottomGalleryItemsPlaceholder}/>
+                <Card key={Math.floor(Math.random() * (100000000))} usageIdentifier={'placeHolder'} {...bottomGalleryItemsPlaceholder}/>
            ))
             )
         }
     },[bottomGalleryItems, bottomGalleryItems.length, bottomGalleryItemsPlaceholder])
-
-
-
     return (
-        <div className={styled.galleryWrapper}>
-            <div className={styled.bottomGalleryHeader}>Check other images in database:</div>
-                <div className={styled.bottomImagesWrapper}>
+        <div className={styled.bottomGallery__galleryWrapper}>
+            <div className={styled.bottomGallery__header}>Check other images in database:</div>
+                <div className={styled.bottomGallery__imagesWrapper}>
                     {content}
                 </div>
         </div>

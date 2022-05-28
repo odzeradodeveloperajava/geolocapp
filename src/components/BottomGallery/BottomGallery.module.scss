@@ -1,12 +1,12 @@
-.galleryWrapper{
+.bottomGallery__galleryWrapper{
     margin: 30px 0 20px 0;
 }
-.bottomGalleryHeader{
+.bottomGallery__header{
     font-weight: 600;
     margin: 0 auto;
     width: fit-content;
 }
-.bottomImagesWrapper{
+.bottomGallery__imagesWrapper{
     margin-top: 20px;
     display: grid;
     @media only screen and (min-width: 360px){

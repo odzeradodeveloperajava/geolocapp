@@ -92,3 +92,8 @@ export const toggleUploadModal = (onOrOff) => {
         payload: {onOrOff}
     };
 };
+export const doNotUploadToggle = () => {
+    return {
+        type: 'DO_NOT_UPLOAD_TOGGLE',
+    };
+};

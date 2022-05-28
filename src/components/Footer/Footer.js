@@ -3,7 +3,7 @@ import styled from './Footer.module.scss';
 
 const Footer = () => {
     return (
-        <div className={styled.footerWrapper}>©2021 Slawomir T </div>
+        <div className={styled.footer__wrapper}>©2021 Slawomir T </div>
     )
 }
 

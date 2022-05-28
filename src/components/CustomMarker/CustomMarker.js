@@ -1,16 +1,17 @@
-import './CustomMarker.scss';
 import { connect } from 'react-redux';
+import styled from './CustomMarker.module.scss';
+
 
 const CustomMarker = ({active, items}) => {
     return (
-        <div className='customMarkerWrapper'>
-            <div className='photoData'>
-                <span className='spanTitle'>Photo name: </span>
+        <div className={styled.customMarker__wrapper}>
+            <div className={styled.customMarker__photoData}>
+                <span className={styled.customMarker__spanTitle}>Photo name: </span>
                 <span>{items[active].cardId}</span>
-                <span className='spanTitle'>Location: </span>
+                <span className={styled.customMarker__spanTitle}>Location: </span>
                 <span>{items[active].town}</span>
             </div>
-            <img className='markerImage' src={items[active].imageUrl} alt='uploaded_photo'></img>
+            <img className={styled.customMarker__markerImage} src={items[active].imageUrl} alt='uploaded_photo'></img>
         </div>
     )
 }

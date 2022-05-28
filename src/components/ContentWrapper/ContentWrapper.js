@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 
 const ContentWrapper = ({activeTheme}) => {
   return (
-    <div className={`${styled.pageWrapper} ${styled[activeTheme]}`}>
+    <div className={`${styled.contentWrapper__pageWrapper} ${styled[activeTheme]}`}>
         <Map />
         <CardsWrapper/>
         <AppDescription />

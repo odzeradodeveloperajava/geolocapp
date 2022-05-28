@@ -1,17 +1,109 @@
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300&family=Open+Sans:wght@300&family=Orbitron:wght@500&family=Ubuntu:wght@300;400&display=swap');
 
-.headerWrapper{
+.header__wrapper{
 width: 100%;
 background-color: cornflowerblue;
 display: flex;
-justify-content: center;
+justify-content: space-around;
 align-items: center;
 color: white;
+font-family: 'Ubuntu', sans-serif;
+font-weight: 400;
 }
-
-.headerInnerWrapper{
-width: 1100px;
+.header__title{
+    cursor: pointer;
+}
+.header__innerWrapper{
 display: flex;
 flex-direction: row;
-justify-content: space-between;
 align-items: center;
+@media only screen and (min-width: 360px){
+    min-width: 360px;
+    padding: 10px;
+}
+@media only screen and (min-width: 800px){
+    width: 800px;
+}
+@media only screen and (min-width: 1100px){
+    width: 1100px;
+}
+}
+.header__uploadButton{
+    flex-shrink: 0;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    margin-left: auto;
+    color: white;
+    border: none;
+    width: 130px;
+    height: 34px;
+    border-radius: 50px;
+    background-color: transparent;
+    border: 2px solid white;
+    transition: 0.3s;
+    &:hover{
+        background-color: rgb(255, 255, 255);
+        color: cornflowerblue;
+    }
+}
+
+.header__toggleButton input{
+    width: 0;
+    height: 0;
+    opacity: 0;
+}
+.header__toggleButton{
+    flex-shrink: 0;
+    margin-left: 20px;
+    margin-right: 20px;
+    width: 60px;
+    height: 34px;
+    position: relative;
+}
+.header__slider{
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgb(240, 240, 240);
+    border-radius: 50px;
+}
+.header__slider::after{
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.3s;
+    background-image: url('https://img.pixers.pics/pho_wat(s3:700/FO/65/76/56/54/700_FO65765654_076fe991e9ee533d73c1b10f07927189.jpg,700,688,cms:2018/10/5bd1b6b8d04b8_220x50-watermark.png,over,480,638,jpg)/koce-pluszowe-sun-icon.jpg.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.header__slider::before{
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+input:checked + .slider{
+    background-color: rgb(61, 61, 61);
+}
+input:checked + .slider:before{
+    transform: translateX(26px);
+    background-color: yellow;
+}
+input:checked + .slider:after{
+    transform: translateX(20px);
+    background-color: rgb(61, 61, 61);
+    background-image: none;
+    //background-image: url('https://listimg.pinclipart.com/picdir/s/576-5762346_yellow-star-shape-png-yellow-star-icon-png.png');
+    background-size: cover;
 }

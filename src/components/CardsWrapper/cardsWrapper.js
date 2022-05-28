@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Card from '../ImageCard/Card';
 import styled from './CardsWrapper.module.scss'
 import { connect } from 'react-redux';
@@ -7,46 +7,35 @@ import { useSwipeable } from "react-swipeable";
 
 
 const CardsWrapper = ({activeItems, activeCard, swipeGalleryHandler}) => {
-    function clickHandler(dir){
-        if(dir === 'Right'){
-        swipeGalleryHandler('right')
-        return null
-        }
-        else if(dir === 'Left')
-        swipeGalleryHandler('left')
-        return null
-    }
-
     const handlers = useSwipeable({})
     const { ref: documentRef } = useSwipeable({
        onSwiped: ({ dir}) => {
-           console.log('swiped kurwa')
          if( dir === 'Left'){
-             clickHandler('Right')
+            swipeGalleryHandler('right')
          }
          else{
-             clickHandler('Left')
+            swipeGalleryHandler('left')
          }
        },
         preventDefaultTouchmoveEvent: true
       });
-      React.useEffect(() => {
+      useEffect(() => {
         documentRef(document.getElementById('imageContainer'));
       });
 
     const buttonLeft = (
-        <button  className={styled.buttonLeft} id='buttonLeft' onClick={()=>clickHandler('Left')}></button>
+        <button  className={styled.cardsWrapper__buttonLeft} id='buttonLeft' onClick={()=>swipeGalleryHandler('left')}></button>
     )
 
     const buttonRight = (
-        <button className={styled.buttonRight} id='buttonRight' onClick={()=>clickHandler('Right')}></button>
+        <button className={styled.cardsWrapper__buttonRight} id='buttonRight' onClick={()=>swipeGalleryHandler('right')}></button>
     )
 
     if ( activeItems.length > 0){
         return (
-            <div className={styled.cards}>
+            <div className={styled.cardsWrapper__mainFrame}>
             {activeCard > 0 ? buttonLeft : null}
-            <div  id='imageContainer' className={styled.imageContainer} {...handlers} >
+            <div  id='imageContainer' className={styled.cardsWrapper__imageContainer} {...handlers} >
                 {activeItems.map(item => (
                 <Card key={item.cardId} {...item} usageIdentifier='upperGallery' />
             ))}

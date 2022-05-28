@@ -1,4 +1,4 @@
-.cards{
+.cardsWrapper__mainFrame{
     box-sizing: border-box;
     display: flex;
     flex-direction: row;
@@ -21,7 +21,7 @@
         transform: translate(-320px, 25px);
     }
 }
-.imageContainer{
+.cardsWrapper__imageContainer{
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -52,12 +52,12 @@
             opacity: 1;
         }
 }
-.buttonLeft{
+.cardsWrapper__buttonLeft{
     @include button;
     left: 10px;
     background-image: url('./../../assets/icons/arrow-left.png');
 }
-.buttonRight{
+.cardsWrapper__buttonRight{
     left: 100%;
     transform: translateX(-50px);
     @include button;

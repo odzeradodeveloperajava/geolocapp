@@ -7,13 +7,14 @@ const initialState = {
     fullScreen: false,
     loaderScreen: false,
     uploadScreen: false,
+    denyUploadToServer: false,
     activeItems: [],
     centerPosition: [],
     bottomGalleryItems: [],
     bottomGalleryItemsPlaceHolder:
         {
         imageUrl: 'https://i.gifer.com/YCZH.gif',
-        town: null,
+        town: 'placeholder',
         country: null,
         lat: null,
         lon: null,
@@ -52,6 +53,11 @@ const rootReducer = (state = initialState, action) => {
             return {
                 ...state,
                 bottomGalleryItems: [...action.payload.bottomGalleryItems]
+            }
+        case ('DO_NOT_UPLOAD_TOGGLE'):
+            return{
+                ...state,
+                denyUploadToServer: !state.denyUploadToServer
             }
         case ('FILES_TO_PROCESS'):
             return {
@@ -129,7 +135,6 @@ const rootReducer = (state = initialState, action) => {
                 }
             }
             case ('TOGGLE_UPLOAD_MODAL'):
-                console.log(action.payload.onOrOff)
                     return{
                         ...state,
                         uploadScreen: action.payload.onOrOff
