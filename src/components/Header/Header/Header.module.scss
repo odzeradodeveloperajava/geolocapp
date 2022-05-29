@@ -93,14 +93,14 @@ align-items: center;
     border-radius: 50%;
     transition: 0.3s;
 }
-input:checked + .slider{
+input:checked + .header__slider{
     background-color: rgb(61, 61, 61);
 }
-input:checked + .slider:before{
+input:checked + .header__slider:before{
     transform: translateX(26px);
     background-color: yellow;
 }
-input:checked + .slider:after{
+input:checked + .header__slider:after{
     transform: translateX(20px);
     background-color: rgb(61, 61, 61);
     background-image: none;

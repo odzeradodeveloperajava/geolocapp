@@ -7,7 +7,7 @@
 }
 
 @media only screen and (min-width: 360px) {
-  .pageWrapper {
+  .contentWrapper__pageWrapper {
     min-width: 360px;
   }
 
@@ -17,14 +17,14 @@
 }
 
 @media only screen and (min-width: 800px) {
-  .pageWrapper {
+  .contentWrapper__pageWrapper {
     width: 800px;
     padding: 10px;
   }
 }
 
 @media only screen and (min-width: 1100px) {
-  .pageWrapper {
+  .contentWrapper__pageWrapper {
     width: 1100px;
     padding: 20px;
   }

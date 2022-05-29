@@ -39,10 +39,10 @@ const Card = ({cardId, imageUrl, size, lat, lon, town,country, usageIdentifier, 
         else if (usageIdentifier === 'bottomGallery'){
           return(
             <div className={`${styled.bottomCard__wrapper} ${styled[activeTheme]}`}>
-              <div className={styled.cardImageContainer} onClick={()=>clickBottomItem()} >
-                <img className={styled.imageInCard} src={imageUrl} alt='' style={{padding: '15px'}}/>
+              <div className={styled.card__imageContainer} onClick={()=>clickBottomItem()} >
+                <img className={styled.card__image} src={imageUrl} alt='' style={{padding: '15px'}}/>
               </div>
-              <div className={styled.geoInformation} style={{alignItems: 'center'}}>
+              <div className={styled.card__geoInformation} style={{alignItems: 'center'}}>
                 <div className={styled.card__tabBottom}>{town}, {country}</div>
                 <div className={styled.card__smallerTab}>Latitude: {latFinal}, Longitude: {lonFinal}</div>
               </div>
@@ -50,9 +50,9 @@ const Card = ({cardId, imageUrl, size, lat, lon, town,country, usageIdentifier, 
           )}
           else if (usageIdentifier === 'placeHolder'){
             return(
-              <div className={`${styled.bottomCardWrapper} ${styled[activeTheme]}`}>
-                <div className={styled.cardImageContainer}>
-                  <img className={styled.imageInCard} src={imageUrl} alt='loading animation' style={{padding: '15px'}}/>
+              <div className={`${styled.bottomCard__wrapper} ${styled[activeTheme]}`}>
+                <div className={styled.card__imageContainer}>
+                  <img className={styled.card__image} src={imageUrl} alt='loading animation' style={{padding: '15px'}}/>
                 </div>
               </div>
             )
