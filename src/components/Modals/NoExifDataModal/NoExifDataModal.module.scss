@@ -1,0 +1,45 @@
+.noExifDataModal__wrapper{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0, 0.75);
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+.noExifDataModal__innerWrapper{
+    position: absolute;
+    width: 800px;
+    height: 600px;
+    z-index: 99;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    opacity: 1;
+    flex-direction: column;
+}
+.noExifDataModal__closeButton{
+    width: 200px;
+    height: 50px;
+    border-radius: 10px;
+    border: 1px solid gray;
+    z-index: 99;
+    margin-top: 30px;
+    background-color: white;
+    cursor: pointer;
+    &:hover{
+        background-color: lightgray;
+        border: none;
+    }
+}
+
+.noGpsDataDesc{
+    font-family: 'Be Vietnam Pro', sans-serif;
+}
+.noExifDataName{
+    font-family: 'Be Vietnam Pro', sans-serif;
+}

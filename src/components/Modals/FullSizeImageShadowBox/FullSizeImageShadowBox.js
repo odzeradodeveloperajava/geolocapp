@@ -4,9 +4,6 @@ import { connect } from 'react-redux';
 import { fullScreenToggle } from '../../../actions';
 
 const FullSizeImageShadowBox = ({activeItems, activeCardNr, fullScreenState, fullScreenToggle}) => {
-
-    // to do transition
-
     const [fullScreenImage, setFullScreenImage] = useState(null);
     useEffect(()=>{
         if(activeItems[activeCardNr] !== undefined){
@@ -23,10 +20,10 @@ const FullSizeImageShadowBox = ({activeItems, activeCardNr, fullScreenState, ful
         window.onscroll = function () { window.scrollTo(0, 0); };
         return(
             <>
-            <div className={styled.wrapper}/>
-            <div className={styled.justifier}>
-                <img className={styled.imageWrapper} alt='' src={fullScreenImage} />
-                <button className={styled.closeButton} onClick={()=>fullScreenToggle('fullScreen',false)}>Close ✖</button>
+            <div className={styled.fullSizeImageShadowBox__wrapper}/>
+            <div className={styled.fullSizeImageShadowBox__justifier}>
+                <img className={styled.fullSizeImageShadowBox__imageWrapper} alt='' src={fullScreenImage} />
+                <button className={styled.fullSizeImageShadowBox__closeButton} onClick={()=>fullScreenToggle('fullScreen',false)}>Close ✖</button>
             </div>
             </>
         )}

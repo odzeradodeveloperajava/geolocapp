@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300&display=swap');
 
-.loaderWrapper{
+.loader__wrapper{
     display: flex;
     opacity: 1;
     z-index: 150;
@@ -13,7 +13,7 @@
     position: fixed;
     flex-direction: column;
 }
-.background{
+.loader__background{
     z-index: 150;
     position: absolute;
     width: 100vw;
@@ -23,11 +23,11 @@
 }
 
 @supports (-moz-appearance:none) {
-    .background{      
+    .loader__background{
     background-color: rgba(0, 0, 0, 0.81);
     }
 }
-.loaderInnerWrapper{
+.loader__innerWrapper{
     position: absolute;
     z-index: 200;
     width: 640px;
@@ -39,16 +39,16 @@
     justify-content: center;
     align-items: center;
 }
-.loading{
+.loader__loading{
     font-family: 'Be Vietnam Pro', sans-serif;
     font-size: 25px;
     margin-bottom: 20px
     }
-.loadingProgress{
+.loader__loadingProgress{
     font-family: 'Be Vietnam Pro', sans-serif;
     margin-bottom: 50px;
 }
-.thumbnailContainer{
+.loader__thumbnailContainer{
     width: 500px;
     height: 250px;
     display: flex;
@@ -57,7 +57,7 @@
     flex-wrap: wrap;
 }
 
-.thumbnailContainer img{
+.loader__thumbnailContainer img{
     height: 100px;
     width: 100px;
     border-radius: 2px;

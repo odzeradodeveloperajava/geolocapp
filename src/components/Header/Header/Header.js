@@ -6,13 +6,13 @@ import { connect } from 'react-redux'
 
 
 
-const Header = ({toggleUploadModal}) =>{
+const Header = ({toggleUploadModal, activeTheme}) =>{
 return(
     <div className={styled.header__wrapper}>
         <div className={styled.header__innerWrapper}>
             <h1 className={styled.header__title} onClick={()=>window.location.reload()}>IMAGE GEOLOC APP</h1>
             <label className={styled.header__toggleButton}>
-                <input type='checkbox' onClick={()=>themeToggle()} />
+                <input type='checkbox' onChange={()=>themeToggle()} checked={activeTheme === 'darkTheme' ? true : false} />
                 <span className={styled.header__slider}>
                 </span>
             </label>
@@ -26,6 +26,11 @@ const mapDispatchToProps = dispatch =>({
     toggleUploadModal: (trueOrFalse) => dispatch(toggleUploadModal(trueOrFalse))
 })
 
+const mapStateToProps = state =>{
+    return{
+      activeTheme : state.activeTheme
+    }
+  }
 
 
-export default connect(null, mapDispatchToProps)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

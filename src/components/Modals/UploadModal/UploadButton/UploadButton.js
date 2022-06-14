@@ -1,5 +1,5 @@
 import React, {useRef} from 'react';
-import './UploadButton.css';
+import styled from './UploadButton.module.scss';
 import addItemHandler from './../../../../functions/addItemHandler/addItemHandler'
 
 const UploadButton = () =>{
@@ -10,10 +10,10 @@ const UploadButton = () =>{
 	}
 
 	return (
-		<div className='uploadButtonWrapper'>
+		<div className={styled.uploadButton__wrapper}>
 	    	<form onSubmit={addItemHandler}>
-						<button onClick={onButtonClick} id="browseFilesBtn" className="browseFilesButton">Browse Files</button>
-						<input ref={inputFile} id="input" type="file" multiple  accept="image/*" onChange={addItemHandler}/>
+						<button onClick={onButtonClick} id="browseFilesBtn" className={styled.uploadButton__browseFilesButton}>Browse Files</button>
+						<input className={styled.uploadButton__input} ref={inputFile} id="input" type="file" multiple  accept="image/*" onChange={addItemHandler}/>
 			</form>
 		</div>
 	)

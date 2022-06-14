@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300&family=Open+Sans:wght@300&display=swap');
-.wrapper{
+.fullSizeImageShadowBox__wrapper{
     position: absolute;
     width: 100vw;
     height: 100vh;
@@ -12,7 +12,7 @@
     flex-direction: column;
     transition: opacity .4s ease;
 }
-.closeButton{
+.fullSizeImageShadowBox__closeButton{
     bottom: 100px;
     z-index: 1100;
     font-family: 'Be Vietnam Pro', sans-serif;
@@ -29,7 +29,7 @@
             color: white
         }
 }
-.imageWrapper{
+.fullSizeImageShadowBox__imageWrapper{
     z-index: 1100;
     min-width: 30vw;
     max-width: 80vh;
@@ -42,7 +42,7 @@
     background-size: contain;
     background-image: url('https://c.tenor.com/pgO8hZgOW5AAAAAM/loading-bar.gif');
 }
-.justifier{
+.fullSizeImageShadowBox__justifier{
     width: 100vw;
     height: 100vh;
     position: absolute;
